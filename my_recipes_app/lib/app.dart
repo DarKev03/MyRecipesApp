@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/ui/pages/SplashScreen.dart';
+import 'package:my_recipes_app/ui/pages/splash_screen_page.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

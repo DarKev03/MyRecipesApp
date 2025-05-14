@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/ui/pages/AuthPage.dart';
+import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
