@@ -8,12 +8,12 @@ class CustomTextButtom extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CustomTextButtom({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.textColor,
     this.textSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
