@@ -1,51 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
+import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 
-class SignUpPage extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
+class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  SignUpPage({super.key});
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        backgroundColor: AppColors.backgroundColor,
       ),
+      backgroundColor: AppColors.backgroundColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.0),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 120),
-
-                // Nombre de la pagina
+                const SizedBox(height: 140),
                 const Text(
-                  'Register',
+                  'Welcome Back',
                   style: TextStyle(
-                    fontSize: 48,
+                    fontSize: 40,
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryColor,
                   ),
                 ),
-
-                const SizedBox(height: 15),
-
-                // Subtitulo
+                const SizedBox(height: 30),
                 const Text(
-                  'Create your new account',
+                  "Login to your account",
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.secondaryColor,
@@ -54,17 +45,9 @@ class SignUpPage extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // Formularios de registro
+                // Formularios
                 CustomTextField(
-                  controller: usernameController,
-                  isPassword: false,
-                  labelText: 'Username',
-                ),
-
-                const SizedBox(height: 25),
-
-                CustomTextField(
-                  controller: emailController,
+                  controller: TextEditingController(),
                   isPassword: false,
                   labelText: 'Email',
                   keyboardType: TextInputType.emailAddress,
@@ -73,56 +56,48 @@ class SignUpPage extends StatelessWidget {
                 const SizedBox(height: 25),
 
                 CustomTextField(
-                  controller: passwordController,
+                  controller: TextEditingController(),
                   labelText: 'Password',
                   isPassword: true,
+                  enableSuggestions: false,
                 ),
 
                 const SizedBox(height: 25),
 
-                CustomTextField(
-                  controller: confirmPasswordController,
-                  labelText: 'Confirm Password',
-                  isPassword: true,
-                ),
-
-                const SizedBox(height: 30),
-
-                // Sign up button
+                // Boton de inicio de sesion
                 CustomElevatedButtomWidget(
                   width: 120,
-                  text: "Sign up",
+                  text: "Login",
                   onPressed: () {},
                 ),
-
                 const SizedBox(height: 30),
 
                 Text("Or continue with"),
 
                 const SizedBox(height: 15),
 
-                // Boton de google
+                // Botones de inicio de sesion con redes sociales
                 IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      "lib/assets/images/google_png.webp",
-                      width: 50,
-                      height: 50,
-                    )),
+                  icon: Image.asset(
+                    "lib/assets/images/google_png.webp",
+                    width: 50,
+                    height: 50,
+                  ),
+                  onPressed: () {},
+                ),
 
-                // Login
+                const SizedBox(height: 25),
+
                 CustomTextButtom(
-                  textSize: 12,
-                  text: "Already have an account?",
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    );
-                  },
-                )
+                    text: "Don't have an account?",
+                    textSize: 12,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPage(),
+                          ));
+                    }),
               ],
             ),
           ),

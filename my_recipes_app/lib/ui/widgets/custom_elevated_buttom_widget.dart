@@ -7,6 +7,8 @@ class CustomElevatedButtomWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final double? textSize;
+  final double? width;
+  final double? height;
 
   const CustomElevatedButtomWidget({
     super.key,
@@ -15,25 +17,34 @@ class CustomElevatedButtomWidget extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.textSize,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? AppColors.primaryColor,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 4
+    return Theme(
+      data: Theme.of(context).copyWith(
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor ?? Colors.white,
-          fontSize: textSize ?? 16,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor ?? AppColors.primaryColor,
+          padding: EdgeInsets.symmetric(
+              horizontal: width ?? 32, vertical: height ?? 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 4,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor ?? Colors.white,
+            fontSize: textSize ?? 16,
+          ),
         ),
       ),
     );

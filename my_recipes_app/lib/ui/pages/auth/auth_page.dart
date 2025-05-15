@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
 import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
 import 'package:my_recipes_app/ui/widgets/app_image_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
@@ -14,73 +15,86 @@ class Authpage extends StatelessWidget {
         ));
   }
 
+  void moveToLoginPage(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ));
+  }
+
   const Authpage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-
-                // Nombre de la app
-                const Text(
-                  'MyRecipes',
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor,
+        extendBodyBehindAppBar: true,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 140,
                   ),
-                ),
 
-                SizedBox(
-                  height: 30,
-                ),
-
-                // Icono de la app
-                const AppImageWidget(),
-
-                SizedBox(
-                  height: 75,
-                ),
-
-                //Subtitulo
-                const Text(
-                  'Tu app de recetas personalizadas',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.secondaryColor,
+                  // Nombre de la app
+                  const Text(
+                    'MyRecipes',
+                    style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  height: 40,
-                ),
+                  SizedBox(
+                    height: 30,
+                  ),
 
-                //Sign up button
-                CustomElevatedButtomWidget(
-                  text: "Sign up",
-                  onPressed: () {
-                    moveToSignUpPage(context);
-                  },
-                ),
+                  // Icono de la app
+                  const AppImageWidget(),
 
-                SizedBox(
-                  height: 10,
-                ),
-                //Sign in button
-                CustomTextButtom(text: "Sign in", onPressed: () {}),
-              ],
+                  SizedBox(
+                    height: 75,
+                  ),
+
+                  //Subtitulo
+                  const Text(
+                    'Tu app de recetas personalizadas',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.secondaryColor,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 40,
+                  ),
+
+                  //Sign up button
+                  CustomElevatedButtomWidget(
+                    text: "Sign up",
+                    onPressed: () {
+                      moveToSignUpPage(context);
+                    },
+                  ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //Sign in button
+                  CustomTextButtom(
+                    text: "Sign in",
+                    onPressed: () {
+                      moveToLoginPage(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ));
