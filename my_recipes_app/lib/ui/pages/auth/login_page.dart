@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
+import 'package:my_recipes_app/ui/pages/main/home_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
+import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final UserRepository userRepository = UserRepository();
+  final LoginViewModel loginViewModel =
+      LoginViewModel(userRepository: UserRepository());
   LoginPage({super.key});
 
   @override
@@ -47,7 +55,7 @@ class LoginPage extends StatelessWidget {
 
                 // Formularios
                 CustomTextField(
-                  controller: TextEditingController(),
+                  controller: emailController,
                   isPassword: false,
                   labelText: 'Email',
                   keyboardType: TextInputType.emailAddress,
@@ -56,7 +64,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 25),
 
                 CustomTextField(
-                  controller: TextEditingController(),
+                  controller: passwordController,
                   labelText: 'Password',
                   isPassword: true,
                   enableSuggestions: false,
@@ -68,9 +76,50 @@ class LoginPage extends StatelessWidget {
                 CustomElevatedButtomWidget(
                   width: 120,
                   text: "Login",
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      bool loginSuccess = await loginViewModel.login(
+                        User(
+                          id: null,
+                          name: null,
+                          createdAt: null,
+                          isAdmin: null,
+                          email: emailController.text,
+                          password: passwordController.text,
+                        ),
+                      );
+                      if (loginSuccess) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                          (Route<dynamic> route) => false,
+                        );
+                      } else {
+                        // Manejar error de inicio de sesión
+                        CustomSnackbar.show(
+                          context,
+                          "Invalid email or password",
+                        );
+                      }
+                      ;
+                    } catch (e) {}
+                  },
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 5),
+
+                CustomTextButtom(
+                    text: "Don't have an account?",
+                    textSize: 13,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPage(),
+                          ));
+                    }),
+
+                const SizedBox(height: 25),
 
                 Text("Or continue with"),
 
@@ -88,16 +137,7 @@ class LoginPage extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                CustomTextButtom(
-                    text: "Don't have an account?",
-                    textSize: 12,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpPage(),
-                          ));
-                    }),
+                
               ],
             ),
           ),

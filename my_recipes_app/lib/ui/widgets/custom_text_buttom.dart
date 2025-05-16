@@ -17,13 +17,19 @@ class CustomTextButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: textSize ?? 16,
-          color: textColor ?? AppColors.secondaryColor,
+    return Theme(
+      data: Theme.of(context).copyWith(
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,        
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: textSize ?? 16,
+            color: textColor ?? AppColors.secondaryColor,
+          ),
         ),
       ),
     );

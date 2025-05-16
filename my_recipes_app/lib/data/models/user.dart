@@ -1,9 +1,9 @@
 class User {
-  final int id;
+  final int? id;
   final String email;
   final String password;
   final String? name;
-  final DateTime createdAt;
+  final String? createdAt;
   final bool? isAdmin;
 
   User({
@@ -20,7 +20,7 @@ class User {
         email: json['email'],
         password: json['password'],
         name: json['name'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: json['created_at'],
         isAdmin: json['is_admin'],
       );
 
@@ -29,7 +29,7 @@ class User {
         'email': email,
         'password': password,
         'name': name,
-        'created_at': createdAt.toIso8601String(),
+        'created_at': null,
         'is_admin': isAdmin,
       };
 }
