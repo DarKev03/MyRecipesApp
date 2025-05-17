@@ -102,7 +102,6 @@ class LoginPage extends StatelessWidget {
                           "Invalid email or password",
                         );
                       }
-                      ;
                     } catch (e) {}
                   },
                 ),
