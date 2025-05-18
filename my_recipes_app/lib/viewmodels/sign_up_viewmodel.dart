@@ -10,7 +10,7 @@ class SignUpViewModel extends ChangeNotifier {
 
   Future<bool> signUp(User user) async {
     try {
-      await _userRepository.createUser(user);      
+      await _userRepository.registerUser(user);      
       return true;
     } catch (e) {
       return false;

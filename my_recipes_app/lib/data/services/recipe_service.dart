@@ -74,13 +74,12 @@ class RecipeService {
 
   Future<List<Recipe>> getRecipesByUserId(int userId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/recipes/$userId'),
+      Uri.parse('$baseUrl/recipes/user/$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = json.decode(response.body);
-      print(response.body);
+      List<dynamic> jsonResponse = json.decode(response.body);      
       return jsonResponse.map((recipe) => Recipe.fromJson(recipe)).toList();
     } else {
       throw Exception('Error fetching recipes by user');

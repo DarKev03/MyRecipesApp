@@ -1,12 +1,13 @@
 class Recipe {
   final int id;
-  final int userId;
+  final int? userId;
   final String title;
   final String? description;
   final String? instructions;
   final int? prepTime;
   final String? imageUrl;
-  final String createdAt;
+  final bool? isFavorite;
+  final String? createdAt;
 
   Recipe({
     required this.id,
@@ -15,6 +16,7 @@ class Recipe {
     this.description,
     this.imageUrl,
     this.instructions,
+    this.isFavorite,
     this.prepTime,
     required this.createdAt,
   });
@@ -24,10 +26,11 @@ class Recipe {
         userId: json['user_id'],
         title: json['title'],
         description: json['description'],
-        imageUrl: json['image_url'],
+        imageUrl: json['imageUrl'],
         instructions: json['instructions'],
-        prepTime: json['prep_time'],
-        createdAt: json['created_at'],
+        isFavorite: json['favorite'],
+        prepTime: json['prepTime'],
+        createdAt: json['createdAt'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +40,7 @@ class Recipe {
         'description': description,
         'image_url': imageUrl,
         'instructions': instructions,
+        'is_favorite': isFavorite,
         'prep_time': prepTime,
         'created_at': createdAt,
       };
