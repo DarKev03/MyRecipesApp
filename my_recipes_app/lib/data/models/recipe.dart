@@ -5,6 +5,7 @@ class Recipe {
   final String? description;
   final String? instructions;
   final int? prepTime;
+  final String? imageUrl;
   final DateTime createdAt;
 
   Recipe({
@@ -12,6 +13,7 @@ class Recipe {
     required this.userId,
     required this.title,
     this.description,
+    this.imageUrl,
     this.instructions,
     this.prepTime,
     required this.createdAt,
@@ -22,6 +24,7 @@ class Recipe {
         userId: json['user_id'],
         title: json['title'],
         description: json['description'],
+        imageUrl: json['image_url'],
         instructions: json['instructions'],
         prepTime: json['prep_time'],
         createdAt: DateTime.parse(json['created_at']),
@@ -32,6 +35,7 @@ class Recipe {
         'user_id': userId,
         'title': title,
         'description': description,
+        'image_url': imageUrl,
         'instructions': instructions,
         'prep_time': prepTime,
         'created_at': createdAt.toIso8601String(),

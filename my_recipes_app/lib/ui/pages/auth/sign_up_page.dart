@@ -94,7 +94,7 @@ class SignUpPage extends StatelessWidget {
                 CustomTextField(
                   controller: nameController,
                   isPassword: false,
-                  labelText: 'Username',
+                  labelText: 'Name',
                 ),
 
                 const SizedBox(height: 25),

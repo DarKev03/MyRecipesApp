@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
+import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,38 +10,47 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: 100,
               ),
-              const Text(
-                'Welcome to My Recipes App',
-                style: TextStyle(
-                  fontSize: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: const Text(
+                  'Recently added',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
           
               //Carrusel de imagenes
-          
+              CarouselSliderWidget(),    
+
               SizedBox(
-                height: 30,
-              ),
+                height: 20,
+              ),                   
           
-              Text(
-                'Recetas favoritas',
-                style: TextStyle(
-                  fontSize: 16,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Text(
+                  'Favorites recipes',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 20),
-
+                        
+          
               // Cards de recetas favoritas
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: FavoritesRecipesWidget(),
+              )
+          
             ],
           ),
         ));
