@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/repositories/recipe_repository.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
-import 'package:my_recipes_app/ui/pages/main/home_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
+import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/sign_up_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -20,7 +24,9 @@ class SignUpPage extends StatelessWidget {
   final UserRepository userRepository = UserRepository();
   final SignUpViewModel signUpViewModel =
       SignUpViewModel(userRepository: UserRepository());
-  SignUpPage({super.key});
+  SignUpPage({super.key});  
+  HomePageViewModel homePageViewmodel =
+      HomePageViewModel(recipeRepository: RecipeRepository());
 
   bool isValid(BuildContext context) {
     final name = nameController.text.trim();
@@ -133,19 +139,25 @@ class SignUpPage extends StatelessWidget {
                       if (!isValid(context)) {
                         return;
                       }
-                      bool success = await signUpViewModel.signUp(User(
+                      final user = User(
                           id: null,
                           email: emailController.text,
                           password: passwordController.text,
                           name: nameController.text,
                           createdAt: null,
-                          isAdmin: null));
+                          isAdmin: null);
+
+                      bool success = await signUpViewModel.signUp(user);
                       if (success) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ));
+                        final loginViewModel = context.read<LoginViewModel>();
+                        loginViewModel
+                            .setCurrentUser(user); // ahora sí, bien hecho
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NavBar()),
+                          (Route<dynamic> route) => false,
+                        );
                       } else {
                         CustomSnackbar.show(
                           context,
@@ -185,8 +197,6 @@ class SignUpPage extends StatelessWidget {
                       width: 50,
                       height: 50,
                     )),
-
-                
               ],
             ),
           ),

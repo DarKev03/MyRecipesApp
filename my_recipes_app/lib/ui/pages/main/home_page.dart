@@ -26,14 +26,14 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-          
+
               //Carrusel de imagenes
-              CarouselSliderWidget(),    
+              CarouselSliderWidget(),
 
               SizedBox(
                 height: 20,
-              ),                   
-          
+              ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Text(
@@ -43,14 +43,16 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-                        
-          
+
+              SizedBox(
+                height: 15,
+              ),
+
               // Cards de recetas favoritas
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: FavoritesRecipesWidget(),
               )
-          
             ],
           ),
         ));
