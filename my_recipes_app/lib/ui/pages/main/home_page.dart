@@ -34,6 +34,7 @@ class HomePage extends StatelessWidget {
                   'Recently added',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -51,12 +52,13 @@ class HomePage extends StatelessWidget {
                   'Favorites recipes',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
 
               SizedBox(
-                height: 15,
+                height: 10,
               ),
 
               // Cards de recetas favoritas
