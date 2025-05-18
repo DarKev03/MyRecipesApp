@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
@@ -16,8 +16,6 @@ class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final UserRepository userRepository = UserRepository();
-  final LoginViewModel loginViewModel =
-      LoginViewModel(userRepository: UserRepository());
   LoginPage({super.key});
 
   @override
@@ -88,13 +86,15 @@ class LoginPage extends StatelessWidget {
                         email: emailController.text,
                         password: passwordController.text,
                       );
+                      final loginViewModel = context.read<LoginViewModel>();
                       bool loginSuccess = await loginViewModel.login(
                         user,
                       );
                       if (loginSuccess) {
-                        final loginViewModel = context.read<LoginViewModel>();
-                        final HomePageViewmodel = context.read<HomePageViewModel>();
-                        await HomePageViewmodel.fetchRecipesByUser(user);
+                        final homePageViewmodel =
+                            context.read<HomePageViewModel>();
+                        await homePageViewmodel
+                            .fetchRecipesByUser(loginViewModel.currentUser!);
 
                         Navigator.pushAndRemoveUntil(
                           context,

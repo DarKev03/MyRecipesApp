@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/recipe_repository.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
@@ -151,7 +151,7 @@ class SignUpPage extends StatelessWidget {
                       if (success) {
                         final loginViewModel = context.read<LoginViewModel>();
                         loginViewModel
-                            .setCurrentUser(user); // ahora sí, bien hecho
+                            .setCurrentUser(user);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

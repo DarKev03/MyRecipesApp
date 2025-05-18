@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,6 +12,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final homePageViewModel = context.read<HomePageViewModel>();
+          final loginViewModel = context.read<LoginViewModel>();
+          homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
+        },
+        backgroundColor: AppColors.primaryColor,
+      ),
         backgroundColor: AppColors.backgroundColor,
         body: SingleChildScrollView(
           child: Column(

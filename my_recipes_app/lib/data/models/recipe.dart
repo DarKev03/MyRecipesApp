@@ -6,7 +6,7 @@ class Recipe {
   final String? instructions;
   final int? prepTime;
   final String? imageUrl;
-  final DateTime createdAt;
+  final String createdAt;
 
   Recipe({
     required this.id,
@@ -27,7 +27,7 @@ class Recipe {
         imageUrl: json['image_url'],
         instructions: json['instructions'],
         prepTime: json['prep_time'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: json['created_at'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +38,6 @@ class Recipe {
         'image_url': imageUrl,
         'instructions': instructions,
         'prep_time': prepTime,
-        'created_at': createdAt.toIso8601String(),
+        'created_at': createdAt,
       };
 }

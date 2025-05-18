@@ -16,7 +16,7 @@ class HomePageViewModel extends ChangeNotifier {
 
   Future<void> fetchRecipesByUser(User user) async {
     try {
-      _recipes = await _recipeRepository.getRecipeByUserId(user.id.toString());
+      _recipes = await _recipeRepository.getRecipeByUserId(user.id!);
 
       _recentlyRecipes = List.from(_recipes)
         ..sort((a, b) => b.createdAt.compareTo(a.createdAt));

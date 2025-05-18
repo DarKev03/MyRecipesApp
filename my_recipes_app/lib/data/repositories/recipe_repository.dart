@@ -24,7 +24,7 @@ class RecipeRepository {
     return await RecipeService().getRecipeById(recipeId);
   }
 
-  Future<List<Recipe>> getRecipeByUserId(String userId) async {
+  Future<List<Recipe>> getRecipeByUserId(int userId) async {
     return await RecipeService().getRecipesByUserId(userId);
   }
 }

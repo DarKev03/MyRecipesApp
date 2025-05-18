@@ -1,45 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 
-class FavoritesRecipesWidget extends StatelessWidget {
-  final List<Recipe> recetas = [
-    Recipe(
-      id: 1,
-      title: 'Spaghetti Carbonara',
-      imageUrl:
-          "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      description: 'A classic Italian pasta dish.',
-      userId: 0,
-      createdAt: DateTime.now(),
-    ),
-    Recipe(
-      id: 2,
-      title: 'Chicken Curry',
-      imageUrl:
-          "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      description: 'A spicy and flavorful dish.',
-      userId: 0,
-      createdAt: DateTime.now(),
-    ),
-    Recipe(
-      id: 3,
-      title: 'Tiramisu',
-      imageUrl:
-          "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      description: 'An Italian dessert.',
-      userId: 0,
-      createdAt: DateTime.now(),
-    ),
-    Recipe(
-      id: 4,
-      title: 'Beef Stroganoff',
-      imageUrl:
-          "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      description: 'A hearty Russian dish.',
-      userId: 0,
-      createdAt: DateTime.now(),
-    ),
-  ];
+class FavoritesRecipesWidget extends StatelessWidget {  
+  final List<Recipe> recetas = [];
   FavoritesRecipesWidget({super.key});
 
   @override

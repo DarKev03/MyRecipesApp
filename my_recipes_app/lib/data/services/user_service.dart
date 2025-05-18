@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
@@ -80,6 +80,7 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error al iniciar sesión');

@@ -1,4 +1,4 @@
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/services/user_service.dart';
 
 class UserRepository {

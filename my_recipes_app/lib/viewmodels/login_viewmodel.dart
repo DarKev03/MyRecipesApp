@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {

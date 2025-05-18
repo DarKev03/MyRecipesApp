@@ -5,7 +5,7 @@ import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class CarouselSliderWidget extends StatelessWidget {
-  CarouselSliderWidget({super.key});
+  const CarouselSliderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
