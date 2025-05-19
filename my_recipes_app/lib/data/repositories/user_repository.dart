@@ -1,9 +1,9 @@
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/services/user_service.dart';
 
 class UserRepository {
-  Future<User> createUser(User user) async {
-    return await UserService().createUser(user);
+  Future<User> registerUser(User user) async {
+    return await UserService().registerUser(user);
   }
 
   Future<User> updateUser(User user) async {

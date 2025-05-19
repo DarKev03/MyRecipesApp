@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:my_recipes_app/data/models/User.dart';
+import 'package:my_recipes_app/data/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
   final String _baseUrl = 'https://myrecipesapi.onrender.com/api';
 
-  Future<User> createUser(User user) async {
+  Future<User> registerUser(User user) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/users'),
+      Uri.parse('$_baseUrl/auth/register'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(user.toJson()),
     );
@@ -79,7 +79,7 @@ class UserService {
       body: json.encode(user.toJson()),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200) {      
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error al iniciar sesión');

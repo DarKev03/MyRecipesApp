@@ -1,7 +1,7 @@
 class User {
   final int? id;
-  final String email;
-  final String password;
+  final String? email;
+  final String? password;
   final String? name;
   final String? createdAt;
   final bool? isAdmin;
