@@ -18,9 +18,9 @@ class HomePage extends StatelessWidget {
             PopupMenuButton<String>(
               color: AppColors.backgroundColor,
               iconColor: AppColors.secondaryColor,
-              itemBuilder: (context) {                                  
+              itemBuilder: (context) {
                 return [
-                  const PopupMenuItem<String>(                    
+                  const PopupMenuItem<String>(
                     value: 'profile',
                     child: Row(
                       children: [
@@ -53,8 +53,8 @@ class HomePage extends StatelessWidget {
                         )
                       ],
                     ),
-                  ),                  
-                ];                
+                  ),
+                ];
               },
             )
           ],

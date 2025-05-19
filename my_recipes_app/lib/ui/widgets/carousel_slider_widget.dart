@@ -1,11 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
+import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
 import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class CarouselSliderWidget extends StatelessWidget {
+class CarouselSliderWidget extends StatefulWidget {
   const CarouselSliderWidget({super.key});
+
+  @override
+  State<CarouselSliderWidget> createState() => _CarouselSliderWidgetState();
+}
+
+class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
+  bool _isHover = false;
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +35,43 @@ class CarouselSliderWidget extends StatelessWidget {
                 )
               : CarouselSlider(
                   items: recipes.map((recipe) {
-                    return Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(25),
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTapDown: (details) {
+                        setState(() {
+                          _isHover = true;
+                        });
+                      },
+                      onTapUp: (details) {
+                        setState(() {
+                          _isHover = false;
+                        });
+                      },
+                      onTapCancel: () {
+                        setState(() {
+                          _isHover = false;
+                        });
+                      },
+                      onTap: () {
+                        // Navigate to the recipe details page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipePage(recipe: recipe),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation:
+                            _isHover && recipes.indexOf(recipe) == _currentIndex
+                                ? 7
+                                : 4,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -86,6 +125,11 @@ class CarouselSliderWidget extends StatelessWidget {
                     aspectRatio: 16 / 9,
                     initialPage: 0,
                     viewportFraction: 0.7,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
                   ));
         },
       ),
