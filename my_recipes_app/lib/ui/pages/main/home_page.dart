@@ -12,21 +12,68 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final homePageViewModel = context.read<HomePageViewModel>();
-          final loginViewModel = context.read<LoginViewModel>();
-          homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
-        },
-        backgroundColor: AppColors.primaryColor,
-      ),
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor,
+          actions: [
+            PopupMenuButton<String>(
+              color: AppColors.backgroundColor,
+              iconColor: AppColors.secondaryColor,
+              itemBuilder: (context) {                                  
+                return [
+                  const PopupMenuItem<String>(                    
+                    value: 'profile',
+                    child: Row(
+                      children: [
+                        Icon(Icons.person, color: AppColors.secondaryColor),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Profile',
+                          style: TextStyle(
+                            color: AppColors.secondaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'logout',
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout, color: AppColors.secondaryColor),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Logout',
+                          style: TextStyle(
+                            color: AppColors.secondaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),                  
+                ];                
+              },
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            final homePageViewModel = context.read<HomePageViewModel>();
+            final loginViewModel = context.read<LoginViewModel>();
+            homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
+          },
+          backgroundColor: AppColors.primaryColor,
+        ),
         backgroundColor: AppColors.backgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 100,
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
