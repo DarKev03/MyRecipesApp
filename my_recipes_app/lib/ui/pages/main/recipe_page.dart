@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/ui/widgets/hero_image_widget.dart';
+import 'package:my_recipes_app/ui/widgets/instruction_list_widget.dart';
+import 'package:my_recipes_app/ui/widgets/tittle_category_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -37,10 +39,20 @@ class _RecipePageState extends State<RecipePage> {
             ),
             //Imagen de la receta
             HeroImageWidget(),
+
+            SizedBox(
+              height: 10,
+            ),
+
             //Titulo y categoria
+            TitleCategoryWidget(),
+
+            SizedBox(
+              height: 20,
+            ),
 
             //Lista de ingredientes
-
+            //InstructionListWidget(),
             //Lista de instrucciones
 
             //Boton guardar
