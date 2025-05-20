@@ -2,20 +2,18 @@ class Recipe {
   final int id;
   final int? userId;
   final String title;
-  final String? description;
-  final String? instructions;
+  final String? category;  
   final int? prepTime;
   final String? imageUrl;
-  final bool? isFavorite;
+  bool? isFavorite;
   final String? createdAt;
 
   Recipe({
     required this.id,
     required this.userId,
     required this.title,
-    this.description,
-    this.imageUrl,
-    this.instructions,
+    this.category,
+    this.imageUrl,    
     this.isFavorite,
     this.prepTime,
     required this.createdAt,
@@ -25,23 +23,22 @@ class Recipe {
         id: json['id'],
         userId: json['user_id'],
         title: json['title'],
-        description: json['description'],
-        imageUrl: json['imageUrl'],
-        instructions: json['instructions'],
-        isFavorite: json['favorite'],
+        category: json['category'],
+        imageUrl: json['imageUrl'] ??
+            "https://upload.wikimedia.org/wikipedia/commons/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",        
+        isFavorite: json['favorite'] ?? false,
         prepTime: json['prepTime'],
         createdAt: json['createdAt'],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'user_id': userId,
+        'user': userId,
         'title': title,
-        'description': description,
-        'image_url': imageUrl,
-        'instructions': instructions,
-        'is_favorite': isFavorite,
-        'prep_time': prepTime,
+        'category': category,
+        'imageUrl': imageUrl,        
+        'isFavorite': isFavorite,
+        'prepTime': prepTime,
         'created_at': createdAt,
       };
 }

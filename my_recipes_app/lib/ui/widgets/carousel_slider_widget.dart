@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class CarouselSliderWidget extends StatefulWidget {
@@ -20,7 +20,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 220,
-      child: Consumer<HomePageViewModel>(
+      child: Consumer<RecipeViewModel>(
         builder: (context, viewModel, child) {
           List<Recipe> recipes = viewModel.recentlyRecipes;
           return viewModel.recentlyRecipes.isEmpty

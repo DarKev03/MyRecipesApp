@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            final homePageViewModel = context.read<HomePageViewModel>();
+            final homePageViewModel = context.read<RecipeViewModel>();
             final loginViewModel = context.read<LoginViewModel>();
             homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
           },

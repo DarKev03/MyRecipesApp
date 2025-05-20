@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class FavoritesRecipesWidget extends StatefulWidget {
@@ -16,7 +16,7 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageViewModel>(
+    return Consumer<RecipeViewModel>(
       builder: (context, homePageViewModel, child) {
         final recetas = homePageViewModel.favoriteRecipes;
         return GridView.builder(

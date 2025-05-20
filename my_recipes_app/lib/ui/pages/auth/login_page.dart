@@ -8,7 +8,7 @@ import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -92,7 +92,7 @@ class LoginPage extends StatelessWidget {
                       );
                       if (loginSuccess) {
                         final homePageViewmodel =
-                            context.read<HomePageViewModel>();
+                            context.read<RecipeViewModel>();
                         await homePageViewmodel
                             .fetchRecipesByUser(loginViewModel.currentUser!);
 
