@@ -4,6 +4,7 @@ import 'package:my_recipes_app/ui/widgets/hero_image_widget.dart';
 import 'package:my_recipes_app/ui/widgets/instruction_list_widget.dart';
 import 'package:my_recipes_app/ui/widgets/tittle_category_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +21,11 @@ class _RecipePageState extends State<RecipePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = context.read<RecipeViewModel>();
-      viewModel.setRecipe(widget.recipe);
+      final recipeViewModel = context.read<RecipeViewModel>();
+      final instructionViewModel = context.read<InstructionViewmodel>();
+
+      recipeViewModel.setRecipe(widget.recipe);
+      instructionViewModel.fetchInstructionsByRecipeId(widget.recipe.id);
     });
   }
 
@@ -52,7 +56,7 @@ class _RecipePageState extends State<RecipePage> {
             ),
 
             //Lista de ingredientes
-            //InstructionListWidget(),
+            Expanded(child: InstructionListWidget()),
             //Lista de instrucciones
 
             //Boton guardar

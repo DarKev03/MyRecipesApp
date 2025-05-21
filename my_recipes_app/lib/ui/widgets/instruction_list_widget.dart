@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
+import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class InstructionListWidget extends StatelessWidget {
@@ -7,11 +8,42 @@ class InstructionListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Instruciiones', 
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ));
+    return Consumer<InstructionViewmodel>(
+      builder: (context, viewModel, child) {
+        final instructions = viewModel.instructions;
+        return instructions.isNotEmpty
+            ? ListView.builder(                
+                itemCount: instructions.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final instruction = instructions[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: AppColors.secondaryColor,
+                      child: Text(
+                        '${index + 1}',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
+                    ),
+                    title: Text(instruction.text,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.secondaryColor)),
+                  );
+                },
+              )
+            : Center(
+                child: Text(
+                  'No instructions available',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
+      },
+    );
   }
 }
