@@ -12,8 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
+        appBar: AppBar(          
           actions: [
             PopupMenuButton<String>(
               color: AppColors.backgroundColor,
@@ -66,8 +65,7 @@ class HomePage extends StatelessWidget {
             homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
           },
           backgroundColor: AppColors.primaryColor,
-        ),
-        backgroundColor: AppColors.backgroundColor,
+        ),        
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
