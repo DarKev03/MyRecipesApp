@@ -22,13 +22,17 @@ class TitleCategoryWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primaryColor,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Container(

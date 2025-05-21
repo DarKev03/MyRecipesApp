@@ -15,7 +15,7 @@ class Ingredient {
         id: json['id'],
         name: json['name'],
         description: json['description'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: DateTime.parse(json['createdAt']),
       );
 
   Map<String, dynamic> toJson() => {

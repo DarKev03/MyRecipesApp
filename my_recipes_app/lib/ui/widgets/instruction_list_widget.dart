@@ -13,18 +13,19 @@ class InstructionListWidget extends StatelessWidget {
         final instructions = viewModel.instructions;
         return instructions.isNotEmpty
             ? ListView.builder(                
-                itemCount: instructions.length,
-                physics: const NeverScrollableScrollPhysics(),
+                itemCount: instructions.length, 
+                physics: NeverScrollableScrollPhysics(), 
+                shrinkWrap: true,               
                 itemBuilder: (context, index) {
                   final instruction = instructions[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      radius: 10,
+                      radius: 8,
                       backgroundColor: AppColors.secondaryColor,
                       child: Text(
                         '${index + 1}',
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             fontWeight: FontWeight.w500,
                             color: Colors.white),
                       ),
