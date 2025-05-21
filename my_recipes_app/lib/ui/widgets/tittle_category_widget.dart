@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class TitleCategoryWidget extends StatelessWidget {
+  final Recipe recipe;
   const TitleCategoryWidget({
     super.key,
+    required this.recipe,
   });
 
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
       builder: (context, viewModel, child) {
-        final recipe = viewModel.currentRecipe;
-        final title = recipe?.title ?? '';
-        final category = recipe?.category ?? '';
-
+        final title = recipe.title;
+        final category = recipe.category;
         return recipe != null
             ? Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -40,7 +41,7 @@ class TitleCategoryWidget extends StatelessWidget {
                         color: AppColors.primaryColor,
                         border: Border.all(
                           color: AppColors.primaryColor,
-                          width: 1,                          
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -48,9 +49,8 @@ class TitleCategoryWidget extends StatelessWidget {
                         vertical: 6,
                         horizontal: 12,
                       ),
-                      
                       child: Text(
-                        category,
+                        category!,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

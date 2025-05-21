@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(          
+        appBar: AppBar(
           actions: [
             PopupMenuButton<String>(
               color: AppColors.backgroundColor,
@@ -62,10 +64,14 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             final homePageViewModel = context.read<RecipeViewModel>();
             final loginViewModel = context.read<LoginViewModel>();
+            final ingredientViewModel = context.read<IngredientViewmodel>();
+            final instructionViewModel = context.read<InstructionViewmodel>();
             homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
+            ingredientViewModel.fetchIngredientsByUserId(loginViewModel.currentUser!.id!);
+            instructionViewModel.fetchInstructionsByUserId(loginViewModel.currentUser!.id!);
           },
           backgroundColor: AppColors.primaryColor,
-        ),        
+        ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

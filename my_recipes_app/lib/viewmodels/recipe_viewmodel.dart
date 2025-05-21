@@ -43,15 +43,17 @@ class RecipeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateRecipe(Recipe recipe) {
-    _recipeRepository.updateRecipe(recipe);
-    notifyListeners();
+  Future<void> updateRecipe(Recipe recipe) async {
+    try {
+      _recipeRepository.updateRecipe(recipe);
+      notifyListeners();
+    } catch (e) {
+      print("Error updating recipe: $e");
+    }
   }
 
   void setRecipe(Recipe recipe) {
     _currentRecipe = recipe;
     notifyListeners();
   }
-
-  
 }

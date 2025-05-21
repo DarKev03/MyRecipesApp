@@ -15,4 +15,8 @@ class InstructionRepository {
   Future<void> deleteInstruction(int id) async {
     return await instructionService.deleteInstruction(id);
   }
+
+  Future<List<Instruction>> getInstructionsByUserId(int userId) async {
+    return await instructionService.getInstructionsByUserId(userId);
+  }
 }

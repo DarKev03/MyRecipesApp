@@ -8,6 +8,10 @@ class RecipeIngredientRepository {
     return await recipeIngredientService.getIngredientsByRecipeId(recipeId);
   }
 
+  Future<List<RecipeIngredient>> getIngredientsByUserId(int userId) async {
+    return await recipeIngredientService.getIngredientsByUserId(userId);
+  }
+
   Future<RecipeIngredient> createRecipeIngredient(
       RecipeIngredient recipeIngredient) async {
     return await recipeIngredientService

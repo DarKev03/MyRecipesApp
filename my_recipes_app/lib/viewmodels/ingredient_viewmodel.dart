@@ -9,18 +9,28 @@ class IngredientViewmodel extends ChangeNotifier {
   final RecipeIngredientRepository recipeIngredientRepository;
   final IngredientRepository ingredientRepository;
 
-  List<RecipeIngredient> _recipeIngredients = [];
+  List<RecipeIngredient> _allUserIngredients = [];
+
+  List<RecipeIngredient> get allUserIngredients => _allUserIngredients;
 
   IngredientViewmodel(
       {required this.recipeIngredientRepository,
       required this.ingredientRepository});
 
-  List<RecipeIngredient> get ingredients => _recipeIngredients;
-
   Future<void> fetchIngredientsByRecipe(Recipe recipe) async {
     try {
-      _recipeIngredients =
+      _allUserIngredients =
           await recipeIngredientRepository.getIngredientsByRecipId(recipe.id);
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching ingredients: $e");
+    }
+  }
+
+  Future<void> fetchIngredientsByUserId(int userId) async {
+    try {
+      _allUserIngredients =
+          await recipeIngredientRepository.getIngredientsByUserId(userId);
       notifyListeners();
     } catch (e) {
       print("Error fetching ingredients: $e");
@@ -35,7 +45,7 @@ class IngredientViewmodel extends ChangeNotifier {
       recipeIngredient.ingredientId = finalIngredient.id;
       final finalRecipeIngredient = await recipeIngredientRepository
           .createRecipeIngredient(recipeIngredient);
-      _recipeIngredients.add(finalRecipeIngredient);
+      _allUserIngredients.add(finalRecipeIngredient);
       notifyListeners();
     } catch (e) {
       print("Error adding ingredient: $e");

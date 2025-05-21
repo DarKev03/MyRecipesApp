@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HeroImageWidget extends StatelessWidget {
+  final Recipe recipe;
   const HeroImageWidget({
-    super.key,
+    super.key, required this.recipe,
   });
   @override
   Widget build(BuildContext context) {
-    return Consumer<RecipeViewModel>(builder: (context, viewModel, child) {
-      final recipe = viewModel.currentRecipe;
-      final imageUrl = viewModel.currentRecipe?.imageUrl;
-      final isFavorite = viewModel.currentRecipe?.isFavorite;
+    return Consumer<RecipeViewModel>(builder: (context, viewModel, child) {            
+      final imageUrl = recipe.imageUrl;
+      final isFavorite = recipe.isFavorite;
 
       return recipe != null
           ? Stack(

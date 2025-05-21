@@ -5,6 +5,7 @@ class RecipeIngredient {
   final String? ingredientName;
   final double? quantity;
   final String? unit;
+  final int? userId;
 
   RecipeIngredient({
     required this.id,
@@ -13,16 +14,18 @@ class RecipeIngredient {
     this.ingredientName,
     this.quantity,
     this.unit,
+    this.userId,
   });
 
   factory RecipeIngredient.fromJson(Map<String, dynamic> json) =>
       RecipeIngredient(
         id: json['id'],
-        recipeId: json['recipe'],
+        recipeId: json['recipeId'],
         ingredientId: json['ingredient'],
         ingredientName: json['ingredientName'],
         quantity: (json['quantity'] as num?)?.toDouble(),
         unit: json['unit'],
+        userId: json['userId'],
       );
 
   Map<String, dynamic> toJson() => {

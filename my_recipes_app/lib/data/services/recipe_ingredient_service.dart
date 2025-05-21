@@ -48,4 +48,21 @@ class RecipeIngredientService {
       throw Exception('Error deleting recipe ingredient');
     }
   }
+
+  Future<List<RecipeIngredient>> getIngredientsByUserId(int userId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/recipe-ingredients/user/$userId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map(
+              (recipeIngredient) => RecipeIngredient.fromJson(recipeIngredient))
+          .toList();
+    } else {
+      throw Exception('Error fetching recipe ingredients');
+    }
+  }
 }

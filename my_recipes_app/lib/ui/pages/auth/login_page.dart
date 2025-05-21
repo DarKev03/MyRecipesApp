@@ -8,6 +8,8 @@ import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -93,8 +95,17 @@ class LoginPage extends StatelessWidget {
                       if (loginSuccess) {
                         final homePageViewmodel =
                             context.read<RecipeViewModel>();
+                        final instructionViewmodel =
+                            context.read<InstructionViewmodel>();
+                        final ingredientViewModel =
+                            context.read<IngredientViewmodel>();
+
                         await homePageViewmodel
                             .fetchRecipesByUser(loginViewModel.currentUser!);
+                        await instructionViewmodel.fetchInstructionsByUserId(
+                            loginViewModel.currentUser!.id!);
+                        await ingredientViewModel.fetchIngredientsByUserId(
+                            loginViewModel.currentUser!.id!);
 
                         Navigator.pushAndRemoveUntil(
                           context,

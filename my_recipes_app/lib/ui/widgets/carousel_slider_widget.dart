@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -54,12 +56,13 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                           _isHover = false;
                         });
                       },
-                      onTap: () {
-                        // Navigate to the recipe details page
+                      onTap: () async {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RecipePage(recipe: recipe),
+                            builder: (context) => RecipePage(
+                              recipe: recipe,
+                            ),
                           ),
                         );
                       },

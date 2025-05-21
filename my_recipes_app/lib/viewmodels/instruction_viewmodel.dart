@@ -4,15 +4,24 @@ import 'package:my_recipes_app/data/repositories/instruction_repository.dart';
 
 class InstructionViewmodel extends ChangeNotifier {
   final InstructionRepository instructionRepository;
-  List<Instruction> _instructions = [];
+  List<Instruction> _allInstructions = [];
 
-  List<Instruction> get instructions => _instructions;
+  List<Instruction> get allInstructions => _allInstructions; 
 
   InstructionViewmodel({required this.instructionRepository});
 
   Future<void> fetchInstructionsByRecipeId(int recipeId) async {
     try {
-      _instructions = await instructionRepository.getInstructionsByRecipeId(recipeId);
+      _allInstructions = await instructionRepository.getInstructionsByRecipeId(recipeId);
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching instructions: $e");
+    }
+  }
+
+  Future<void> fetchInstructionsByUserId(int userId) async {
+    try {
+      _allInstructions = await instructionRepository.getInstructionsByUserId(userId);
       notifyListeners();
     } catch (e) {
       print("Error fetching instructions: $e");

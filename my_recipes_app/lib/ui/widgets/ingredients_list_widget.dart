@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class IngredientsListWidget extends StatelessWidget {
-  const IngredientsListWidget({super.key});
+  final Recipe recipe;
+  const IngredientsListWidget({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<IngredientViewmodel>(
       builder: (context, viewModel, child) {
-        final ingredients = viewModel.ingredients;
+        final ingredients = viewModel.allUserIngredients
+            .where((ingredient) => ingredient.recipeId == recipe.id)
+            .toList();
         return ingredients.isEmpty
             ? Center(
                 child: Text('No ingredients available'),
