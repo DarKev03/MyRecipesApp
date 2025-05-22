@@ -17,8 +17,8 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
-      builder: (context, homePageViewModel, child) {
-        final recetas = homePageViewModel.favoriteRecipes;
+      builder: (context, viewModel, child) {
+        final recetas = viewModel.favoriteRecipes;
         return GridView.builder(
           padding: EdgeInsets.only(bottom: 40),
           shrinkWrap: true,

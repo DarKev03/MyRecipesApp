@@ -25,7 +25,7 @@ class SignUpPage extends StatelessWidget {
   final SignUpViewModel signUpViewModel =
       SignUpViewModel(userRepository: UserRepository());
   SignUpPage({super.key});  
-  RecipeViewModel homePageViewmodel =
+  final RecipeViewModel homePageViewmodel =
       RecipeViewModel(recipeRepository: RecipeRepository());
 
   bool isValid(BuildContext context) {

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,7 +13,7 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
-            PopupMenuButton<String>(              
+            PopupMenuButton<String>(
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 return [
@@ -61,16 +57,14 @@ class HomePage extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          enableFeedback: true,
+          splashColor: const Color.fromARGB(255, 124, 17, 53),
           onPressed: () {
-            final homePageViewModel = context.read<RecipeViewModel>();
-            final loginViewModel = context.read<LoginViewModel>();
-            final ingredientViewModel = context.read<IngredientViewmodel>();
-            final instructionViewModel = context.read<InstructionViewmodel>();
-            homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
-            ingredientViewModel.fetchIngredientsByUserId(loginViewModel.currentUser!.id!);
-            instructionViewModel.fetchInstructionsByUserId(loginViewModel.currentUser!.id!);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreationPage()));
           },
           backgroundColor: AppColors.primaryColor,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
         body: SingleChildScrollView(
           child: Column(

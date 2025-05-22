@@ -18,7 +18,7 @@ class TitleCategoryWidget extends StatelessWidget {
         final title = recipe.title;
         final category = recipe.category;
         return Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Column(
