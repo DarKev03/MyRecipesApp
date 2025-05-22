@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +15,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
+          forceMaterialTransparency: true,
           actions: [
-            PopupMenuButton<String>(
-              color: AppColors.backgroundColor,
+            PopupMenuButton<String>(              
               iconColor: AppColors.secondaryColor,
-              itemBuilder: (context) {                                  
+              itemBuilder: (context) {
                 return [
-                  const PopupMenuItem<String>(                    
+                  const PopupMenuItem<String>(
                     value: 'profile',
                     child: Row(
                       children: [
@@ -53,21 +54,24 @@ class HomePage extends StatelessWidget {
                         )
                       ],
                     ),
-                  ),                  
-                ];                
+                  ),
+                ];
               },
             )
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            final homePageViewModel = context.read<HomePageViewModel>();
+            final homePageViewModel = context.read<RecipeViewModel>();
             final loginViewModel = context.read<LoginViewModel>();
+            final ingredientViewModel = context.read<IngredientViewmodel>();
+            final instructionViewModel = context.read<InstructionViewmodel>();
             homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
+            ingredientViewModel.fetchIngredientsByUserId(loginViewModel.currentUser!.id!);
+            instructionViewModel.fetchInstructionsByUserId(loginViewModel.currentUser!.id!);
           },
           backgroundColor: AppColors.primaryColor,
         ),
-        backgroundColor: AppColors.backgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

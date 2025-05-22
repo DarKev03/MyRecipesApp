@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class FavoritesRecipesWidget extends StatelessWidget {  
+class FavoritesRecipesWidget extends StatefulWidget {
   const FavoritesRecipesWidget({super.key});
 
   @override
+  State<FavoritesRecipesWidget> createState() => _FavoritesRecipesWidgetState();
+}
+
+class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
+  bool _isHover = false;
+  int _selectedIndex = -1;
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageViewModel>(
+    return Consumer<RecipeViewModel>(
       builder: (context, homePageViewModel, child) {
         final recetas = homePageViewModel.favoriteRecipes;
         return GridView.builder(
           padding: EdgeInsets.only(bottom: 40),
           shrinkWrap: true,
           itemCount: recetas.length,
-          physics: recetas.length <= 4? const NeverScrollableScrollPhysics(): const AlwaysScrollableScrollPhysics(),
+          physics: recetas.length <= 4
+              ? const NeverScrollableScrollPhysics()
+              : const AlwaysScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
@@ -22,19 +33,50 @@ class FavoritesRecipesWidget extends StatelessWidget {
             childAspectRatio: 1, // cuadradas
           ),
           itemBuilder: (context, index) {
-            final receta = recetas[index];
+            final recipe = recetas[index];
 
-            return Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
+            return InkWell(
+              borderRadius: BorderRadius.circular(25),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onTapDown: (details) {
+                setState(() {
+                  _isHover = true;
+                  _selectedIndex = index;
+                });
+              },
+              onTapUp: (details) {
+                setState(() {
+                  _isHover = false;
+                  _selectedIndex = -1;
+                });
+              },
+              onTapCancel: () {
+                setState(() {
+                  _isHover = false;
+                  _selectedIndex = -1;
+                });
+              },
+              onTap: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipePage(
+                      recipe: recipe,
+                    ),
+                  ),
+                );
+              },
+              child: Card(
+                elevation: _isHover && _selectedIndex == index ? 7 : 4,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
                 child: Stack(
                   children: [
                     Image.network(
-                      receta.imageUrl ?? '',
+                      recipe.imageUrl ?? '',
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
@@ -47,7 +89,7 @@ class FavoritesRecipesWidget extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        receta.title,
+                        recipe.title,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

@@ -8,15 +8,27 @@ import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final UserRepository userRepository = UserRepository();
-  LoginPage({super.key});
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,45 +85,66 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 25),
 
                 // Boton de inicio de sesion
-                CustomElevatedButtomWidget(
-                  width: 120,
-                  text: "Login",
-                  onPressed: () async {
-                    try {
-                      User user = User(
-                        id: null,
-                        name: null,
-                        createdAt: null,
-                        isAdmin: null,
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                      final loginViewModel = context.read<LoginViewModel>();
-                      bool loginSuccess = await loginViewModel.login(
-                        user,
-                      );
-                      if (loginSuccess) {
-                        final homePageViewmodel =
-                            context.read<HomePageViewModel>();
-                        await homePageViewmodel
-                            .fetchRecipesByUser(loginViewModel.currentUser!);
+                loading
+                    ? const CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                        strokeWidth: 2,
+                        backgroundColor: AppColors.backgroundColor,
+                      )
+                    : CustomElevatedButtomWidget(
+                        width: 120,
+                        text: "Login",
+                        onPressed: () async {
+                          try {
+                            User user = User(
+                              id: null,
+                              name: null,
+                              createdAt: null,
+                              isAdmin: null,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+                            final loginViewModel =
+                                context.read<LoginViewModel>();
+                            bool loginSuccess = await loginViewModel.login(
+                              user,
+                            );
+                            if (loginSuccess) {
+                              final homePageViewmodel =
+                                  context.read<RecipeViewModel>();
+                              final instructionViewmodel =
+                                  context.read<InstructionViewmodel>();
+                              final ingredientViewModel =
+                                  context.read<IngredientViewmodel>();
+                              setState(() {
+                                loading = true;
+                              });
 
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NavBar()),
-                          (Route<dynamic> route) => false,
-                        );
-                      } else {
-                        // Manejar error de inicio de sesión
-                        CustomSnackbar.show(
-                          context,
-                          "Invalid email or password",
-                        );
-                      }
-                    } catch (e) {}
-                  },
-                ),
+                              await homePageViewmodel.fetchRecipesByUser(
+                                  loginViewModel.currentUser!);
+                              await instructionViewmodel
+                                  .fetchInstructionsByUserId(
+                                      loginViewModel.currentUser!.id!);
+                              await ingredientViewModel
+                                  .fetchIngredientsByUserId(
+                                      loginViewModel.currentUser!.id!);
+
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const NavBar()),
+                                (Route<dynamic> route) => false,
+                              );
+                            } else {
+                              // Manejar error de inicio de sesión
+                              CustomSnackbar.show(
+                                context,
+                                "Invalid email or password",
+                              );
+                            }
+                          } catch (e) {}
+                        },
+                      ),
                 const SizedBox(height: 5),
 
                 CustomTextButtom(

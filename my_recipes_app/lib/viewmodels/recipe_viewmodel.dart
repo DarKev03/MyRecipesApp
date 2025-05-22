@@ -3,17 +3,19 @@ import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/recipe_repository.dart';
 
-class HomePageViewModel extends ChangeNotifier {
+class RecipeViewModel extends ChangeNotifier {
   final RecipeRepository _recipeRepository;
   List<Recipe> _recipes = [];
   List<Recipe> _recentlyRecipes = [];
+  Recipe? _currentRecipe;
 
   List<Recipe> get recipes => _recipes;
+  Recipe? get currentRecipe => _currentRecipe;
   List<Recipe> get recentlyRecipes => _recentlyRecipes;
   List<Recipe> get favoriteRecipes =>
       _recipes.where((recipe) => recipe.isFavorite!).toList();
 
-  HomePageViewModel({required RecipeRepository recipeRepository})
+  RecipeViewModel({required RecipeRepository recipeRepository})
       : _recipeRepository = recipeRepository;
 
   Future<void> fetchRecipesByUser(User user) async {
@@ -33,5 +35,25 @@ class HomePageViewModel extends ChangeNotifier {
     } catch (e) {
       print("Error fetching recipes: $e");
     }
+  }
+
+  void toggleFavorite(Recipe recipe) {
+    recipe.isFavorite = !recipe.isFavorite!;
+    _recipeRepository.updateRecipe(recipe);
+    notifyListeners();
+  }
+
+  Future<void> updateRecipe(Recipe recipe) async {
+    try {
+      _recipeRepository.updateRecipe(recipe);
+      notifyListeners();
+    } catch (e) {
+      print("Error updating recipe: $e");
+    }
+  }
+
+  void setRecipe(Recipe recipe) {
+    _currentRecipe = recipe;
+    notifyListeners();
   }
 }

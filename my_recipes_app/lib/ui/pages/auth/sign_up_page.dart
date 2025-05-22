@@ -10,7 +10,7 @@ import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
-import 'package:my_recipes_app/viewmodels/home_page_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/sign_up_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +25,8 @@ class SignUpPage extends StatelessWidget {
   final SignUpViewModel signUpViewModel =
       SignUpViewModel(userRepository: UserRepository());
   SignUpPage({super.key});  
-  HomePageViewModel homePageViewmodel =
-      HomePageViewModel(recipeRepository: RecipeRepository());
+  RecipeViewModel homePageViewmodel =
+      RecipeViewModel(recipeRepository: RecipeRepository());
 
   bool isValid(BuildContext context) {
     final name = nameController.text.trim();

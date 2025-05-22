@@ -21,8 +21,8 @@ class RecipeService {
   }
 
   Future<Recipe> updateRecipe(Recipe recipe) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/recipes/${recipe.id}'),
+    final response = await http.post(
+      Uri.parse('$baseUrl/recipes/update'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipe.toJson()),
     );
