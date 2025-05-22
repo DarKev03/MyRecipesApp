@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -34,7 +37,15 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
+                    onTap: () {
+                      final loginViewModel = context.read<LoginViewModel>();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Authpage()));
+                      loginViewModel.logout();
+                    },
                     value: 'logout',
                     child: Row(
                       children: [
