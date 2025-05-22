@@ -28,18 +28,25 @@ class IngredientsListWidget extends StatelessWidget {
                   return ListTile(
                     contentPadding: EdgeInsets.only(right: 8, left: 16),
                     leading: CircleAvatar(
-                      radius: 8,
+                      radius: 4,
                       backgroundColor: AppColors.secondaryColor,
                     ),
                     title: Text(ingredient.ingredientName!,
                         style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.secondaryColor)),
                     trailing: IconButton(
                       onPressed: () {},
                       icon: Icon(Icons.shopping_bag_outlined),
                       color: AppColors.primaryColor,
+                    ),
+                    subtitle: Text(
+                      '${ingredient.quantity} ${ingredient.unit}',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.secondaryColor),
                     ),
                   );
                 },

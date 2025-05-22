@@ -15,9 +15,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          forceMaterialTransparency: true,
           actions: [
-            PopupMenuButton<String>(
-              color: AppColors.backgroundColor,
+            PopupMenuButton<String>(              
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 return [

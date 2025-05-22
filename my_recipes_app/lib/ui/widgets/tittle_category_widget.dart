@@ -17,61 +17,52 @@ class TitleCategoryWidget extends StatelessWidget {
       builder: (context, viewModel, child) {
         final title = recipe.title;
         final category = recipe.category;
-        return recipe != null
-            ? Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        return Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Wrap(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      decoration: BoxDecoration(
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.primaryColor,
-                        border: Border.all(
-                          color: AppColors.primaryColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 12,
-                      ),
-                      child: Text(
-                        category!,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
                       ),
                     ),
                   ],
                 ),
-              )
-            : const Padding(
-                padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                child: Text(
-                  'No recipe selected',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.backgroundColor,
+                const SizedBox(height: 4),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    border: Border.all(
+                      color: AppColors.primaryColor,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6,
+                    horizontal: 12,
+                  ),
+                  child: Text(
+                    category!,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              );
+              ],
+            ),
+          ),
+        );
       },
     );
   }
