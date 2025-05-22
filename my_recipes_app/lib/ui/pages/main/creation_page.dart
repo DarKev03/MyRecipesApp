@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
+import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 
 class CreationPage extends StatelessWidget {
@@ -13,6 +14,7 @@ class CreationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -35,6 +37,9 @@ class CreationPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 20,
+              ),
               CustomTextField(
                 controller: nameController,
                 isPassword: false,
@@ -67,6 +72,10 @@ class CreationPage extends StatelessWidget {
                 height: 25,
               ),
               IngredientsDynamicList(),
+              SizedBox(
+                height: 25,
+              ),
+              InstructionsDynamicListWidget()
             ],
           ),
         ),

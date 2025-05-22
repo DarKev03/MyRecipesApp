@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           enableFeedback: true,
-          splashColor: const Color.fromARGB(255, 124, 17, 53),
+          splashColor: Colors.transparent,
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => CreationPage()));
