@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/ingredient.dart';
+import 'package:my_recipes_app/data/models/instruction.dart';
+import 'package:my_recipes_app/data/models/recipe.dart';
+import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
+import 'package:my_recipes_app/ui/widgets/image_uploader_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
 import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
+import 'package:provider/provider.dart';
 
-class CreationPage extends StatelessWidget {
+class CreationPage extends StatefulWidget {
+  CreationPage({super.key});
+
+  @override
+  State<CreationPage> createState() => _CreationPageState();
+}
+
+class _CreationPageState extends State<CreationPage> {
   final nameController = TextEditingController();
   final categoriaController = TextEditingController();
 
-  CreationPage({super.key});
+  int recipeId = 0;
+  String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +35,38 @@ class CreationPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.save_outlined,
                 size: 30,
-                color: AppColors.secondaryColor,
+                color:
+                    imageUrl == null ? Colors.grey : AppColors.secondaryColor,
               ),
-              onPressed: () {
-                //Agendar receta
-              },
+              onPressed: imageUrl == null
+                  ? null
+                  : () async {
+                      final recipesViewmodel = context.read<RecipeViewModel>();
+                      final loginViewModel = context.read<LoginViewModel>();
+                      final currentUser = loginViewModel.currentUser!.id!;
+                      await recipesViewmodel.addRecipe(Recipe(
+                          id: null,
+                          userId: currentUser,
+                          category: categoriaController.text,
+                          imageUrl: imageUrl,
+                          isFavorite: false,
+                          prepTime: null,
+                          title: nameController.text,
+                          createdAt: DateTime.now().toString()));
+                      setState(() {
+                        recipeId = recipesViewmodel.recipes.last.id!;
+                      });
+                      await recipesViewmodel.fetchRecipesByUser(loginViewModel.currentUser!);
+                      Navigator.pop(context);
+                    },
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(        
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
           child: Column(
@@ -55,27 +90,23 @@ class CreationPage extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              ElevatedButton.icon(
-                  onPressed: () {
-                    // Implementar la funcionalidad para añadir una foto
-                  },
-                  icon: Icon(Icons.photo_camera, color: Colors.white),
-                  label: Text('Imagen', style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  )),
+              ImageUploaderWidget(onImageUploaded: (imageUrl) {
+                setState(() {
+                  this.imageUrl = imageUrl;
+                });
+              }),
               SizedBox(
                 height: 25,
               ),
-              IngredientsDynamicList(),
+              IngredientsDynamicList(
+                recipeId: recipeId,
+              ),
               SizedBox(
                 height: 25,
               ),
-              InstructionsDynamicListWidget()
+              InstructionsDynamicListWidget(
+                recipeId: recipeId,
+              ),
             ],
           ),
         ),

@@ -30,8 +30,9 @@ class RecipeIngredient {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'recipe': recipeId,
-        'ingredient': ingredientId,
+        'recipeId': recipeId,
+        'ingredientId': ingredientId,
+        'ingredientName': ingredientName,
         'quantity': quantity,
         'unit': unit,
       };

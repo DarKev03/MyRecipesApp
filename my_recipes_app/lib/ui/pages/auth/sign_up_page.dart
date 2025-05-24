@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/user.dart';
-import 'package:my_recipes_app/data/repositories/recipe_repository.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
@@ -10,7 +9,6 @@ import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
-import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 

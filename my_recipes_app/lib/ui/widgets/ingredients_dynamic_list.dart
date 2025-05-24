@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/models/ingredient.dart';
+import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class IngredientsDynamicList extends StatefulWidget {
+  final int? recipeId;
+  const IngredientsDynamicList({super.key, this.recipeId});
+
   @override
   State<IngredientsDynamicList> createState() => _IngredientsDynamicListState();
 }
@@ -16,7 +23,16 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
   @override
   void initState() {
     super.initState();
-    _addIngredient(); // Añadir al menos uno al principio
+    _addIngredient();
+  }
+
+  @override
+  void didUpdateWidget(covariant IngredientsDynamicList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.recipeId != widget.recipeId) {
+      _saveIngredients();
+    }
   }
 
   void _addIngredient() {
@@ -25,6 +41,62 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       ingredientQuantityControllers.add(TextEditingController());
       ingredientUnitsControllers.add(TextEditingController());
     });
+  }
+
+  void _removeIngredient() {
+    for (var element in ingredientNameControllers) {
+      element.dispose();
+    }
+    for (var element in ingredientQuantityControllers) {
+      element.dispose();
+    }
+    for (var element in ingredientUnitsControllers) {
+      element.dispose();
+    }
+
+    ingredientNameControllers = [];
+    ingredientQuantityControllers = [];
+    ingredientUnitsControllers = [];
+  }
+
+  void _saveIngredients() async {
+    if (widget.recipeId == null) {
+      return;
+    } else {
+      List<Ingredient> ingredients = [];
+      List<Ingredient> ingredientsSaved = [];
+      final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
+      for (int i = 0; i < ingredientNameControllers.length; i++) {
+        ingredients.add(Ingredient(
+          id: null,
+          name: ingredientNameControllers[i].text,
+          description: null,
+          createdAt: null,
+        ));
+      }
+      for (var ingredient in ingredients) {
+        ingredientsSaved
+            .add(await recipesIngredientsViewmodel.addIngredient(ingredient));
+      }
+
+      List<RecipeIngredient> recipeIngredients = [];
+
+      for (int i = 0; i < ingredients.length; i++) {
+        recipeIngredients.add(RecipeIngredient(
+          id: null,
+          recipeId: widget.recipeId!,
+          ingredientName: ingredientsSaved[i].name,
+          ingredientId: ingredientsSaved[i].id!,
+          quantity: double.tryParse(ingredientQuantityControllers[i].text),
+          unit: ingredientUnitsControllers[i].text,
+        ));
+      }
+      for (var recipeIngredient in recipeIngredients) {
+        await recipesIngredientsViewmodel.addRecipeIngredient(recipeIngredient);
+      }
+
+      _removeIngredient();
+    }
   }
 
   @override
@@ -49,11 +121,10 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
                   });
                 },
                 background: Container(
-                  alignment: Alignment.centerRight,                  
+                  alignment: Alignment.centerRight,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primaryColor
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 16),
                     child: const Icon(
@@ -101,17 +172,11 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
           height: 10,
           width: 100,
           text: 'Añadir ingrediente',
-          onPressed: _addIngredient,
+          onPressed: () {
+            _addIngredient();
+          },
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    for (final c in ingredientNameControllers) c.dispose();
-    for (final c in ingredientQuantityControllers) c.dispose();
-    for (final c in ingredientUnitsControllers) c.dispose();
-    super.dispose();
   }
 }

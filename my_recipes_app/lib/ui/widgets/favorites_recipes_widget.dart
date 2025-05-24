@@ -89,7 +89,7 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        recipe.title,
+                        recipe.title!,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

@@ -27,7 +27,7 @@ class TitleCategoryWidget extends StatelessWidget {
                 Wrap(
                   children: [
                     Text(
-                      title,
+                      title!,
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w500,
