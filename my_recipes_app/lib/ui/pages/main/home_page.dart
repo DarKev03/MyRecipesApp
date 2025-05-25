@@ -67,8 +67,9 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(        
           enableFeedback: true,
+          elevation: 2,
           splashColor: Colors.transparent,
           onPressed: () {
             Navigator.push(context,

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/data/models/ingredient.dart';
-import 'package:my_recipes_app/data/models/instruction.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
-import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
+import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/image_uploader_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
 import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class CreationPage extends StatefulWidget {
-  CreationPage({super.key});
+  const CreationPage({super.key});
 
   @override
   State<CreationPage> createState() => _CreationPageState();
@@ -25,6 +24,16 @@ class _CreationPageState extends State<CreationPage> {
 
   int recipeId = 0;
   String? imageUrl;
+
+  bool isValidToSend() {
+    if (imageUrl != null &&
+        nameController.text.isNotEmpty &&
+        categoriaController.text.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +50,30 @@ class _CreationPageState extends State<CreationPage> {
                 color:
                     imageUrl == null ? Colors.grey : AppColors.secondaryColor,
               ),
-              onPressed: imageUrl == null
+              onPressed: !isValidToSend()
                   ? null
                   : () async {
+                      final name =
+                          Validations.firstLetterUpperCase(nameController.text);
+                      final category = Validations.firstLetterUpperCase(
+                          categoriaController.text);
                       final recipesViewmodel = context.read<RecipeViewModel>();
                       final loginViewModel = context.read<LoginViewModel>();
                       final currentUser = loginViewModel.currentUser!.id!;
                       await recipesViewmodel.addRecipe(Recipe(
                           id: null,
                           userId: currentUser,
-                          category: categoriaController.text,
+                          category: category,
                           imageUrl: imageUrl,
                           isFavorite: false,
                           prepTime: null,
-                          title: nameController.text,
+                          title: name,
                           createdAt: DateTime.now().toString()));
                       setState(() {
                         recipeId = recipesViewmodel.recipes.last.id!;
                       });
-                      await recipesViewmodel.fetchRecipesByUser(loginViewModel.currentUser!);
+                      await recipesViewmodel
+                          .fetchRecipesByUser(loginViewModel.currentUser!);
                       Navigator.pop(context);
                     },
             ),

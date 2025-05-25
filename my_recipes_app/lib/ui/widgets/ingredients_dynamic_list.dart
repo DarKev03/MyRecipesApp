@@ -4,6 +4,7 @@ import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -67,9 +68,10 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       List<Ingredient> ingredientsSaved = [];
       final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
       for (int i = 0; i < ingredientNameControllers.length; i++) {
+        var name = Validations.firstLetterUpperCase(ingredientNameControllers[i].text);        
         ingredients.add(Ingredient(
           id: null,
-          name: ingredientNameControllers[i].text,
+          name: name,
           description: null,
           createdAt: null,
         ));
@@ -81,7 +83,7 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
 
       List<RecipeIngredient> recipeIngredients = [];
 
-      for (int i = 0; i < ingredients.length; i++) {
+      for (int i = 0; i < ingredients.length; i++) {                
         recipeIngredients.add(RecipeIngredient(
           id: null,
           recipeId: widget.recipeId!,

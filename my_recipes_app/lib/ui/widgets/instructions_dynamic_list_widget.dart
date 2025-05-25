@@ -3,6 +3,7 @@ import 'package:my_recipes_app/data/models/instruction.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +54,12 @@ class _InstructionsDynamicListWidgetState
       List<Instruction> instructions = [];
       final recipesInstructionsViewmodel = context.read<InstructionViewmodel>();
       for (int i = 0; i < instructionsControllers.length; i++) {
+        var name =
+            Validations.firstLetterUpperCase(instructionsControllers[i].text);
         instructions.add(Instruction(
           id: null,
           recipeId: widget.recipeId,
-          text: instructionsControllers[i].text,
+          text: name,
         ));
       }
       for (var instruction in instructions) {

@@ -23,9 +23,7 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
           padding: EdgeInsets.only(bottom: 40),
           shrinkWrap: true,
           itemCount: recetas.length,
-          physics: recetas.length <= 4
-              ? const NeverScrollableScrollPhysics()
-              : const AlwaysScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
