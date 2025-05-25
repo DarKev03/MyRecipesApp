@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool? enableSuggestions;
   final String? labelText;
   final Color? color;
+  final Function(String)? onChanged;
   const CustomTextField(
       {super.key,
       this.keyboardType,
@@ -17,7 +18,8 @@ class CustomTextField extends StatefulWidget {
       required this.isPassword,
       this.enableSuggestions,
       this.labelText,
-      this.color});
+      this.color,
+      this.onChanged});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -30,6 +32,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextField(
       enableSuggestions: widget.enableSuggestions ?? false,
+      onChanged: widget.onChanged,
       keyboardType: widget.keyboardType ?? TextInputType.text,
       maxLength: widget.maxLength,
       controller: widget.controller,

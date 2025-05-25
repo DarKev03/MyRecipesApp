@@ -22,13 +22,14 @@ class _CreationPageState extends State<CreationPage> {
   final nameController = TextEditingController();
   final categoriaController = TextEditingController();
 
+  final imagePlaceHolder =
+      'https://ysccfnuyictzgvydbbaq.supabase.co/storage/v1/object/public/recipes/images/sin_imagen.png';
+
   int recipeId = 0;
   String? imageUrl;
 
   bool isValidToSend() {
-    if (imageUrl != null &&
-        nameController.text.isNotEmpty &&
-        categoriaController.text.isNotEmpty) {
+    if (nameController.text.isNotEmpty || categoriaController.text.isNotEmpty) {
       return true;
     } else {
       return false;
@@ -47,8 +48,10 @@ class _CreationPageState extends State<CreationPage> {
               icon: Icon(
                 Icons.save_outlined,
                 size: 30,
-                color:
-                    imageUrl == null ? Colors.grey : AppColors.secondaryColor,
+                color: nameController.text.isNotEmpty ||
+                        categoriaController.text.isNotEmpty
+                    ? AppColors.secondaryColor
+                    : Colors.grey,
               ),
               onPressed: !isValidToSend()
                   ? null
@@ -64,7 +67,7 @@ class _CreationPageState extends State<CreationPage> {
                           id: null,
                           userId: currentUser,
                           category: category,
-                          imageUrl: imageUrl,
+                          imageUrl: imageUrl ?? imagePlaceHolder,
                           isFavorite: false,
                           prepTime: null,
                           title: name,
@@ -93,11 +96,17 @@ class _CreationPageState extends State<CreationPage> {
                 controller: nameController,
                 isPassword: false,
                 labelText: 'Name',
+                onChanged: (text) {
+                  setState(() {});
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               CustomTextField(
+                  onChanged: (text) {
+                    setState(() {});
+                  },
                   controller: categoriaController,
                   isPassword: false,
                   labelText: 'Category'),

@@ -68,7 +68,13 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       List<Ingredient> ingredientsSaved = [];
       final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
       for (int i = 0; i < ingredientNameControllers.length; i++) {
-        var name = Validations.firstLetterUpperCase(ingredientNameControllers[i].text);        
+        if (ingredientNameControllers[i].text.isEmpty ||
+            ingredientQuantityControllers[i].text.isEmpty ||
+            ingredientUnitsControllers[i].text.isEmpty) {
+          return;
+        }
+        var name =
+            Validations.firstLetterUpperCase(ingredientNameControllers[i].text);
         ingredients.add(Ingredient(
           id: null,
           name: name,
@@ -83,7 +89,7 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
 
       List<RecipeIngredient> recipeIngredients = [];
 
-      for (int i = 0; i < ingredients.length; i++) {                
+      for (int i = 0; i < ingredients.length; i++) {
         recipeIngredients.add(RecipeIngredient(
           id: null,
           recipeId: widget.recipeId!,

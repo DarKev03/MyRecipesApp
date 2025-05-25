@@ -54,6 +54,9 @@ class _InstructionsDynamicListWidgetState
       List<Instruction> instructions = [];
       final recipesInstructionsViewmodel = context.read<InstructionViewmodel>();
       for (int i = 0; i < instructionsControllers.length; i++) {
+        if (instructionsControllers[i].text.isEmpty) {
+          return;
+        }
         var name =
             Validations.firstLetterUpperCase(instructionsControllers[i].text);
         instructions.add(Instruction(
