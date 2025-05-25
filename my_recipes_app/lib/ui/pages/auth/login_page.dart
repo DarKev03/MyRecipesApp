@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                               user,
                             );
                             if (loginSuccess) {
-                              final homePageViewmodel =
+                              final recipeViewModel =
                                   context.read<RecipeViewModel>();
                               final instructionViewmodel =
                                   context.read<InstructionViewmodel>();
@@ -120,8 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                                 loading = true;
                               });
 
-                              await homePageViewmodel.fetchRecipesByUser(
+                              await recipeViewModel.fetchRecipesByUser(
                                   loginViewModel.currentUser!);
+                              recipeViewModel.filterRecipes("");
                               await instructionViewmodel
                                   .fetchInstructionsByUserId(
                                       loginViewModel.currentUser!.id!);

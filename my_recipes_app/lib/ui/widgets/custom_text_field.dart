@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isPassword;
   final bool? enableSuggestions;
   final String? labelText;
+  final IconData? icon;
   final Color? color;
   final Function(String)? onChanged;
   const CustomTextField(
@@ -19,7 +20,8 @@ class CustomTextField extends StatefulWidget {
       this.enableSuggestions,
       this.labelText,
       this.color,
-      this.onChanged});
+      this.onChanged,
+      this.icon});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -38,36 +40,41 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       obscureText: widget.isPassword == true ? _isObscured : false,
       decoration: InputDecoration(
-        labelText: widget.labelText,
-        labelStyle: const TextStyle(
-          color: AppColors.secondaryColor,
-          fontSize: 16,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: widget.color ?? AppColors.primaryColor,
-            width: 1,
+          labelText: widget.labelText,
+          labelStyle: const TextStyle(
+            color: AppColors.secondaryColor,
+            fontSize: 16,
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: widget.color ?? AppColors.primaryColor,
-            width: 2,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: widget.color ?? AppColors.primaryColor,
+              width: 1,
+            ),
           ),
-        ),
-        suffixIcon: widget.isPassword != false
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isObscured = !_isObscured;
-                  });
-                },
-                icon:
-                    Icon(_isObscured ? Icons.visibility_off : Icons.visibility))
-            : null,
-      ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: widget.color ?? AppColors.primaryColor,
+              width: 2,
+            ),
+          ),
+          suffixIcon: widget.isPassword != false
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isObscured = !_isObscured;
+                    });
+                  },
+                  icon: Icon(
+                      _isObscured ? Icons.visibility_off : Icons.visibility))
+              : null,
+          prefixIcon: widget.icon != null
+              ? Icon(
+                  widget.icon,
+                  color: widget.color ?? AppColors.primaryColor,
+                )
+              : null),
     );
   }
 }

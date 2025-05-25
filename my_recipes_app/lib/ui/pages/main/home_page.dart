@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
-import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
+import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(        
+        floatingActionButton: FloatingActionButton(
           enableFeedback: true,
           elevation: 2,
           splashColor: Colors.transparent,
@@ -121,7 +121,9 @@ class HomePage extends StatelessWidget {
               // Cards de recetas favoritas
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: FavoritesRecipesWidget(),
+                child: CustomGridBuilderWidget(
+                  index: 1,
+                ),
               )
             ],
           ),

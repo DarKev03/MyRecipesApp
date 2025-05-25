@@ -7,14 +7,24 @@ class RecipeViewModel extends ChangeNotifier {
   final RecipeRepository _recipeRepository;
   List<Recipe> _recipes = [];
   List<Recipe> _recentlyRecipes = [];
+  List<Recipe> _filteredRecipes = [];
 
   List<Recipe> get recipes => _recipes;
   List<Recipe> get recentlyRecipes => _recentlyRecipes;
   List<Recipe> get favoriteRecipes =>
       _recipes.where((recipe) => recipe.isFavorite!).toList();
+  List<Recipe> get filteredRecipes => _filteredRecipes;
 
   RecipeViewModel({required RecipeRepository recipeRepository})
       : _recipeRepository = recipeRepository;
+
+  void filterRecipes(String query)  {
+    _filteredRecipes = _recipes
+        .where((recipe) =>
+            recipe.title!.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    notifyListeners();
+  }
 
   Future<void> fetchRecipesByUser(User user) async {
     try {
