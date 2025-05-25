@@ -8,21 +8,42 @@ class RecipeViewModel extends ChangeNotifier {
   List<Recipe> _recipes = [];
   List<Recipe> _recentlyRecipes = [];
   List<Recipe> _filteredRecipes = [];
+  final List<String> _selectedCategories = [];
+  double _maxPreparationTime = 0;
 
   List<Recipe> get recipes => _recipes;
   List<Recipe> get recentlyRecipes => _recentlyRecipes;
   List<Recipe> get favoriteRecipes =>
       _recipes.where((recipe) => recipe.isFavorite!).toList();
   List<Recipe> get filteredRecipes => _filteredRecipes;
+  List<String> get categoryRecipes =>
+      _recipes.map((recipe) => recipe.category!).toList();
+  List<String> get selectedCategories => _selectedCategories;
+  double get maxPreparationTime => _maxPreparationTime;
 
   RecipeViewModel({required RecipeRepository recipeRepository})
       : _recipeRepository = recipeRepository;
 
-  void filterRecipes(String query)  {
+  void filterRecipes(String query) {
     _filteredRecipes = _recipes
         .where((recipe) =>
             recipe.title!.toLowerCase().contains(query.toLowerCase()))
         .toList();
+    notifyListeners();
+  }
+
+  void setMaxPrepTime(double time) {
+    _maxPreparationTime = time;
+    notifyListeners();
+  }
+
+  void setSelectedCategory(String categorie) {
+    _selectedCategories.add(categorie);
+    notifyListeners();
+  }
+
+  void removeSelectedCategory(String categorie) {
+    _selectedCategories.remove(categorie);
     notifyListeners();
   }
 
@@ -72,5 +93,11 @@ class RecipeViewModel extends ChangeNotifier {
     } catch (e) {
       print("Error adding recipe: $e");
     }
+  }
+
+  void resetFilters() {
+    _selectedCategories.clear();
+    _maxPreparationTime = 0;
+    notifyListeners();
   }
 }

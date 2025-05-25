@@ -20,9 +20,28 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
       builder: (context, viewModel, child) {
-        final recetas = widget.index == 0
-            ? viewModel.filteredRecipes
-            : viewModel.favoriteRecipes;
+        final categoriesSelected = viewModel.selectedCategories;
+        final maxPreparationTime = viewModel.maxPreparationTime;
+
+        List recetas = [];
+
+        if (widget.index == 0) {
+          if (categoriesSelected.isNotEmpty || maxPreparationTime > 0) {
+            recetas = viewModel.filteredRecipes.where((recipe) {
+              final matchesCategory = categoriesSelected.isEmpty ||
+                  categoriesSelected.contains(recipe.category);
+              final matchesTime = maxPreparationTime == 0 ||
+                  (recipe.prepTime != null &&
+                      recipe.prepTime! <= maxPreparationTime);
+              return matchesCategory && matchesTime;
+            }).toList();
+          } else {
+            recetas = viewModel.filteredRecipes;
+          }
+        } else {
+          recetas = viewModel.favoriteRecipes;
+        }
+
         return recetas.isNotEmpty
             ? GridView.builder(
                 padding: EdgeInsets.only(bottom: 40),
@@ -33,7 +52,7 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 1, // cuadradas
+                  childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
                   final recipe = recetas[index];
@@ -42,13 +61,13 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
                     borderRadius: BorderRadius.circular(25),
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
-                    onTapDown: (details) {
+                    onTapDown: (_) {
                       setState(() {
                         _isHover = true;
                         _selectedIndex = index;
                       });
                     },
-                    onTapUp: (details) {
+                    onTapUp: (_) {
                       setState(() {
                         _isHover = false;
                         _selectedIndex = -1;
@@ -60,13 +79,11 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
                         _selectedIndex = -1;
                       });
                     },
-                    onTap: () async {
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RecipePage(
-                            recipe: recipe,
-                          ),
+                          builder: (context) => RecipePage(recipe: recipe),
                         ),
                       );
                     },
@@ -116,8 +133,8 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
               )
             : Center(
                 child: widget.index == 0
-                    ? Text('No recipes found')
-                    : Text(
+                    ? const Text('No recipes found')
+                    : const Text(
                         'No favorite recipes',
                         style: TextStyle(
                           fontSize: 16,

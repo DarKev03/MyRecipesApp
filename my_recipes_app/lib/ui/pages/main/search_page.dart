@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
+import 'package:my_recipes_app/ui/widgets/filter_drawer_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +15,12 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController queryController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
@@ -29,12 +32,14 @@ class _SearchPageState extends State<SearchPage> {
                   color: AppColors.secondaryColor,
                 ),
                 onPressed: () {
-                  //Buscar receta
+                  //Filtros
+                  _scaffoldKey.currentState?.openEndDrawer();
                 },
               ),
             ),
           ],
         ),
+        endDrawer: FilterDrawerWidget(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
