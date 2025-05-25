@@ -22,7 +22,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
       height: 220,
       child: Consumer<RecipeViewModel>(
         builder: (context, viewModel, child) {
-          List<Recipe> recipes = viewModel.recentlyRecipes;
+          List<Recipe> recipes = viewModel.recentlyRecipes;          
           return viewModel.recentlyRecipes.isEmpty
               ? const Center(
                   child: Text(
@@ -97,7 +97,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    recipe.title,
+                                    recipe.title!,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

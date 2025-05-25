@@ -1,7 +1,7 @@
 class Recipe {
-  final int id;
+  final int? id;
   final int? userId;
-  final String title;
+  final String? title;
   final String? category;  
   final int? prepTime;
   final String? imageUrl;
@@ -21,19 +21,19 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) => Recipe(
         id: json['id'],
-        userId: json['user_id'],
+        userId: json['userId'],
         title: json['title'],
         category: json['category'],
         imageUrl: json['imageUrl'] ??
             "https://upload.wikimedia.org/wikipedia/commons/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",        
-        isFavorite: json['favorite'] ?? false,
+        isFavorite: json['isFavorite'] ?? false,
         prepTime: json['prepTime'],
         createdAt: json['createdAt'],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'user': userId,
+        'userId': userId,
         'title': title,
         'category': category,
         'imageUrl': imageUrl,        

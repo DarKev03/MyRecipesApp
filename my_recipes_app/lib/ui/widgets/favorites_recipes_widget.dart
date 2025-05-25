@@ -17,15 +17,13 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
-      builder: (context, homePageViewModel, child) {
-        final recetas = homePageViewModel.favoriteRecipes;
+      builder: (context, viewModel, child) {
+        final recetas = viewModel.favoriteRecipes;
         return GridView.builder(
           padding: EdgeInsets.only(bottom: 40),
           shrinkWrap: true,
           itemCount: recetas.length,
-          physics: recetas.length <= 4
-              ? const NeverScrollableScrollPhysics()
-              : const AlwaysScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
@@ -89,7 +87,7 @@ class _FavoritesRecipesWidgetState extends State<FavoritesRecipesWidget> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        recipe.title,
+                        recipe.title!,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

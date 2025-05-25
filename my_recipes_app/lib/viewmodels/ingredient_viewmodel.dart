@@ -20,7 +20,7 @@ class IngredientViewmodel extends ChangeNotifier {
   Future<void> fetchIngredientsByRecipe(Recipe recipe) async {
     try {
       _allUserIngredients =
-          await recipeIngredientRepository.getIngredientsByRecipId(recipe.id);
+          await recipeIngredientRepository.getIngredientsByRecipId(recipe.id!);
       notifyListeners();
     } catch (e) {
       print("Error fetching ingredients: $e");
@@ -37,18 +37,35 @@ class IngredientViewmodel extends ChangeNotifier {
     }
   }
 
-  Future<void> addIngredient(
-      Ingredient ingredient, RecipeIngredient recipeIngredient) async {
+  Future<Ingredient> addIngredient(Ingredient ingredient) async {
     try {
-      final finalIngredient =
+      Ingredient ingredientSaved =
           await ingredientRepository.createIngredient(ingredient);
-      recipeIngredient.ingredientId = finalIngredient.id;
-      final finalRecipeIngredient = await recipeIngredientRepository
-          .createRecipeIngredient(recipeIngredient);
-      _allUserIngredients.add(finalRecipeIngredient);
       notifyListeners();
+      return ingredientSaved;
     } catch (e) {
       print("Error adding ingredient: $e");
+      return ingredient;
+    }
+  }
+
+  Future<void> deleteIngredient(int id) async {
+    try {
+      await ingredientRepository.deleteIngredient(id);
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting ingredient: $e");
+    }
+  }
+
+  Future<void> addRecipeIngredient(RecipeIngredient recipeIngredient) async {
+    try {
+      RecipeIngredient recipeIngredientSaved = await recipeIngredientRepository
+          .createRecipeIngredient(recipeIngredient);
+      _allUserIngredients.add(recipeIngredientSaved);
+      notifyListeners();
+    } catch (e) {
+      print("Error adding recipe ingredient: $e");
     }
   }
 

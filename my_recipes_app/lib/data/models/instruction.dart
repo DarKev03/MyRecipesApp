@@ -1,5 +1,5 @@
 class Instruction {
-  final int id;
+  final int? id;
   final int? recipeId;
   final String text;
   final int? userId;

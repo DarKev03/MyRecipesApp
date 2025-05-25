@@ -27,4 +27,14 @@ class InstructionViewmodel extends ChangeNotifier {
       print("Error fetching instructions: $e");
     }
   }
+
+  Future<void> addInstruction(Instruction instruction) async {
+    try {
+      final finalInstruction = await instructionRepository.createInstruction(instruction);
+      _allInstructions.add(finalInstruction);
+      notifyListeners();
+    } catch (e) {
+      print("Error adding instruction: $e");
+    }
+  }
 }

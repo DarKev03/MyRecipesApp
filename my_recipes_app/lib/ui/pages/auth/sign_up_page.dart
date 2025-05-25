@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/user.dart';
-import 'package:my_recipes_app/data/repositories/recipe_repository.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
@@ -10,9 +9,7 @@ import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
-import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/sign_up_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -22,11 +19,7 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final UserRepository userRepository = UserRepository();
-  final SignUpViewModel signUpViewModel =
-      SignUpViewModel(userRepository: UserRepository());
-  SignUpPage({super.key});  
-  RecipeViewModel homePageViewmodel =
-      RecipeViewModel(recipeRepository: RecipeRepository());
+  SignUpPage({super.key});
 
   bool isValid(BuildContext context) {
     final name = nameController.text.trim();
@@ -146,12 +139,11 @@ class SignUpPage extends StatelessWidget {
                           name: nameController.text,
                           createdAt: null,
                           isAdmin: null);
-
-                      bool success = await signUpViewModel.signUp(user);
+                      final loginViewModel = context.read<LoginViewModel>();
+                      bool success = await loginViewModel.signUp(user);
                       if (success) {
                         final loginViewModel = context.read<LoginViewModel>();
-                        loginViewModel
-                            .setCurrentUser(user);
+                        loginViewModel.setCurrentUser(user);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

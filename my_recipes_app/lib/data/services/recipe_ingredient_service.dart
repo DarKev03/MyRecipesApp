@@ -26,7 +26,7 @@ class RecipeIngredientService {
   Future<RecipeIngredient> createRecipeIngredient(
       RecipeIngredient recipeIngredient) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/recipe-ingredients'),
+      Uri.parse('$baseUrl/recipe-ingredients'), 
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipeIngredient.toJson()),
     );

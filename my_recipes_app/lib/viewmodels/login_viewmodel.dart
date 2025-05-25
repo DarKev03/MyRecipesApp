@@ -27,6 +27,15 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> signUp(User user) async {
+    try {
+      await _userRepository.registerUser(user);      
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   void logout() {
     _currentUser = null;
     notifyListeners();

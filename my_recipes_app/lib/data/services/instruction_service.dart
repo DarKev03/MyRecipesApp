@@ -24,7 +24,7 @@ class InstructionService {
 
   Future<Instruction> createInstruction(Instruction instruction) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/instructions/'),
+      Uri.parse('$baseUrl/instructions'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(instruction.toJson()),
     );

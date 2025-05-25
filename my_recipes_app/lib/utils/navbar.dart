@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/main/calendar_page.dart';
 import 'package:my_recipes_app/ui/pages/main/home_page.dart';
@@ -44,43 +46,60 @@ class _NavBar extends State<NavBar> {
           splashFactory: NoSplash.splashFactory,
           highlightColor: Colors.transparent,
         ),
-        child: BottomNavigationBar(
-          backgroundColor: AppColors.backgroundColor,
-          currentIndex: _currentIndex, // Controla el índice actual
-          onTap: _onTabTapped, // Cambia de página al tocar
-          selectedItemColor: AppColors.primaryColor,
-          unselectedItemColor: AppColors.secondaryColor,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          iconSize: 25,
-          enableFeedback: true,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
+        child: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Container(
+              
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(0, 255, 255, 255),
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                ),
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
+              child: BottomNavigationBar(
+                backgroundColor: Colors.transparent,
+                currentIndex: _currentIndex, // Controla el índice actual
+                onTap: _onTabTapped, // Cambia de página al tocar
+                selectedItemColor: AppColors.primaryColor,
+                elevation: 0,
+                unselectedItemColor: AppColors.secondaryColor,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                type: BottomNavigationBarType.fixed,
+                iconSize: 25,
+                enableFeedback: true,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                    ),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.search,
+                    ),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.calendar_today,
+                    ),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.shopping_cart,
+                    ),
+                    label: '',
+                  ),
+                ],
               ),
-              label: '',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_today,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_cart,
-              ),
-              label: '',
-            ),
-          ],
+          ),
         ),
       ),
     );

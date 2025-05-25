@@ -20,4 +20,11 @@ class Validations {
   static bool doPasswordsMatch(String password, String confirmPassword) {
     return password == confirmPassword;
   }
+
+  // Validar primera letra en mayusculas
+  static String firstLetterUpperCase(String title) {
+    title = title.trim();
+    title = title[0].toUpperCase()+title.substring(1);
+    return title;
+  }
 }

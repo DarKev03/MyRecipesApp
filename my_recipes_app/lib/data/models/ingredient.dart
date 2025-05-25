@@ -1,8 +1,8 @@
 class Ingredient {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
   final String? description;
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   Ingredient({
     required this.id,
@@ -22,6 +22,6 @@ class Ingredient {
         'id': id,
         'name': name,
         'description': description,
-        'created_at': createdAt.toIso8601String(),
+        'created_at': createdAt,
       };
 }

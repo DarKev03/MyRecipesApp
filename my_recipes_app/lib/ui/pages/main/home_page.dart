@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
+import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/favorites_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +16,7 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
-            PopupMenuButton<String>(              
+            PopupMenuButton<String>(
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 return [
@@ -38,7 +37,15 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
+                    onTap: () {
+                      final loginViewModel = context.read<LoginViewModel>();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Authpage()));
+                      loginViewModel.logout();
+                    },
                     value: 'logout',
                     child: Row(
                       children: [
@@ -60,17 +67,16 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(        
+          enableFeedback: true,
+          elevation: 2,
+          splashColor: Colors.transparent,
           onPressed: () {
-            final homePageViewModel = context.read<RecipeViewModel>();
-            final loginViewModel = context.read<LoginViewModel>();
-            final ingredientViewModel = context.read<IngredientViewmodel>();
-            final instructionViewModel = context.read<InstructionViewmodel>();
-            homePageViewModel.fetchRecipesByUser(loginViewModel.currentUser!);
-            ingredientViewModel.fetchIngredientsByUserId(loginViewModel.currentUser!.id!);
-            instructionViewModel.fetchInstructionsByUserId(loginViewModel.currentUser!.id!);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreationPage()));
           },
           backgroundColor: AppColors.primaryColor,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
         body: SingleChildScrollView(
           child: Column(
