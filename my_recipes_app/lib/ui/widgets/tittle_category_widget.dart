@@ -17,6 +17,8 @@ class TitleCategoryWidget extends StatelessWidget {
       builder: (context, viewModel, child) {
         final title = recipe.title;
         final category = recipe.category;
+        final prepTime = recipe.prepTime;
+
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Align(
@@ -37,27 +39,40 @@ class TitleCategoryWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 4),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    border: Border.all(
-                      color: AppColors.primaryColor,
-                      width: 1,
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        border: Border.all(
+                          color: AppColors.primaryColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 12,
+                      ),
+                      child: Text(
+                        category!,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 6,
-                    horizontal: 12,
-                  ),
-                  child: Text(
-                    category!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                    const SizedBox(width: 15),
+                    Text(
+                      prepTime != null ? '$prepTime min' : '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryColor,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),

@@ -42,7 +42,8 @@ class IngredientsListWidget extends StatelessWidget {
                       color: AppColors.primaryColor,
                     ),
                     subtitle: Text(
-                      '${ingredient.quantity} ${ingredient.unit}',
+                      ingredient.quantity != null && ingredient.unit != null?
+                      '${ingredient.quantity} ${ingredient.unit}' : '',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
