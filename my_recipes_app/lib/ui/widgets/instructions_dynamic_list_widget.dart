@@ -8,8 +8,8 @@ import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class InstructionsDynamicListWidget extends StatefulWidget {
-  int? recipeId;
-  InstructionsDynamicListWidget({super.key, this.recipeId});
+  final int? recipeId;
+  const InstructionsDynamicListWidget({super.key, this.recipeId});
 
   @override
   State<InstructionsDynamicListWidget> createState() =>

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
-import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/image_uploader_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
