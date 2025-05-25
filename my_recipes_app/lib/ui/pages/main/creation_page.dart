@@ -20,6 +20,7 @@ class CreationPage extends StatefulWidget {
 class _CreationPageState extends State<CreationPage> {
   final nameController = TextEditingController();
   final categoriaController = TextEditingController();
+  final prepTimeController = TextEditingController();
 
   final imagePlaceHolder =
       'https://ysccfnuyictzgvydbbaq.supabase.co/storage/v1/object/public/recipes/images/sin_imagen.png';
@@ -68,7 +69,7 @@ class _CreationPageState extends State<CreationPage> {
                           category: category,
                           imageUrl: imageUrl ?? imagePlaceHolder,
                           isFavorite: false,
-                          prepTime: null,
+                          prepTime: int.tryParse(prepTimeController.text),
                           title: name,
                           createdAt: DateTime.now().toString()));
                       setState(() {
@@ -102,13 +103,30 @@ class _CreationPageState extends State<CreationPage> {
               SizedBox(
                 height: 15,
               ),
-              CustomTextField(
-                  onChanged: (text) {
-                    setState(() {});
-                  },
-                  controller: categoriaController,
-                  isPassword: false,
-                  labelText: 'Category'),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: CustomTextField(
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                        controller: categoriaController,
+                        isPassword: false,
+                        labelText: 'Category'),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: CustomTextField(
+                          keyboardType: TextInputType.number,
+                          labelText: 'Prep Time (min)',
+                          controller: prepTimeController,
+                          isPassword: false))
+                ],
+              ),
               SizedBox(
                 height: 15,
               ),

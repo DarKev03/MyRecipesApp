@@ -68,9 +68,7 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       List<Ingredient> ingredientsSaved = [];
       final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
       for (int i = 0; i < ingredientNameControllers.length; i++) {
-        if (ingredientNameControllers[i].text.isEmpty ||
-            ingredientQuantityControllers[i].text.isEmpty ||
-            ingredientUnitsControllers[i].text.isEmpty) {
+        if (ingredientNameControllers[i].text.isEmpty) {
           return;
         }
         var name =
@@ -144,7 +142,7 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 6,
+                      flex: 5,
                       child: CustomTextField(
                         controller: ingredientNameControllers[index],
                         isPassword: false,
