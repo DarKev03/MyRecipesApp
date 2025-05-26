@@ -36,7 +36,7 @@ class RecipeViewModel extends ChangeNotifier {
   List<RecipeCalendar> get allRecipeCalendars => _allRecipeCalendars;
 
   List<Recipe> get recipesPerDay => _recipesPerDay;
-  
+
   //Constructor y funcionas
   RecipeViewModel(
       {required RecipeRepository recipeRepository,
@@ -163,6 +163,21 @@ class RecipeViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Error deleting recipe: $e");
+    }
+  }
+
+  Future<void> deleteRecipeCalendar(int id) async {
+    try {
+      final recipe = _recipesPerDay.where((recipe) => recipe.id == id).first;
+      final recipeCalendarToDelete = _allRecipeCalendars
+          .where((calendar) => calendar.recipeId == recipe.id)
+          .first;
+      await _recipeCalendarRepository.deleteRecipeCalendar(
+        recipeCalendarToDelete.id!,
+      );
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting recipe calendar: $e");
     }
   }
 }

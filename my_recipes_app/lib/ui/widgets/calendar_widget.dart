@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
         builder: (context, RecipeViewModel recipeViewModel, child) {
-      final recipesPerDay = recipeViewModel.recipesPerDay;
-      final calendarRecipes = recipeViewModel.allRecipeCalendars;
+      var recipesPerDay = recipeViewModel.recipesPerDay;
+      var calendarRecipes = recipeViewModel.allRecipeCalendars;
 
       return TableCalendar.new(
           firstDay: DateTime.utc(2000, 1, 1),
@@ -36,12 +37,72 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               _focusedDay = focusedDay;
             });
             recipeViewModel.setRecipesPerDay(selectedDay);
+            recipesPerDay = recipeViewModel.recipesPerDay;
 
             showDialog(
                 context: context,
                 builder: (context) => Dialog(
-                    child: Text(
-                        "${selectedDay.day} ${selectedDay.month} ${selectedDay.year}")));
+                    backgroundColor: AppColors.backgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: recipesPerDay.isEmpty
+                        ? Container(
+                            height: 100,
+                            width: 200,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(16),
+                            child: const Text('No recipes for this day'))
+                        : Container(
+                            height: 300,
+                            width: 300,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: recipesPerDay.length,
+                              itemBuilder: (context, index) {
+                                final recipe = recipesPerDay[index];
+                                return ListTile(
+                                  title: Text(
+                                    recipe.title!,
+                                    style: const TextStyle(
+                                        color: AppColors.secondaryColor),
+                                  ),
+                                  leading: IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                    onPressed: () {
+                                      recipeViewModel
+                                          .deleteRecipeCalendar(recipe.id!);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios_sharp,
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RecipePage(recipe: recipe)));
+                                    },
+                                  ),
+                                  tileColor: Colors.white,
+                                  style: ListTileStyle.list,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(                                      
+                                      color: AppColors.secondaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                );
+                              },
+                            ),
+                          )));
           },
           calendarStyle: CalendarStyle(
             selectedDecoration: BoxDecoration(
