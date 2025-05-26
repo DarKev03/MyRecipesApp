@@ -12,7 +12,7 @@ class RecipeRepository {
     return await RecipeService().updateRecipe(recipe);
   }
 
-  Future<void> deleteRecipe(String recipeId) async {
+  Future<void> deleteRecipe(int recipeId) async {
     return await RecipeService().deleteRecipe(recipeId);
   }
 

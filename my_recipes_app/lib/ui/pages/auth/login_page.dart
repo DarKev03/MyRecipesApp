@@ -129,6 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                               await ingredientViewModel
                                   .fetchIngredientsByUserId(
                                       loginViewModel.currentUser!.id!);
+                              await recipeViewModel
+                                  .fetchRecipeCalendarsByUserId(
+                                      loginViewModel.currentUser!.id!);
 
                               Navigator.pushAndRemoveUntil(
                                 context,

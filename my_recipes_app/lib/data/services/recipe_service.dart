@@ -34,7 +34,7 @@ class RecipeService {
     }
   }
 
-  Future<void> deleteRecipe(String recipeId) async {
+  Future<void> deleteRecipe(int recipeId) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/recipes/$recipeId'),
       headers: {'Content-Type': 'application/json'},

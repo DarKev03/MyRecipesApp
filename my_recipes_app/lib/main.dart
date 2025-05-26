@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/data/repositories/recipe_calendar_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_recipes_app/data/repositories/ingredient_repository.dart';
 import 'package:my_recipes_app/data/repositories/instruction_repository.dart';
@@ -25,7 +26,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => RecipeViewModel(recipeRepository: RecipeRepository()),
+          create: (_) => RecipeViewModel(recipeRepository: RecipeRepository(), recipeCalendarRepository: RecipeCalendarRepository()),
         ),
         ChangeNotifierProvider(
           create: (_) => LoginViewModel(userRepository: UserRepository()),
