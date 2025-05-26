@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
+import 'package:my_recipes_app/data/models/recipe_calendar.dart';
+import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/hero_image_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_list_widget.dart';
 import 'package:my_recipes_app/ui/widgets/instruction_list_widget.dart';
 import 'package:my_recipes_app/ui/widgets/tittle_category_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class RecipePage extends StatelessWidget {
   final Recipe recipe;
-  const RecipePage({super.key, required this.recipe});
+  final TextEditingController controller = TextEditingController();
+  RecipePage({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,85 @@ class RecipePage extends StatelessWidget {
                   color: AppColors.secondaryColor,
                 ),
                 onPressed: () {
-                  //Agendar receta
+                  final viewModel = context.read<RecipeViewModel>();
+                  final userViewModel = context.read<LoginViewModel>();
+
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  ).then((value) {
+                    if (value == null) return;
+
+                    DateTime datePicked =
+                        DateTime(value.year, value.month, value.day);
+
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) {
+                        final TextEditingController controller =
+                            TextEditingController();
+
+                        return AlertDialog(
+                          title: const Text('Notes'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                  'Do you want to add some notes for this recipe on date: ${datePicked.day}/${datePicked.month}/${datePicked.year}?'),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              CustomTextField(
+                                controller: controller,
+                                isPassword: false,
+                                labelText: 'Notes',
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text('No'),
+                              onPressed: () async {
+                                await viewModel.addRecipeCalendar(
+                                  RecipeCalendar(
+                                    id: null,
+                                    userId: userViewModel.currentUser!.id!,
+                                    recipeId: recipe.id!,
+                                    recipeTitle: recipe.title!,
+                                    scheduledDate: datePicked,
+                                    notes: null,
+                                  ),
+                                );
+                                await viewModel.fetchRecipeCalendarsByUserId(
+                                    userViewModel.currentUser!.id!);
+                                Navigator.pop(dialogContext);
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Yes'),
+                              onPressed: () async {
+                                viewModel.addRecipeCalendar(
+                                  RecipeCalendar(
+                                    id: null,
+                                    userId: userViewModel.currentUser!.id!,
+                                    recipeId: recipe.id!,
+                                    recipeTitle: recipe.title!,
+                                    scheduledDate: datePicked,
+                                    notes: controller.text,
+                                  ),
+                                );
+                                viewModel.fetchRecipeCalendarsByUserId(
+                                    userViewModel.currentUser!.id!);
+                                Navigator.pop(dialogContext);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  });
                 },
               ),
             ),
@@ -37,24 +121,32 @@ class RecipePage extends StatelessWidget {
                 height: 20,
               ),
               //Imagen de la receta
-              HeroImageWidget(recipe: recipe,),
+              HeroImageWidget(
+                recipe: recipe,
+              ),
 
               SizedBox(
                 height: 10,
               ),
 
               //Titulo y categoria
-              TitleCategoryWidget(recipe: recipe,),
+              TitleCategoryWidget(
+                recipe: recipe,
+              ),
 
               SizedBox(
                 height: 20,
               ),
 
               //Lista de ingredientes
-              IngredientsListWidget(recipe: recipe,),
+              IngredientsListWidget(
+                recipe: recipe,
+              ),
 
               //Lista de instrucciones
-              InstructionListWidget(recipe: recipe,),
+              InstructionListWidget(
+                recipe: recipe,
+              ),
             ],
           ),
         ));

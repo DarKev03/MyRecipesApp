@@ -133,7 +133,9 @@ class RecipeViewModel extends ChangeNotifier {
 
   Future<void> addRecipeCalendar(RecipeCalendar recipeCalendar) async {
     try {
-      await _recipeCalendarRepository.createRecipeCalendar(recipeCalendar);
+      final newRecipeCalendar =
+          await _recipeCalendarRepository.createRecipeCalendar(recipeCalendar);
+      _allRecipeCalendars.add(newRecipeCalendar);
       notifyListeners();
     } catch (e) {
       print("Error adding recipe calendar: $e");
@@ -172,10 +174,11 @@ class RecipeViewModel extends ChangeNotifier {
       final recipeCalendarToDelete = _allRecipeCalendars
           .where((calendar) => calendar.recipeId == recipe.id)
           .first;
+      _allRecipeCalendars.remove(recipeCalendarToDelete);
+      notifyListeners();
       await _recipeCalendarRepository.deleteRecipeCalendar(
         recipeCalendarToDelete.id!,
       );
-      notifyListeners();
     } catch (e) {
       print("Error deleting recipe calendar: $e");
     }

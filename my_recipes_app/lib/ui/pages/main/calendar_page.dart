@@ -13,33 +13,35 @@ class CalendarPage extends StatelessWidget {
         forceMaterialTransparency: true,
         actions: [],
       ),
-      body: Center(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(          
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [            
-            SizedBox(
-              height: 20,
-            ),
-            CalendarWidget(),
-            SizedBox(
-              height: 50,
-            ),
+      body: SingleChildScrollView(
+        child: Center(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              CalendarWidget(),
+              SizedBox(
+                height: 50,
+              ),
 
-            //Proximas planificaciones
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Text('Proximas planificaciones',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryColor)),
-            ),
-            NextRecipesWidget(),
-          ],
-        ),
-      )),
+              //Proximas planificaciones
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text('Proximas planificaciones',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.secondaryColor)),
+              ),
+              NextRecipesWidget(),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

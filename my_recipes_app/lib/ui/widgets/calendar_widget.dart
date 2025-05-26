@@ -23,7 +23,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       var recipesPerDay = recipeViewModel.recipesPerDay;
       var calendarRecipes = recipeViewModel.allRecipeCalendars;
 
-      return TableCalendar.new(
+      return TableCalendar(
           firstDay: DateTime.utc(2000, 1, 1),
           lastDay: DateTime.utc(2100, 12, 31),
           focusedDay: _focusedDay,
@@ -53,7 +53,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(16),
                             child: const Text('No recipes for this day'))
-                        : Container(
+                        : SizedBox(
                             height: 300,
                             width: 300,
                             child: ListView.builder(
