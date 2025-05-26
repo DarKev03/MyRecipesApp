@@ -7,7 +7,7 @@ class RecipeCalendarService {
 
   Future<List<RecipeCalendar>> getRecipeCalendarsByUserId(int userId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/calendar/user/$userId'),
+      Uri.parse('http://192.168.1.121:8080/api/calendar/user/$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -24,7 +24,7 @@ class RecipeCalendarService {
   Future<RecipeCalendar> createRecipeCalendar(
       RecipeCalendar recipeCalendar) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/calendar'),
+      Uri.parse('http://192.168.1.121:8080/api/calendar'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipeCalendar.toJson()),
     );

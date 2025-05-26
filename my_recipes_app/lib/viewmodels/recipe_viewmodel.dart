@@ -15,6 +15,7 @@ class RecipeViewModel extends ChangeNotifier {
   List<RecipeCalendar> _allRecipeCalendars = [];
   List<Recipe> _recipesPerDay = [];
 
+  //getters
   double _maxPreparationTime = 0;
 
   List<Recipe> get recipes => _recipes;
@@ -35,7 +36,8 @@ class RecipeViewModel extends ChangeNotifier {
   List<RecipeCalendar> get allRecipeCalendars => _allRecipeCalendars;
 
   List<Recipe> get recipesPerDay => _recipesPerDay;
-
+  
+  //Constructor y funcionas
   RecipeViewModel(
       {required RecipeRepository recipeRepository,
       required RecipeCalendarRepository recipeCalendarRepository})
