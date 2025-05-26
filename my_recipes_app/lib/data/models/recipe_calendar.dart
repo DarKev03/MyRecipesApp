@@ -21,6 +21,7 @@ class RecipeCalendar {
         id: json['id'],
         userId: json['userId'],
         recipeId: json['recipeId'],
+        recipeTitle: json['recipeTitle'],
         scheduledDate: DateTime.parse(json['scheduledDate']),
         notes: json['notes'],        
       );
