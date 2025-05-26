@@ -1,35 +1,36 @@
 class RecipeCalendar {
-  final int id;
-  final int userId;
-  final int recipeId;
-  final DateTime scheduledDate;
+  final int? id;
+  final int? userId;
+  final int? recipeId;
+  final String? recipeTitle;
+  final DateTime? scheduledDate;
   final String? notes;
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   RecipeCalendar({
     required this.id,
-    required this.userId,
-    required this.recipeId,
-    required this.scheduledDate,
+    this.userId,
+    this.recipeId,
+    this.recipeTitle,
+    this.scheduledDate,
     this.notes,
-    required this.createdAt,
+    this.createdAt,
   });
 
   factory RecipeCalendar.fromJson(Map<String, dynamic> json) => RecipeCalendar(
         id: json['id'],
-        userId: json['user_id'],
-        recipeId: json['recipe_id'],
-        scheduledDate: DateTime.parse(json['scheduled_date']),
-        notes: json['notes'],
-        createdAt: DateTime.parse(json['created_at']),
+        userId: json['userId'],
+        recipeId: json['recipeId'],
+        scheduledDate: DateTime.parse(json['scheduledDate']),
+        notes: json['notes'],        
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'user_id': userId,
-        'recipe_id': recipeId,
-        'scheduled_date': scheduledDate.toIso8601String(),
-        'notes': notes,
-        'created_at': createdAt.toIso8601String(),
+        'userId': userId,
+        'recipeId': recipeId,
+        'recipeTitle': recipeTitle,
+        'scheduled_date': scheduledDate?.toIso8601String(),
+        'notes': notes,        
       };
 }
