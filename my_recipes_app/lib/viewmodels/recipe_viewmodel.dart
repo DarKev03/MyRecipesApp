@@ -12,12 +12,17 @@ class RecipeViewModel extends ChangeNotifier {
   double _maxPreparationTime = 0;
 
   List<Recipe> get recipes => _recipes;
+
   List<Recipe> get recentlyRecipes => _recentlyRecipes;
+
   List<Recipe> get favoriteRecipes =>
       _recipes.where((recipe) => recipe.isFavorite!).toList();
+
   List<Recipe> get filteredRecipes => _filteredRecipes;
+
   List<String> get categoryRecipes =>
-      _recipes.map((recipe) => recipe.category!).toList();
+      _recipes.map((recipe) => recipe.category!).toSet().toList();
+
   List<String> get selectedCategories => _selectedCategories;
   double get maxPreparationTime => _maxPreparationTime;
 
