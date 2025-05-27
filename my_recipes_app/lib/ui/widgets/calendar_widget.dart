@@ -53,7 +53,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(16),
                             child: const Text('No recipes for this day'))
-                        : Container(
+                        : SizedBox(
                             height: 300,
                             width: 300,
                             child: ListView.builder(
