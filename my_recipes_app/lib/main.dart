@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/repositories/recipe_calendar_repository.dart';
+import 'package:my_recipes_app/data/repositories/shopping_list_repository.dart';
+import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_recipes_app/data/repositories/ingredient_repository.dart';
 import 'package:my_recipes_app/data/repositories/instruction_repository.dart';
@@ -26,7 +28,9 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => RecipeViewModel(recipeRepository: RecipeRepository(), recipeCalendarRepository: RecipeCalendarRepository()),
+          create: (_) => RecipeViewModel(
+              recipeRepository: RecipeRepository(),
+              recipeCalendarRepository: RecipeCalendarRepository()),
         ),
         ChangeNotifierProvider(
           create: (_) => LoginViewModel(userRepository: UserRepository()),
@@ -40,6 +44,9 @@ Future<void> main() async {
               recipeIngredientRepository: RecipeIngredientRepository(),
               ingredientRepository: IngredientRepository()),
         ),
+        ChangeNotifierProvider(
+            create: (_) =>
+                ShoppingListViewmodel(repository: ShoppingListRepository()))
       ],
       child: const MainApp(),
     ),
