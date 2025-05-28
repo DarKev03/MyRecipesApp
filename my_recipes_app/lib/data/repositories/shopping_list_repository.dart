@@ -5,8 +5,9 @@ import 'package:my_recipes_app/data/services/shopping_list_service.dart';
 class ShoppingListRepository {
   ShoppingListService shoppingListService = ShoppingListService();
 
-  Future<void> addItemToShoppingList(ShoppingListItem shoppingListItem) async {
-    await shoppingListService.addItemToShoppingList(shoppingListItem);
+  Future<ShoppingListItem> addItemToShoppingList(
+      ShoppingListItem shoppingListItem) async {
+    return await shoppingListService.addItemToShoppingList(shoppingListItem);
   }
 
   Future<void> removeItemFromShoppingList(int itemName) async {

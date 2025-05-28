@@ -82,7 +82,7 @@ class ShoppingListService {
     }
   }
 
-  Future<void> updateShoppingList(ShoppingList shoppingList) async {
+  Future<ShoppingList> updateShoppingList(ShoppingList shoppingList) async {
     final response = await http.put(
       Uri.parse('$baseUrl/shopping-lists/update'),
       headers: {'Content-Type': 'application/json'},
@@ -93,6 +93,8 @@ class ShoppingListService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to update shopping list');
+    } else {
+      return ShoppingList.fromJson(json.decode(response.body));
     }
   }
 
