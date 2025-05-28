@@ -12,7 +12,7 @@ import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingListPage extends StatefulWidget {
-  ShoppingListPage({super.key});
+  const ShoppingListPage({super.key});
 
   @override
   State<ShoppingListPage> createState() => _ShoppingListPageState();

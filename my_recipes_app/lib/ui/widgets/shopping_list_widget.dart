@@ -40,7 +40,7 @@ class ShoppingListWidget extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 16),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
