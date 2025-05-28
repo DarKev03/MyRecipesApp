@@ -123,6 +123,7 @@ class RecipeViewModel extends ChangeNotifier {
 
   Future<void> fetchRecipeCalendarsByUserId(int userId) async {
     try {
+      _allRecipeCalendars.clear();
       _allRecipeCalendars =
           await _recipeCalendarRepository.getRecipeCalendarsByUserId(userId);
       notifyListeners();

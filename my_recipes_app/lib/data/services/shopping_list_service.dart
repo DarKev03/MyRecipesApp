@@ -35,25 +35,29 @@ class ShoppingListService {
     }
   }
 
-  Future<List<ShoppingList>> getShoppingList() async {
+  Future<List<ShoppingListItem>> fetchItemsByShoppingListId(
+      int shoppingListId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/shopping-lists'),
+      Uri.parse(
+          'http://192.168.1.121:8080/api/shopping-list-items/shopping-list/$shoppingListId'),
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse.map((item) => ShoppingList.fromJson(item)).toList();
+      return jsonResponse
+          .map((item) => ShoppingListItem.fromJson(item))
+          .toList();
     } else {
-      throw Exception('Failed to fetch shopping list');
+      throw Exception(
+          'Failed to fetch items for shopping list');
     }
   }
 
   Future<List<ShoppingList>> getShoppingListByUserId(int userId) async {
     final response = await http.get(
       Uri.parse('http://192.168.1.121:8080/api/shopping-lists/user/$userId'),
-
-      ///shopping-lists/user/
+      
       headers: {'Content-Type': 'application/json'},
     );
 

@@ -13,8 +13,9 @@ class ShoppingListRepository {
     await shoppingListService.removeItemFromShoppingList(itemName);
   }
 
-  Future<List<ShoppingList>> getShoppingList() async {
-    return await shoppingListService.getShoppingList();
+  Future<List<ShoppingListItem>> fetchItemsByShoppingListId(
+      int shoppingListId) async {
+    return await shoppingListService.fetchItemsByShoppingListId(shoppingListId);
   }
 
   Future<List<ShoppingList>> getShoppingListByUserId(int userId) async {

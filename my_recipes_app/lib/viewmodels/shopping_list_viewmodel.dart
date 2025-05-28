@@ -7,7 +7,7 @@ class ShoppingListViewmodel extends ChangeNotifier {
   final ShoppingListRepository _shoppingListRepository;
 
   List<ShoppingList> _shoppingLists = [];
-  List<ShoppingListItem> _items = [];
+  final List<ShoppingListItem> _items = [];
 
   List<ShoppingListItem> get items => _items;
   List<ShoppingList> get shoppingLists => _shoppingLists;
@@ -16,6 +16,19 @@ class ShoppingListViewmodel extends ChangeNotifier {
       : _shoppingListRepository = repository;
 
   //Funciones de items
+
+  Future<void> fetchItemsByShoppingListId(int shoppingListId) async {
+    try {
+      var itemsToAdd = await _shoppingListRepository
+          .fetchItemsByShoppingListId(shoppingListId);
+      _items.removeWhere((item) => item.shoppingListId == shoppingListId);
+      _items.addAll(itemsToAdd);
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching items by shopping list ID: $e');
+    }
+  }
+
   Future<void> addItemToShoppingList(ShoppingListItem shoppingListItem) async {
     try {
       await _shoppingListRepository.addItemToShoppingList(shoppingListItem);
@@ -26,9 +39,18 @@ class ShoppingListViewmodel extends ChangeNotifier {
     }
   }
 
-  void deleteItemsFromShoppingListDeleted(ShoppingList shoppingList) {
-    _items.removeWhere((item) => item.shoppingListId == shoppingList.id);
-    notifyListeners();
+  Future<void> deleteItemsFromShoppingListDeleted(
+      ShoppingList shoppingList) async {
+    for (var item
+        in _items.where((item) => item.shoppingListId == shoppingList.id)) {
+      try {
+        _items.remove(item);
+        notifyListeners();
+        removeItem(item.id!);
+      } catch (e) {
+        print('Error removing item from shopping list: $e');
+      }
+    }
   }
 
   Future<void> removeItem(int itemId) async {
@@ -46,10 +68,10 @@ class ShoppingListViewmodel extends ChangeNotifier {
     try {
       _shoppingLists =
           await _shoppingListRepository.getShoppingListByUserId(userId);
-      _items = shoppingLists
-          .where((list) => list.items != null)
-          .expand((list) => list.items!)
-          .toList();
+      _items.clear();
+      for (var shoppingList in _shoppingLists) {
+        await fetchItemsByShoppingListId(shoppingList.id!);
+      }
       notifyListeners();
     } catch (e) {
       print('Error fetching shopping list: $e');
@@ -80,7 +102,7 @@ class ShoppingListViewmodel extends ChangeNotifier {
   Future<void> clearLists() async {
     try {
       for (var item in _items) {
-        await _shoppingListRepository.removeItemFromShoppingList(item.id!);
+        removeItem(item.id!);
       }
       _items.clear();
       notifyListeners();
