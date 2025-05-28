@@ -10,7 +10,7 @@ class ShoppingListService {
   Future<ShoppingListItem> addItemToShoppingList(
       ShoppingListItem shoppingListItem) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.121:8080/api/shopping-list-items'),
+      Uri.parse('$baseUrl/shopping-list-items'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(
         shoppingListItem.toJson(),
@@ -26,7 +26,7 @@ class ShoppingListService {
 
   Future<void> removeItemFromShoppingList(int itemId) async {
     final response = await http.delete(
-      Uri.parse('http://192.168.1.121:8080/api/shopping-list-items/$itemId'),
+      Uri.parse('$baseUrl/shopping-list-items/$itemId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -38,8 +38,7 @@ class ShoppingListService {
   Future<List<ShoppingListItem>> fetchItemsByShoppingListId(
       int shoppingListId) async {
     final response = await http.get(
-      Uri.parse(
-          'http://192.168.1.121:8080/api/shopping-list-items/shopping-list/$shoppingListId'),
+      Uri.parse('$baseUrl/shopping-list-items/shopping-list/$shoppingListId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -49,15 +48,13 @@ class ShoppingListService {
           .map((item) => ShoppingListItem.fromJson(item))
           .toList();
     } else {
-      throw Exception(
-          'Failed to fetch items for shopping list');
+      throw Exception('Failed to fetch items for shopping list');
     }
   }
 
   Future<List<ShoppingList>> getShoppingListByUserId(int userId) async {
     final response = await http.get(
-      Uri.parse('http://192.168.1.121:8080/api/shopping-lists/user/$userId'),
-      
+      Uri.parse('$baseUrl/shopping-lists/user/$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -71,7 +68,7 @@ class ShoppingListService {
 
   Future<ShoppingList> createShoppingList(ShoppingList shoppingList) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.121:8080/api/shopping-lists'),
+      Uri.parse('$baseUrl/shopping-lists'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(
         shoppingList.toJson(),
@@ -101,7 +98,7 @@ class ShoppingListService {
 
   Future<void> deleteShoppingList(int id) async {
     final response = await http.delete(
-      Uri.parse('http://192.168.1.121:8080/api/shopping-lists/$id'),
+      Uri.parse('$baseUrl/shopping-lists/$id'),
       headers: {'Content-Type': 'application/json'},
     );
 
