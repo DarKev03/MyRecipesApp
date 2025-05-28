@@ -23,7 +23,19 @@ class ShoppingListWidget extends StatelessWidget {
                   return Dismissible(
                     key: Key(shoppingList.id.toString()),
                     direction: DismissDirection.endToStart,
-                    background: Container(                      
+                    onDismissed: (direction) {
+                      shoppingListViewmodel.removeShoppingList(shoppingList);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Shopping list "${shoppingList.name}" deleted',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: AppColors.primaryColor,
+                        ),
+                      );
+                    },
+                    background: Container(
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.only(right: 20),
                       decoration: BoxDecoration(
@@ -96,8 +108,7 @@ class ShoppingListWidget extends StatelessWidget {
                 },
               )
             : Container(
-                height: MediaQuery.of(context).size.height *
-                    0.4,
+                height: MediaQuery.of(context).size.height * 0.4,
                 alignment: Alignment.center,
                 child: Text(
                   'No shopping lists available',

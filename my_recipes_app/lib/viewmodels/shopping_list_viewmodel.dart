@@ -31,8 +31,9 @@ class ShoppingListViewmodel extends ChangeNotifier {
 
   Future<void> addItemToShoppingList(ShoppingListItem shoppingListItem) async {
     try {
-      await _shoppingListRepository.addItemToShoppingList(shoppingListItem);
-      _items.add(shoppingListItem);
+      final itemSaved =
+          await _shoppingListRepository.addItemToShoppingList(shoppingListItem);
+      _items.add(itemSaved);
       notifyListeners();
     } catch (e) {
       print('Error adding item to shopping list: $e');

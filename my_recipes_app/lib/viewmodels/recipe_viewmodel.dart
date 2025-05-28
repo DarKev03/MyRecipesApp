@@ -73,6 +73,7 @@ class RecipeViewModel extends ChangeNotifier {
   Future<void> fetchRecipesByUser(User user) async {
     try {
       _recipes = await _recipeRepository.getRecipeByUserId(user.id!);
+      _filteredRecipes = List.from(_recipes);
       fillRecentlyRecipes();
       notifyListeners();
     } catch (e) {
