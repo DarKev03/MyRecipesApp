@@ -35,6 +35,9 @@ class RecipeViewModel extends ChangeNotifier {
 
   List<RecipeCalendar> get allRecipeCalendars => _allRecipeCalendars;
 
+  List<RecipeCalendar> get allRecipesOrdered => _allRecipeCalendars
+    ..sort((a, b) => a.scheduledDate!.compareTo(b.scheduledDate!));
+
   List<Recipe> get recipesPerDay => _recipesPerDay;
 
   //Constructor y funcionas

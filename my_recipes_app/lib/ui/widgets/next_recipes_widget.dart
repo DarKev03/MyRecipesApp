@@ -9,7 +9,7 @@ class NextRecipesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(builder: (context, viewModel, child) {
-      final recipesCalendar = viewModel.allRecipeCalendars;
+      final recipesCalendar = viewModel.allRecipesOrdered;
       if (recipesCalendar.isNotEmpty) {
         return ListView.builder(
           itemCount: recipesCalendar.length,
@@ -36,7 +36,7 @@ class NextRecipesWidget extends StatelessWidget {
               subtitle: Text(recipe.notes ?? '',
                   style: TextStyle(
                     fontSize: 12,
-              )),
+                  )),
               trailing: Text(
                 '${recipe.scheduledDate?.day}/${recipe.scheduledDate?.month}/${recipe.scheduledDate?.year}',
                 style: TextStyle(
