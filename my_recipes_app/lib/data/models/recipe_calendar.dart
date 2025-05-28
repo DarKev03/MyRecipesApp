@@ -21,9 +21,9 @@ class RecipeCalendar {
         id: json['id'],
         userId: json['userId'],
         recipeId: json['recipeId'],
-        recipeTitle: json['recipeTitle'],
+        recipeTitle: json['recipeTitle'] ?? '',
         scheduledDate: DateTime.parse(json['scheduledDate']),
-        notes: json['notes'],        
+        notes: json['notes'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,7 +31,7 @@ class RecipeCalendar {
         'userId': userId,
         'recipeId': recipeId,
         'recipeTitle': recipeTitle,
-        'scheduled_date': scheduledDate?.toIso8601String(),
-        'notes': notes,        
+        'scheduledDate': scheduledDate?.toIso8601String(),
+        'notes': notes,
       };
 }

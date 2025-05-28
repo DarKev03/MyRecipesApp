@@ -24,7 +24,7 @@ class RecipeCalendarService {
   Future<RecipeCalendar> createRecipeCalendar(
       RecipeCalendar recipeCalendar) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/calendar'),
+      Uri.parse('$baseUrl/calendar'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipeCalendar.toJson()),
     );

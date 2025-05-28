@@ -12,6 +12,7 @@ import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -116,6 +117,8 @@ class _LoginPageState extends State<LoginPage> {
                                   context.read<InstructionViewmodel>();
                               final ingredientViewModel =
                                   context.read<IngredientViewmodel>();
+                              final shoppingListViewmodel =
+                                  context.read<ShoppingListViewmodel>();
                               setState(() {
                                 loading = true;
                               });
@@ -131,6 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                                       loginViewModel.currentUser!.id!);
                               await recipeViewModel
                                   .fetchRecipeCalendarsByUserId(
+                                      loginViewModel.currentUser!.id!);
+                              await shoppingListViewmodel
+                                  .fetchShoppingListByUserId(
                                       loginViewModel.currentUser!.id!);
 
                               Navigator.pushAndRemoveUntil(

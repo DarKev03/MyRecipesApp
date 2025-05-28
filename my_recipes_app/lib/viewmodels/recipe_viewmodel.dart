@@ -35,6 +35,9 @@ class RecipeViewModel extends ChangeNotifier {
 
   List<RecipeCalendar> get allRecipeCalendars => _allRecipeCalendars;
 
+  List<RecipeCalendar> get allRecipesOrdered => _allRecipeCalendars
+    ..sort((a, b) => a.scheduledDate!.compareTo(b.scheduledDate!));
+
   List<Recipe> get recipesPerDay => _recipesPerDay;
 
   //Constructor y funcionas
@@ -123,6 +126,7 @@ class RecipeViewModel extends ChangeNotifier {
 
   Future<void> fetchRecipeCalendarsByUserId(int userId) async {
     try {
+      _allRecipeCalendars.clear();
       _allRecipeCalendars =
           await _recipeCalendarRepository.getRecipeCalendarsByUserId(userId);
       notifyListeners();
@@ -133,7 +137,9 @@ class RecipeViewModel extends ChangeNotifier {
 
   Future<void> addRecipeCalendar(RecipeCalendar recipeCalendar) async {
     try {
-      await _recipeCalendarRepository.createRecipeCalendar(recipeCalendar);
+      final newRecipeCalendar =
+          await _recipeCalendarRepository.createRecipeCalendar(recipeCalendar);
+      _allRecipeCalendars.add(newRecipeCalendar);
       notifyListeners();
     } catch (e) {
       print("Error adding recipe calendar: $e");
@@ -172,10 +178,11 @@ class RecipeViewModel extends ChangeNotifier {
       final recipeCalendarToDelete = _allRecipeCalendars
           .where((calendar) => calendar.recipeId == recipe.id)
           .first;
+      _allRecipeCalendars.remove(recipeCalendarToDelete);
+      notifyListeners();
       await _recipeCalendarRepository.deleteRecipeCalendar(
         recipeCalendarToDelete.id!,
       );
-      notifyListeners();
     } catch (e) {
       print("Error deleting recipe calendar: $e");
     }
