@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 class InstructionsDynamicListWidget extends StatefulWidget {
   final int? recipeId;
-  const InstructionsDynamicListWidget({super.key, this.recipeId});
+  final VoidCallback? onInstructionsSaved;
+  const InstructionsDynamicListWidget(
+      {super.key, this.recipeId, this.onInstructionsSaved});
 
   @override
   State<InstructionsDynamicListWidget> createState() =>
@@ -54,22 +56,27 @@ class _InstructionsDynamicListWidgetState
       List<Instruction> instructions = [];
       final recipesInstructionsViewmodel = context.read<InstructionViewmodel>();
       for (int i = 0; i < instructionsControllers.length; i++) {
-        if (instructionsControllers[i].text.isEmpty) {
-          return;
+        if (instructionsControllers[i].text.isNotEmpty) {
+          var name =
+              Validations.firstLetterUpperCase(instructionsControllers[i].text);
+          instructions.add(Instruction(
+            id: null,
+            recipeId: widget.recipeId,
+            text: name,
+          ));
         }
-        var name =
-            Validations.firstLetterUpperCase(instructionsControllers[i].text);
-        instructions.add(Instruction(
-          id: null,
-          recipeId: widget.recipeId,
-          text: name,
-        ));
       }
       for (var instruction in instructions) {
         await recipesInstructionsViewmodel.addInstruction(instruction);
       }
 
       _removeInstruction();
+
+      if (widget.onInstructionsSaved != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.onInstructionsSaved!();
+        });
+      }
     } else {
       return;
     }

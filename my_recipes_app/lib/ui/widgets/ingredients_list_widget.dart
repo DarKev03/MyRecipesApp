@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
+import 'package:my_recipes_app/data/models/shopping_list.dart';
 import 'package:my_recipes_app/data/models/shopping_list_item.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +48,8 @@ class IngredientsListWidget extends StatelessWidget {
                           context: context,
                           builder: (dialogContext) {
                             final shoppingLists = shoppingList.shoppingLists;
+                            final loginViewModel =
+                                context.read<LoginViewModel>();
                             return AlertDialog(
                               title: Text('Añadir a una lista de la compra'),
                               content: shoppingLists.isEmpty
@@ -55,8 +59,7 @@ class IngredientsListWidget extends StatelessWidget {
                                       width: double.maxFinite,
                                       height: 300,
                                       child: ListView.builder(
-                                        itemCount: shoppingLists
-                                            .length, // <-- ¡Esto es clave!
+                                        itemCount: shoppingLists.length,
                                         itemBuilder: (context, index) {
                                           final shoppingListElement =
                                               shoppingLists[index];
@@ -97,7 +100,99 @@ class IngredientsListWidget extends StatelessWidget {
                                 if (shoppingLists.isEmpty)
                                   TextButton(
                                     onPressed: () {
-                                      // Aquí puedes abrir un dialogo para crear lista
+                                      Navigator.of(dialogContext).pop();
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          bool isLoading = false;
+                                          return StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return !isLoading
+                                                  ? AlertDialog(
+                                                      title: Text(
+                                                          'Crear lista de compra'),
+                                                      content: Text(
+                                                          '¿Quieres crear una nueva lista de compra?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              Text('Cancelar'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              isLoading = true;
+                                                            });
+                                                            await shoppingList
+                                                                .addShoppingList(
+                                                              ShoppingList(
+                                                                id: null,
+                                                                name:
+                                                                    'Lista para ${recipe.title}',
+                                                                userId: loginViewModel
+                                                                    .currentUser!
+                                                                    .id!,
+                                                                createdAt: null,
+                                                              ),
+                                                            );
+                                                            await shoppingList
+                                                                .fetchShoppingListByUserId(
+                                                                    loginViewModel
+                                                                        .currentUser!
+                                                                        .id!);
+                                                            await shoppingList
+                                                                .addItemToShoppingList(
+                                                              ShoppingListItem(
+                                                                ingredientId:
+                                                                    ingredient
+                                                                        .ingredientId,
+                                                                id: null,
+                                                                ingredientName:
+                                                                    ingredient
+                                                                        .ingredientName,
+                                                                quantity:
+                                                                    ingredient
+                                                                        .quantity,
+                                                                unit: ingredient
+                                                                    .unit,
+                                                                shoppingListId:
+                                                                    shoppingList
+                                                                        .shoppingLists
+                                                                        .last
+                                                                        .id,
+                                                              ),
+                                                            );
+                                                            setState(() {
+                                                              isLoading = false;
+                                                            });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text('Crear'),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : AlertDialog(
+                                                      title: Text(
+                                                          'Creando lista de compra...'),
+                                                      content: Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: AppColors
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                            },
+                                          );
+                                        },
+                                      );
                                     },
                                     child: Text('Crear lista'),
                                   ),

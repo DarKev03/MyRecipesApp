@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
@@ -27,12 +29,21 @@ class _CreationPageState extends State<CreationPage> {
 
   int recipeId = 0;
   String? imageUrl;
+  bool isLoading = false;
+  bool areIngredientsSaved = false;
+  bool areInstructionsSaved = false;
 
   bool isValidToSend() {
-    if (nameController.text.isNotEmpty || categoriaController.text.isNotEmpty) {
-      return true;
-    } else {
-      return false;
+    return nameController.text.isNotEmpty ||
+        categoriaController.text.isNotEmpty;
+  }
+
+  void checkIsAllSave() {
+    if (areIngredientsSaved && areInstructionsSaved) {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.pop(context);
     }
   }
 
@@ -48,14 +59,14 @@ class _CreationPageState extends State<CreationPage> {
               icon: Icon(
                 Icons.save_outlined,
                 size: 30,
-                color: nameController.text.isNotEmpty ||
-                        categoriaController.text.isNotEmpty
-                    ? AppColors.secondaryColor
-                    : Colors.grey,
+                color: isValidToSend() ? AppColors.secondaryColor : Colors.grey,
               ),
               onPressed: !isValidToSend()
                   ? null
                   : () async {
+                      setState(() {
+                        isLoading = true;
+                      });
                       final name =
                           Validations.firstLetterUpperCase(nameController.text);
                       final category = Validations.firstLetterUpperCase(
@@ -75,81 +86,118 @@ class _CreationPageState extends State<CreationPage> {
                       setState(() {
                         recipeId = recipesViewmodel.recipes.last.id!;
                       });
-                      await recipesViewmodel
+                      recipesViewmodel
                           .fetchRecipesByUser(loginViewModel.currentUser!);
-                      Navigator.pop(context);
                     },
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              CustomTextField(
-                controller: nameController,
-                isPassword: false,
-                labelText: 'Name',
-                onChanged: (text) {
-                  setState(() {});
-                },
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
+      body: Stack(
+        children: [
+          // El contenido principal del formulario
+          SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: CustomTextField(
-                        onChanged: (text) {
-                          setState(() {});
-                        },
-                        controller: categoriaController,
-                        isPassword: false,
-                        labelText: 'Category'),
+                  SizedBox(height: 20),
+                  CustomTextField(
+                    controller: nameController,
+                    isPassword: false,
+                    labelText: 'Name',
+                    onChanged: (text) {
+                      setState(() {});
+                    },
                   ),
-                  SizedBox(
-                    width: 10,
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: CustomTextField(
+                            onChanged: (text) {
+                              setState(() {});
+                            },
+                            controller: categoriaController,
+                            isPassword: false,
+                            labelText: 'Category'),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                          flex: 1,
+                          child: CustomTextField(
+                              keyboardType: TextInputType.number,
+                              labelText: 'Prep Time (min)',
+                              controller: prepTimeController,
+                              isPassword: false))
+                    ],
                   ),
-                  Expanded(
-                      flex: 1,
-                      child: CustomTextField(
-                          keyboardType: TextInputType.number,
-                          labelText: 'Prep Time (min)',
-                          controller: prepTimeController,
-                          isPassword: false))
+                  SizedBox(height: 15),
+                  ImageUploaderWidget(onImageUploaded: (imageUrl) {
+                    setState(() {
+                      this.imageUrl = imageUrl;
+                    });
+                  }),
+                  SizedBox(height: 25),
+                  IngredientsDynamicList(
+                    recipeId: recipeId,
+                    onIngredientsSaved: () {
+                      setState(() {
+                        areIngredientsSaved = true;
+                        checkIsAllSave();
+                      });
+                    },
+                  ),
+                  SizedBox(height: 25),
+                  InstructionsDynamicListWidget(
+                    recipeId: recipeId,
+                    onInstructionsSaved: () {
+                      setState(() {
+                        areInstructionsSaved = true;
+                        checkIsAllSave();
+                      });
+                    },
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 15,
-              ),
-              ImageUploaderWidget(onImageUploaded: (imageUrl) {
-                setState(() {
-                  this.imageUrl = imageUrl;
-                });
-              }),
-              SizedBox(
-                height: 25,
-              ),
-              IngredientsDynamicList(
-                recipeId: recipeId,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              InstructionsDynamicListWidget(
-                recipeId: recipeId,
-              ),
-            ],
+            ),
           ),
-        ),
+          if (isLoading)
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Container(
+                      color: Colors.black
+                          .withOpacity(0.15), // Le da un toque oscuro
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Guardando receta...',
+                          style: TextStyle(
+                            color: AppColors.secondaryColor,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }
