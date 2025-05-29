@@ -24,132 +24,176 @@ class RecipePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.calendar_today_outlined,
-                  color: AppColors.secondaryColor,
-                ),
-                onPressed: () {
-                  final viewModel = context.read<RecipeViewModel>();
-                  final userViewModel = context.read<LoginViewModel>();
+            PopupMenuButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: AppColors.secondaryColor,
+              ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.edit, color: AppColors.secondaryColor),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Edit',
+                          style: TextStyle(color: AppColors.secondaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete,
+                            color: AppColors.secondaryColor),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Delete',
+                          style: TextStyle(color: AppColors.secondaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      final viewModel = context.read<RecipeViewModel>();
+                      final userViewModel = context.read<LoginViewModel>();
 
-                  // Elegir fecha para planificación
-                  showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  ).then((value) {
-                    if (value == null) return;
+                      // Elegir fecha para planificación
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      ).then((value) {
+                        if (value == null) return;
 
-                    DateTime datePicked =
-                        DateTime(value.year, value.month, value.day);
+                        DateTime datePicked =
+                            DateTime(value.year, value.month, value.day);
 
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) {
-                        final TextEditingController controller =
-                            TextEditingController();
-                        bool isLoading = false;
-                        return StatefulBuilder(builder: (context, setState) {
-                          return !isLoading
-                              ? AlertDialog(
-                                  title: const Text('Notes'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                          'Do you want to add some notes for this recipe on date: ${datePicked.day}/${datePicked.month}/${datePicked.year}?'),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      CustomTextField(
-                                        controller: controller,
-                                        isPassword: false,
-                                        labelText: 'Notes',
-                                      ),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text('No'),
-                                      onPressed: () async {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        await viewModel.addRecipeCalendar(
-                                          RecipeCalendar(
-                                            id: null,
-                                            userId:
-                                                userViewModel.currentUser!.id!,
-                                            recipeId: recipe.id!,
-                                            recipeTitle: recipe.title!,
-                                            scheduledDate: datePicked,
-                                            notes: null,
+                        showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            final TextEditingController controller =
+                                TextEditingController();
+                            bool isLoading = false;
+                            return StatefulBuilder(
+                                builder: (context, setState) {
+                              return !isLoading
+                                  ? AlertDialog(
+                                      title: const Text('Notes'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                              'Do you want to add some notes for this recipe on date: ${datePicked.day}/${datePicked.month}/${datePicked.year}?'),
+                                          SizedBox(
+                                            height: 10,
                                           ),
-                                        );
-                                        await viewModel
-                                            .fetchRecipeCalendarsByUserId(
-                                                userViewModel.currentUser!.id!);
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Navigator.pop(dialogContext);
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text('Yes'),
-                                      onPressed: () async {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        await viewModel.addRecipeCalendar(
-                                          RecipeCalendar(
-                                            id: null,
-                                            userId:
-                                                userViewModel.currentUser!.id!,
-                                            recipeId: recipe.id!,
-                                            recipeTitle: recipe.title!,
-                                            scheduledDate: datePicked,
-                                            notes: controller.text,
+                                          CustomTextField(
+                                            controller: controller,
+                                            isPassword: false,
+                                            labelText: 'Notes',
                                           ),
-                                        );
-                                        await viewModel
-                                            .fetchRecipeCalendarsByUserId(
-                                                userViewModel.currentUser!.id!);
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Navigator.pop(dialogContext);
-                                      },
-                                    ),
-                                  ],
-                                )
-                              : AlertDialog(                                
-                                  content: SizedBox(
-                                    height: 30,
-                                    child: Center(
-                                    child: Stack(
-                                      children: [
-                                        BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 5, sigmaY: 5)),
-                                        const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: AppColors.primaryColor,
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('No'),
+                                          onPressed: () async {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            await viewModel.addRecipeCalendar(
+                                              RecipeCalendar(
+                                                id: null,
+                                                userId: userViewModel
+                                                    .currentUser!.id!,
+                                                recipeId: recipe.id!,
+                                                recipeTitle: recipe.title!,
+                                                scheduledDate: datePicked,
+                                                notes: null,
+                                              ),
+                                            );
+                                            await viewModel
+                                                .fetchRecipeCalendarsByUserId(
+                                                    userViewModel
+                                                        .currentUser!.id!);
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(dialogContext);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Yes'),
+                                          onPressed: () async {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            await viewModel.addRecipeCalendar(
+                                              RecipeCalendar(
+                                                id: null,
+                                                userId: userViewModel
+                                                    .currentUser!.id!,
+                                                recipeId: recipe.id!,
+                                                recipeTitle: recipe.title!,
+                                                scheduledDate: datePicked,
+                                                notes: controller.text,
+                                              ),
+                                            );
+                                            await viewModel
+                                                .fetchRecipeCalendarsByUserId(
+                                                    userViewModel
+                                                        .currentUser!.id!);
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(dialogContext);
+                                          },
                                         ),
                                       ],
-                                    ),
-                                                                    ),
-                                  ));
-                        });
-                      },
-                    );
-                  });
-                },
-              ),
+                                    )
+                                  : AlertDialog(
+                                      content: SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: Stack(
+                                          children: [
+                                            BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 5, sigmaY: 5)),
+                                            const CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: AppColors.primaryColor,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                            });
+                          },
+                        );
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.calendar_today,
+                            color: AppColors.secondaryColor),
+                        SizedBox(width: 10),
+                        Text(
+                          'Plan Recipe',
+                          style: TextStyle(color: AppColors.secondaryColor),
+                        ),
+                      ],
+                    ),
+                  )
+                ];
+              },
             ),
           ],
         ),
