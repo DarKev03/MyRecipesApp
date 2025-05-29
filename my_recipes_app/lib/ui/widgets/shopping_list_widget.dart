@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ class ShoppingListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userViewModel = context.read<LoginViewModel>();
     return Consumer<ShoppingListViewmodel>(
       builder: (BuildContext context, shoppingListViewmodel, Widget? child) {
         final shoppingLists = shoppingListViewmodel.shoppingLists;
@@ -23,8 +25,11 @@ class ShoppingListWidget extends StatelessWidget {
                   return Dismissible(
                     key: Key(shoppingList.id.toString()),
                     direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      shoppingListViewmodel.removeShoppingList(shoppingList);
+                    onDismissed: (direction) async {
+                      await shoppingListViewmodel
+                          .removeShoppingList(shoppingList);
+                      await shoppingListViewmodel.fetchShoppingListByUserId(
+                          userViewModel.currentUser!.id!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
