@@ -21,7 +21,7 @@ class RecipeIngredient {
       RecipeIngredient(
         id: json['id'],
         recipeId: json['recipeId'],
-        ingredientId: json['ingredient'],
+        ingredientId: json['ingredientId'],
         ingredientName: json['ingredientName'],
         quantity: (json['quantity'] as num?)?.toDouble(),
         unit: json['unit'],

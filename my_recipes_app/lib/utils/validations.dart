@@ -23,8 +23,11 @@ class Validations {
 
   // Validar primera letra en mayusculas
   static String firstLetterUpperCase(String title) {
+    if (title.isEmpty) {
+      return title; 
+    }
     title = title.trim();
-    title = title[0].toUpperCase()+title.substring(1);
+    title = title[0].toUpperCase() + title.substring(1);
     return title;
   }
 }

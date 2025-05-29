@@ -23,7 +23,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       var recipesPerDay = recipeViewModel.recipesPerDay;
       var calendarRecipes = recipeViewModel.allRecipeCalendars;
 
-      return TableCalendar.new(
+      return TableCalendar(
           firstDay: DateTime.utc(2000, 1, 1),
           lastDay: DateTime.utc(2100, 12, 31),
           focusedDay: _focusedDay,

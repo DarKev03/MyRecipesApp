@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 
 class IngredientsDynamicList extends StatefulWidget {
   final int? recipeId;
-  const IngredientsDynamicList({super.key, this.recipeId});
+  final VoidCallback? onIngredientsSaved;
+  const IngredientsDynamicList(
+      {super.key, this.recipeId, this.onIngredientsSaved});
 
   @override
   State<IngredientsDynamicList> createState() => _IngredientsDynamicListState();
@@ -68,17 +70,16 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       List<Ingredient> ingredientsSaved = [];
       final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
       for (int i = 0; i < ingredientNameControllers.length; i++) {
-        if (ingredientNameControllers[i].text.isEmpty) {
-          return;
+        if (ingredientNameControllers[i].text.isNotEmpty) {
+          var name = Validations.firstLetterUpperCase(
+              ingredientNameControllers[i].text);
+          ingredients.add(Ingredient(
+            id: null,
+            name: name,
+            description: null,
+            createdAt: null,
+          ));
         }
-        var name =
-            Validations.firstLetterUpperCase(ingredientNameControllers[i].text);
-        ingredients.add(Ingredient(
-          id: null,
-          name: name,
-          description: null,
-          createdAt: null,
-        ));
       }
       for (var ingredient in ingredients) {
         ingredientsSaved
@@ -102,6 +103,12 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
       }
 
       _removeIngredient();
+
+      if (widget.onIngredientsSaved != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.onIngredientsSaved!();
+        });
+      }
     }
   }
 
