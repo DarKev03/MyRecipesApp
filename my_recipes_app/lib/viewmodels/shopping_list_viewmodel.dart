@@ -102,11 +102,6 @@ class ShoppingListViewmodel extends ChangeNotifier {
 
   Future<void> clearLists() async {
     try {
-      for (var item in _items) {
-        removeItem(item.id!);
-      }
-      _items.clear();
-      notifyListeners();
       for (var shoppingList in _shoppingLists) {
         await _shoppingListRepository.deleteShoppingList(shoppingList.id!);
       }

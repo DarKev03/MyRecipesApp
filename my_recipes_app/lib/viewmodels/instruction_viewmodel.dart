@@ -6,13 +6,14 @@ class InstructionViewmodel extends ChangeNotifier {
   final InstructionRepository instructionRepository;
   List<Instruction> _allInstructions = [];
 
-  List<Instruction> get allInstructions => _allInstructions; 
+  List<Instruction> get allInstructions => _allInstructions;
 
   InstructionViewmodel({required this.instructionRepository});
 
   Future<void> fetchInstructionsByRecipeId(int recipeId) async {
     try {
-      _allInstructions = await instructionRepository.getInstructionsByRecipeId(recipeId);
+      _allInstructions =
+          await instructionRepository.getInstructionsByRecipeId(recipeId);
       notifyListeners();
     } catch (e) {
       print("Error fetching instructions: $e");
@@ -21,7 +22,8 @@ class InstructionViewmodel extends ChangeNotifier {
 
   Future<void> fetchInstructionsByUserId(int userId) async {
     try {
-      _allInstructions = await instructionRepository.getInstructionsByUserId(userId);
+      _allInstructions =
+          await instructionRepository.getInstructionsByUserId(userId);
       notifyListeners();
     } catch (e) {
       print("Error fetching instructions: $e");
@@ -30,11 +32,22 @@ class InstructionViewmodel extends ChangeNotifier {
 
   Future<void> addInstruction(Instruction instruction) async {
     try {
-      final finalInstruction = await instructionRepository.createInstruction(instruction);
+      final finalInstruction =
+          await instructionRepository.createInstruction(instruction);
       _allInstructions.add(finalInstruction);
       notifyListeners();
     } catch (e) {
       print("Error adding instruction: $e");
+    }
+  }
+
+  Future<void> deleteInstruction(int id) async {
+    try {
+      await instructionRepository.deleteInstruction(id);
+      _allInstructions.removeWhere((instruction) => instruction.id == id);
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting instruction: $e");
     }
   }
 }

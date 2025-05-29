@@ -9,6 +9,8 @@ import 'package:my_recipes_app/ui/widgets/ingredients_list_widget.dart';
 import 'package:my_recipes_app/ui/widgets/instruction_list_widget.dart';
 import 'package:my_recipes_app/ui/widgets/tittle_category_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +47,58 @@ class RecipePage extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem<String>(
+                    onTap: () {
+                      final viewModel = context.read<RecipeViewModel>();
+                      final userViewModel = context.read<LoginViewModel>();
+                      final ingredientsViewModel =
+                          context.read<IngredientViewmodel>();
+                      final instructionViewModel =
+                          context.read<InstructionViewmodel>();
+
+                      // Eliminar receta
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return AlertDialog(
+                            title: const Text('Delete Recipe'),
+                            content: const Text(
+                                'Are you sure you want to delete this recipe?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.pop(dialogContext);
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Delete'),
+                                onPressed: () async {
+                                  // Eliminar receta
+                                  await viewModel.deleteRecipe(recipe.id!);
+                                  // Actualizar recetas del usuario
+                                  await viewModel.fetchRecipesByUser(
+                                      userViewModel.currentUser!);
+                                  // Actualizar ingredientes
+                                  await ingredientsViewModel
+                                      .fetchIngredientsByUserId(
+                                          userViewModel.currentUser!.id!);
+                                  // Actualizar instrucciones
+                                  await instructionViewModel
+                                      .fetchInstructionsByUserId(
+                                          userViewModel.currentUser!.id!);
+                                  // Actualizar calendarios
+                                  await viewModel.fetchRecipeCalendarsByUserId(
+                                      userViewModel.currentUser!.id!);
+
+                                  Navigator.pop(dialogContext);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     value: 'delete',
                     child: Row(
                       children: [
