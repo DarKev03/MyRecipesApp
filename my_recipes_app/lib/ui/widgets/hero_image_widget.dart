@@ -55,7 +55,7 @@ class HeroImageWidget extends StatelessWidget {
                 label: Text('Favorite',
                     style: TextStyle(color: AppColors.primaryColor)),
                 icon: Icon(
-                  isFavorite! ? Icons.favorite : Icons.favorite_border,
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
                   color: AppColors.primaryColor,
                 ),
                 style: ElevatedButton.styleFrom(

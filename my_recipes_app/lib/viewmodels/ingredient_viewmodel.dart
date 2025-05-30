@@ -9,7 +9,7 @@ class IngredientViewmodel extends ChangeNotifier {
   final IngredientRepository ingredientRepository;
 
   List<RecipeIngredient> _allUserIngredients = [];
-  List<RecipeIngredient> _allRecipeIngredients = [];
+  final List<RecipeIngredient> _allRecipeIngredients = [];
   List<RecipeIngredient> _currentRecipeIngredients = [];
 
   List<RecipeIngredient> get allUserIngredients => _allUserIngredients;
