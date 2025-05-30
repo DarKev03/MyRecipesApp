@@ -69,7 +69,7 @@ class RecipeIngredientService {
   Future<RecipeIngredient> updateRecipeIngredient(
       RecipeIngredient recipeIngredient) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.121:8080/api/recipe-ingredients/update'),
+      Uri.parse('$baseUrl/recipe-ingredients/update'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipeIngredient.toJson()),
     );
