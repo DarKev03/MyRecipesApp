@@ -50,6 +50,7 @@ class Authpage extends StatelessWidget {
         elevation: 0,
         actions: [
           PopupMenuButton<String>(
+            color: AppColors.backgroundColor,
             icon: const Icon(Icons.language),
             tooltip: getLanguageText(locale),
             onSelected: (value) {
