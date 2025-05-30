@@ -51,8 +51,7 @@ class _CreationPageState extends State<CreationPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.recipeToEdit != null) {
-      initialIngredientsAndInstructions();
+    if (widget.recipeToEdit != null) {      
       nameController.text = widget.recipeToEdit!.title!;
       categoriaController.text = widget.recipeToEdit!.category!;
       prepTimeController.text = widget.recipeToEdit!.prepTime?.toString() ?? '';
@@ -64,31 +63,7 @@ class _CreationPageState extends State<CreationPage> {
   bool isValidToSend() {
     return nameController.text.isNotEmpty &&
         categoriaController.text.isNotEmpty;
-  }
-
-  Future<void> initialIngredientsAndInstructions() async {
-    if (widget.recipeToEdit != null) {
-      final recipeIngredientViewModel = context.read<IngredientViewmodel>();
-      final recipeInstructionViewModel = context.read<InstructionViewmodel>();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await recipeIngredientViewModel
-            .fetchIngredientsByUserId(widget.recipeToEdit!.userId!);
-        recipeIngredientViewModel
-            .getRecipeIngredients(widget.recipeToEdit!.id!);
-        recipeInstructionViewModel
-            .fetchInstructionsByUserId(widget.recipeToEdit!.userId!);
-      });
-
-      recipeInstructionViewModel
-          .getRecipeInstructions(widget.recipeToEdit!.id!);
-      setState(() {
-        widget.initialIngredients =
-            recipeIngredientViewModel.allRecipeIngredients;
-        widget.initialInstructions =
-            recipeInstructionViewModel.allRecipeInstructions;
-      });
-    }
-  }
+  }  
 
   Future<void> _saveAll() async {
     setState(() => isLoading = true);

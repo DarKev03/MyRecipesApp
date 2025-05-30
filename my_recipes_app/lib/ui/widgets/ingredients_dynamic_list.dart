@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 
 class IngredientsDynamicList extends StatefulWidget {
   final int? recipeId;
-  final List<RecipeIngredient>? initialIngredients;
+  List<RecipeIngredient>? initialIngredients;
 
-  const IngredientsDynamicList({
+  IngredientsDynamicList({
     super.key,
     this.recipeId,
     this.initialIngredients,
@@ -34,6 +34,10 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
   @override
   void initState() {
     super.initState();
+    final vm = context.read<IngredientViewmodel>();
+    widget.initialIngredients = vm.allUserIngredients
+        .where((ri) => ri.recipeId == widget.recipeId)
+        .toList();
     if (widget.initialIngredients != null &&
         widget.initialIngredients!.isNotEmpty) {
       for (var ri in widget.initialIngredients!) {
@@ -68,7 +72,7 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
       vm.deleteRecipeIngredient(originalRecipeIngredientIds[index]!);
       originalRecipeIngredientIds.removeAt(index);
       vm.fetchIngredientsByUserId(userVm.currentUser!.id!);
-      vm.getRecipeIngredients(widget.recipeId!);
+      vm.fetchIngredientsByRecipeId(widget.recipeId!);
     }
     nameControllers[index].dispose();
     quantityControllers[index].dispose();
@@ -112,8 +116,8 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
           quantity: quantity,
           unit: unit,
         ));
-        vm.getRecipeIngredients(recipeId);
-        final newRecipeIng = vm.allRecipeIngredients.last;
+        await vm.fetchIngredientsByRecipeId(recipeId);
+        final newRecipeIng = vm.allUserIngredients.last;
 
         recipeIngredientIds[i] = newRecipeIng.id;
         ingredientIds[i] = usedIngredientId;

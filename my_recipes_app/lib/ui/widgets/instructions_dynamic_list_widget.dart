@@ -10,13 +10,13 @@ import 'package:provider/provider.dart';
 
 class InstructionsDynamicListWidget extends StatefulWidget {
   final int? recipeId;
-  final List<Instruction>? initialInstructions;
+  List<Instruction>? initialInstructions;
 
-  const InstructionsDynamicListWidget({
-    Key? key,
+  InstructionsDynamicListWidget({
+    super.key,
     this.recipeId,
     this.initialInstructions,
-  }) : super(key: key);
+  });
 
   @override
   InstructionsDynamicListWidgetState createState() =>
@@ -32,6 +32,10 @@ class InstructionsDynamicListWidgetState
   @override
   void initState() {
     super.initState();
+    final vm = context.read<InstructionViewmodel>();
+    widget.initialInstructions = vm.allInstructions
+        .where((inst) => inst.recipeId == widget.recipeId)
+        .toList();
     if (widget.initialInstructions != null &&
         widget.initialInstructions!.isNotEmpty) {
       for (var inst in widget.initialInstructions!) {
@@ -93,7 +97,7 @@ class InstructionsDynamicListWidgetState
         ));
         currentInstructionIds.add(id);
       }
-    }    
+    }
   }
 
   @override
