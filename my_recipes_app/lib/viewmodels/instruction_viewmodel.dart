@@ -5,6 +5,7 @@ import 'package:my_recipes_app/data/repositories/instruction_repository.dart';
 class InstructionViewmodel extends ChangeNotifier {
   final InstructionRepository instructionRepository;
   List<Instruction> _allInstructions = [];
+  List<Instruction> get allRecipeInstructions => _allInstructions;
 
   List<Instruction> get allInstructions => _allInstructions;
 
@@ -18,6 +19,12 @@ class InstructionViewmodel extends ChangeNotifier {
     } catch (e) {
       print("Error fetching instructions: $e");
     }
+  }
+
+  void getRecipeInstructions(int recipeId) {
+    _allInstructions = _allInstructions
+        .where((instruction) => instruction.recipeId == recipeId)
+        .toList();
   }
 
   Future<void> fetchInstructionsByUserId(int userId) async {

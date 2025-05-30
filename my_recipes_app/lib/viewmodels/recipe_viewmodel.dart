@@ -102,7 +102,13 @@ class RecipeViewModel extends ChangeNotifier {
 
   Future<void> updateRecipe(Recipe recipe) async {
     try {
-      _recipeRepository.updateRecipe(recipe);
+      final recipeUpdated = await _recipeRepository.updateRecipe(recipe);
+      final index = _recipes.indexWhere((r) => r.id == recipe.id);
+      if (index != -1) {
+        _recipes[index] = recipeUpdated;
+      } else {
+        print("Recipe not found for update");
+      }
       notifyListeners();
     } catch (e) {
       print("Error updating recipe: $e");

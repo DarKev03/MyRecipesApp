@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/ingredient.dart';
-import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
 import 'package:my_recipes_app/data/repositories/ingredient_repository.dart';
 import 'package:my_recipes_app/data/repositories/recipe_ingredient_repository.dart';
@@ -10,21 +9,20 @@ class IngredientViewmodel extends ChangeNotifier {
   final IngredientRepository ingredientRepository;
 
   List<RecipeIngredient> _allUserIngredients = [];
+  List<RecipeIngredient> _allRecipeIngredients = [];
 
   List<RecipeIngredient> get allUserIngredients => _allUserIngredients;
+  List<RecipeIngredient> get allRecipeIngredients => _allRecipeIngredients;
 
   IngredientViewmodel(
       {required this.recipeIngredientRepository,
       required this.ingredientRepository});
 
-  Future<void> fetchIngredientsByRecipe(Recipe recipe) async {
-    try {
-      _allUserIngredients =
-          await recipeIngredientRepository.getIngredientsByRecipId(recipe.id!);
-      notifyListeners();
-    } catch (e) {
-      print("Error fetching ingredients: $e");
-    }
+  void getRecipeIngredients(int recipeId) {
+    _allRecipeIngredients = _allUserIngredients
+        .where((ingredient) => ingredient.recipeId == recipeId)
+        .toList();
+    notifyListeners();
   }
 
   Future<void> fetchIngredientsByUserId(int userId) async {
@@ -49,9 +47,10 @@ class IngredientViewmodel extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteIngredient(int id) async {
+  Future<void> deleteRecipeIngredient(int id) async {
     try {
-      await ingredientRepository.deleteIngredient(id);
+      await recipeIngredientRepository.deleteRecipeIngredient(id);
+      _allUserIngredients.removeWhere((ingredient) => ingredient.id == id);
       notifyListeners();
     } catch (e) {
       print("Error deleting ingredient: $e");

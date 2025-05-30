@@ -4,8 +4,8 @@ import 'package:my_recipes_app/data/services/recipe_service.dart';
 class RecipeRepository {
   final String baseUrl = 'https://myrecipesapi.onrender.com/api';
 
-  Future<Recipe> createRecipe(Recipe recipe){
-    return RecipeService().createRecipe(recipe);
+  Future<Recipe> createRecipe(Recipe recipe) async {
+    return await RecipeService().createRecipe(recipe);
   }
 
   Future<Recipe> updateRecipe(Recipe recipe) async {

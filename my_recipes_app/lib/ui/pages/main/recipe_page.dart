@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/data/models/recipe_calendar.dart';
+import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/hero_image_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_list_widget.dart';
@@ -34,6 +35,16 @@ class RecipePage extends StatelessWidget {
               itemBuilder: (context) {
                 return [
                   PopupMenuItem<String>(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreationPage(
+                              editRecipe: true,
+                              recipe: recipe,
+                            ),
+                          ));
+                    },
                     value: 'edit',
                     child: Row(
                       children: [
