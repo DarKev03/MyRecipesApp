@@ -7,6 +7,7 @@ import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IngredientsListWidget extends StatelessWidget {
   final Recipe recipe;
@@ -21,7 +22,7 @@ class IngredientsListWidget extends StatelessWidget {
             .toList();
         return ingredients.isEmpty
             ? Center(
-                child: Text('No ingredients available'),
+                child: Text(AppLocalizations.of(context)!.noIngredientsFound),
               )
             : ListView.builder(
                 itemCount: ingredients.length,

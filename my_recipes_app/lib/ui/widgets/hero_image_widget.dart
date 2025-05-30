@@ -3,6 +3,7 @@ import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HeroImageWidget extends StatelessWidget {
   final Recipe recipe;
@@ -52,7 +53,7 @@ class HeroImageWidget extends StatelessWidget {
                 onPressed: () {
                   viewModel.toggleFavorite(recipe);
                 },
-                label: Text('Favorite',
+                label: Text(AppLocalizations.of(context)!.favoire,
                     style: TextStyle(color: AppColors.primaryColor)),
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,

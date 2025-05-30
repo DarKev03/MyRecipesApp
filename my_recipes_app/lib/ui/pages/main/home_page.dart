@@ -6,6 +6,7 @@ import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,17 +21,18 @@ class HomePage extends StatelessWidget {
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 return [
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'profile',
                     child: Row(
                       children: [
-                        Icon(Icons.person, color: AppColors.secondaryColor),
-                        SizedBox(
+                        const Icon(Icons.person,
+                            color: AppColors.secondaryColor),
+                        const SizedBox(
                           width: 10,
                         ),
                         Text(
-                          'Profile',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.profile,
+                          style: const TextStyle(
                             color: AppColors.secondaryColor,
                           ),
                         )
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          'Logout',
+                          AppLocalizations.of(context)!.logout,
                           style: TextStyle(
                             color: AppColors.secondaryColor,
                           ),
@@ -87,8 +89,8 @@ class HomePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: const Text(
-                  'Recently added',
+                child: Text(
+                  AppLocalizations.of(context)!.recentlyAdded,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -106,7 +108,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Text(
-                  'Favorites recipes',
+                  AppLocalizations.of(context)!.favoriteRecipes,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

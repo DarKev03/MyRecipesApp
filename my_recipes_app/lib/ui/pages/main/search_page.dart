@@ -5,6 +5,7 @@ import 'package:my_recipes_app/ui/widgets/filter_drawer_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -55,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                       child: CustomTextField(
                         controller: queryController,
                         isPassword: false,
-                        labelText: 'Search',
+                        labelText: AppLocalizations.of(context)!.search,
                         color: AppColors.primaryColor,
                         enableSuggestions: true,
                         icon: Icons.search,

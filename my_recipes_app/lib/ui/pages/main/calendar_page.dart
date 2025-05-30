@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/widgets/calendar_widget.dart';
 import 'package:my_recipes_app/ui/widgets/next_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -31,7 +32,7 @@ class CalendarPage extends StatelessWidget {
               //Proximas planificaciones
               Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: Text('Proximas planificaciones',
+                child: Text(AppLocalizations.of(context)!.upcomingPlannings,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,

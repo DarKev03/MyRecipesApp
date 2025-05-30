@@ -3,6 +3,7 @@ import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterDrawerWidget extends StatefulWidget {
   const FilterDrawerWidget({super.key});
@@ -32,8 +33,8 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Filter options',
+                Text(
+                  AppLocalizations.of(context)!.filterOptions,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -46,8 +47,8 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                 SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'Categories',
+                Text(
+                  AppLocalizations.of(context)!.category,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -91,7 +92,7 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                   height: 20,
                 ),
                 // Slider de tiempo de preparacion
-                Text('Max preparation time',
+                Text(AppLocalizations.of(context)!.maxPrepTime,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _FilterDrawerWidgetState extends State<FilterDrawerWidget> {
                 SizedBox(
                     width: double.infinity,
                     child: CustomElevatedButtomWidget(
-                        text: 'Reset filters',
+                        text: AppLocalizations.of(context)!.resetFilters,
                         onPressed: () {
                           final recipeViewModel =
                               context.read<RecipeViewModel>();
