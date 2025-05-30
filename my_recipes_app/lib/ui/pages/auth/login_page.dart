@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                               password: passwordController.text,
                             );
                             final loginViewModel =
-                                context.read<LoginViewModel>();
+                                context.read<UserViewModel>();
                             bool loginSuccess = await loginViewModel.login(
                               user,
                             );

@@ -10,7 +10,7 @@ class UserRepository {
     return await UserService().updateUser(user);
   }
 
-  Future<void> deleteUser(String userId) async {
+  Future<void> deleteUser(int userId) async {
     return await UserService().deleteUser(userId);
   }
 

@@ -20,7 +20,6 @@ class IngredientViewmodel extends ChangeNotifier {
   IngredientViewmodel(
       {required this.recipeIngredientRepository,
       required this.ingredientRepository});
-  
 
   Future<void> fetchIngredientsByUserId(int userId) async {
     try {
@@ -51,6 +50,16 @@ class IngredientViewmodel extends ChangeNotifier {
     } catch (e) {
       print("Error adding ingredient: $e");
       return ingredient;
+    }
+  }
+
+  Future<void> deleteIngredient(int id) async {
+    try {
+      await ingredientRepository.deleteIngredient(id);
+      _allUserIngredients.removeWhere((ingredient) => ingredient.id == id);
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting ingredient: $e");
     }
   }
 

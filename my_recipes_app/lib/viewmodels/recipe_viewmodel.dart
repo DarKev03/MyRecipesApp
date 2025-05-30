@@ -173,6 +173,7 @@ class RecipeViewModel extends ChangeNotifier {
   Future<void> deleteRecipe(int id) async {
     try {
       await _recipeRepository.deleteRecipe(id);
+      _recipes.removeWhere((recipe) => recipe.id == id);
       notifyListeners();
     } catch (e) {
       print("Error deleting recipe: $e");

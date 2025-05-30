@@ -68,7 +68,7 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
     if (originalRecipeIngredientIds.length > index &&
         originalRecipeIngredientIds[index] != null) {
       final vm = context.read<IngredientViewmodel>();
-      final userVm = context.read<LoginViewModel>();
+      final userVm = context.read<UserViewModel>();
       vm.deleteRecipeIngredient(originalRecipeIngredientIds[index]!);
       originalRecipeIngredientIds.removeAt(index);
       vm.fetchIngredientsByUserId(userVm.currentUser!.id!);

@@ -27,8 +27,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final shoppingListViewmodel = context.watch<ShoppingListViewmodel>();
-    final userViewModel = context.watch<LoginViewModel>();
+    final shoppingListViewmodel = context.read<ShoppingListViewmodel>();
+    final userViewModel = context.read<UserViewModel>();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(

@@ -50,7 +50,7 @@ class IngredientsListWidget extends StatelessWidget {
                           builder: (dialogContext) {
                             final shoppingLists = shoppingList.shoppingLists;
                             final loginViewModel =
-                                context.read<LoginViewModel>();
+                                context.read<UserViewModel>();
                             return AlertDialog(
                               title: Text('Añadir a una lista de la compra'),
                               content: shoppingLists.isEmpty

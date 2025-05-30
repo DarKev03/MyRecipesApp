@@ -34,7 +34,7 @@ class UserService {
     }
   }
 
-  Future<void> deleteUser(String userId) async {
+  Future<void> deleteUser(int userId) async {
     final response = await http.delete(
       Uri.parse('$_baseUrl/users/$userId'),
       headers: {'Content-Type': 'application/json'},
@@ -79,7 +79,7 @@ class UserService {
       body: json.encode(user.toJson()),
     );
 
-    if (response.statusCode == 200) {      
+    if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error al iniciar sesión');

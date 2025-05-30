@@ -67,7 +67,7 @@ class _CreationPageState extends State<CreationPage> {
   Future<void> _saveAll() async {
     setState(() => isLoading = true);
     final recipesViewmodel = context.read<RecipeViewModel>();
-    final loginViewModel = context.read<LoginViewModel>();
+    final loginViewModel = context.read<UserViewModel>();
     final name = Validations.firstLetterUpperCase(nameController.text);
     final category = Validations.firstLetterUpperCase(categoriaController.text);
     final currentUser = loginViewModel.currentUser!.id!;

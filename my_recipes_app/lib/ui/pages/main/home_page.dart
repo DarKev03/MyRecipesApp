@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
+import 'package:my_recipes_app/ui/pages/main/admin_page.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
@@ -17,19 +18,48 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
+            // Elementos de la barra de acciones
             PopupMenuButton<String>(
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
-                return [
+                final items = <PopupMenuEntry<String>>[];
+                final user = context.read<UserViewModel>();                
+                if (user.currentUser!.isAdmin! == true) {
+                  items.add(
+                    PopupMenuItem<String>(
+                      value: 'admin',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.admin_panel_settings,
+                              color: AppColors.secondaryColor),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Admin',
+                            style: const TextStyle(
+                              color: AppColors.secondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }                
+                items.add(
                   PopupMenuItem<String>(
                     value: 'profile',
                     child: Row(
                       children: [
                         const Icon(Icons.person,
                             color: AppColors.secondaryColor),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Text(
                           AppLocalizations.of(context)!.profile,
                           style: const TextStyle(
@@ -39,34 +69,36 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                );
+                items.add(
                   PopupMenuItem<String>(
+                    value: 'logout',
                     onTap: () {
-                      final loginViewModel = context.read<LoginViewModel>();
+                      final loginViewModel = context.read<UserViewModel>();
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Authpage()));
                       loginViewModel.logout();
                     },
-                    value: 'logout',
                     child: Row(
                       children: [
-                        Icon(Icons.logout, color: AppColors.secondaryColor),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        const Icon(Icons.logout,
+                            color: AppColors.secondaryColor),
+                        const SizedBox(width: 10),
                         Text(
                           AppLocalizations.of(context)!.logout,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.secondaryColor,
                           ),
                         )
                       ],
                     ),
                   ),
-                ];
+                );
+                return items;
               },
-            )
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(

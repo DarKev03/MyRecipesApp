@@ -10,7 +10,7 @@ class ShoppingListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userViewModel = context.read<LoginViewModel>();
+    final userViewModel = context.read<UserViewModel>();
     return Consumer<ShoppingListViewmodel>(
       builder: (BuildContext context, shoppingListViewmodel, Widget? child) {
         final shoppingLists = shoppingListViewmodel.shoppingLists;

@@ -34,7 +34,7 @@ Future<void> main() async {
               recipeCalendarRepository: RecipeCalendarRepository()),
         ),
         ChangeNotifierProvider(
-          create: (_) => LoginViewModel(userRepository: UserRepository()),
+          create: (_) => UserViewModel(userRepository: UserRepository()),
         ),
         ChangeNotifierProvider(
           create: (_) => InstructionViewmodel(

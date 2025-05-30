@@ -143,10 +143,10 @@ class SignUpPage extends StatelessWidget {
                           name: nameController.text,
                           createdAt: null,
                           isAdmin: null);
-                      final loginViewModel = context.read<LoginViewModel>();
+                      final loginViewModel = context.read<UserViewModel>();
                       bool success = await loginViewModel.signUp(user);
                       if (success) {
-                        final loginViewModel = context.read<LoginViewModel>();
+                        final loginViewModel = context.read<UserViewModel>();
                         loginViewModel.setCurrentUser(user);
                         Navigator.pushAndRemoveUntil(
                           context,

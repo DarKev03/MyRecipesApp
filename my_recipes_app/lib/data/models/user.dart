@@ -21,7 +21,7 @@ class User {
         password: json['password'],
         name: json['name'],
         createdAt: json['created_at'],
-        isAdmin: json['is_admin'],
+        isAdmin: json['admin']?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +30,6 @@ class User {
         'password': password,
         'name': name,
         'created_at': null,
-        'is_admin': isAdmin,
+        'admin': isAdmin,
       };
 }

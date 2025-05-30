@@ -57,7 +57,7 @@ class InstructionsDynamicListWidgetState
 
   void _removeInstruction(int index) async {
     final vm = context.read<InstructionViewmodel>();
-    final userVm = context.read<LoginViewModel>();
+    final userVm = context.read<UserViewModel>();
     if (originalInstructionIds.length > index) {
       await vm.deleteInstruction(originalInstructionIds[index]!);
       originalInstructionIds.removeAt(index);

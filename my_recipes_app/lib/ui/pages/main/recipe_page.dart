@@ -62,7 +62,7 @@ class RecipePage extends StatelessWidget {
                   PopupMenuItem<String>(
                     onTap: () {
                       final viewModel = context.read<RecipeViewModel>();
-                      final userViewModel = context.read<LoginViewModel>();
+                      final userViewModel = context.read<UserViewModel>();
                       final ingredientsViewModel =
                           context.read<IngredientViewmodel>();
                       final instructionViewModel =
@@ -131,7 +131,7 @@ class RecipePage extends StatelessWidget {
                   PopupMenuItem(
                     onTap: () {
                       final viewModel = context.read<RecipeViewModel>();
-                      final userViewModel = context.read<LoginViewModel>();
+                      final userViewModel = context.read<UserViewModel>();
 
                       // Elegir fecha para planificación
                       showDatePicker(
