@@ -10,8 +10,6 @@ import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
 import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/validations.dart';
-import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +49,7 @@ class _CreationPageState extends State<CreationPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.recipeToEdit != null) {      
+    if (widget.recipeToEdit != null) {
       nameController.text = widget.recipeToEdit!.title!;
       categoriaController.text = widget.recipeToEdit!.category!;
       prepTimeController.text = widget.recipeToEdit!.prepTime?.toString() ?? '';
@@ -63,7 +61,7 @@ class _CreationPageState extends State<CreationPage> {
   bool isValidToSend() {
     return nameController.text.isNotEmpty &&
         categoriaController.text.isNotEmpty;
-  }  
+  }
 
   Future<void> _saveAll() async {
     setState(() => isLoading = true);
