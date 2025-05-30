@@ -21,4 +21,9 @@ class RecipeIngredientRepository {
   Future<void> deleteRecipeIngredient(int id) async {
     return await recipeIngredientService.deleteRecipeIngredient(id);
   }
+
+  Future<RecipeIngredient> updateRecipeIngredient(RecipeIngredient recipeIngredient) async {
+    return await recipeIngredientService
+        .updateRecipeIngredient(recipeIngredient);
+  }
 }

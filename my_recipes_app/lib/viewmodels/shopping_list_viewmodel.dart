@@ -40,20 +40,6 @@ class ShoppingListViewmodel extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteItemsFromShoppingListDeleted(
-      ShoppingList shoppingList) async {
-    for (var item
-        in _items.where((item) => item.shoppingListId == shoppingList.id)) {
-      try {
-        _items.remove(item);
-        notifyListeners();
-        removeItem(item.id!);
-      } catch (e) {
-        print('Error removing item from shopping list: $e');
-      }
-    }
-  }
-
   Future<void> removeItem(int itemId) async {
     try {
       await _shoppingListRepository.removeItemFromShoppingList(itemId);
@@ -91,7 +77,6 @@ class ShoppingListViewmodel extends ChangeNotifier {
 
   Future<void> removeShoppingList(ShoppingList shoppingList) async {
     try {
-      deleteItemsFromShoppingListDeleted(shoppingList);
       _shoppingLists.remove(shoppingList);
       notifyListeners();
       await _shoppingListRepository.deleteShoppingList(shoppingList.id!);
@@ -102,11 +87,6 @@ class ShoppingListViewmodel extends ChangeNotifier {
 
   Future<void> clearLists() async {
     try {
-      for (var item in _items) {
-        removeItem(item.id!);
-      }
-      _items.clear();
-      notifyListeners();
       for (var shoppingList in _shoppingLists) {
         await _shoppingListRepository.deleteShoppingList(shoppingList.id!);
       }

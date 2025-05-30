@@ -15,9 +15,15 @@ class TitleCategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(
       builder: (context, viewModel, child) {
-        final title = recipe.title;
-        final category = recipe.category;
-        final prepTime = recipe.prepTime;
+        final title = viewModel.recipes
+            .firstWhere((r) => r.id == recipe.id, orElse: () => recipe)
+            .title;
+        final category = viewModel.recipes
+            .firstWhere((r) => r.id == recipe.id, orElse: () => recipe)
+            .category;
+        final prepTime = viewModel.recipes
+            .firstWhere((r) => r.id == recipe.id, orElse: () => recipe)
+            .prepTime;
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

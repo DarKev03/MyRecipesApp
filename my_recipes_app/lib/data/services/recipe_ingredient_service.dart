@@ -26,7 +26,7 @@ class RecipeIngredientService {
   Future<RecipeIngredient> createRecipeIngredient(
       RecipeIngredient recipeIngredient) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/recipe-ingredients'), 
+      Uri.parse('$baseUrl/recipe-ingredients'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(recipeIngredient.toJson()),
     );
@@ -63,6 +63,21 @@ class RecipeIngredientService {
           .toList();
     } else {
       throw Exception('Error fetching recipe ingredients');
+    }
+  }
+
+  Future<RecipeIngredient> updateRecipeIngredient(
+      RecipeIngredient recipeIngredient) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/recipe-ingredients/update'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(recipeIngredient.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error updating recipe ingredient');
+    } else {
+      return RecipeIngredient.fromJson(json.decode(response.body));
     }
   }
 }
