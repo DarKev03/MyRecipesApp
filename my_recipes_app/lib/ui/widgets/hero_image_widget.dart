@@ -13,8 +13,11 @@ class HeroImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeViewModel>(builder: (context, viewModel, child) {
-      final imageUrl = recipe.imageUrl;
-      final isFavorite = recipe.isFavorite;
+      final imageUrl = viewModel.recipes
+          .firstWhere((r) => r.id == recipe.id, orElse: () => recipe)
+          .imageUrl;
+      final isFavorite =
+          viewModel.favoriteRecipes.any((r) => r.id == recipe.id);
 
       return Stack(
         alignment: Alignment.center,

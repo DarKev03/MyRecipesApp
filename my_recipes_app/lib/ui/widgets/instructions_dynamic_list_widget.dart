@@ -5,81 +5,95 @@ import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class InstructionsDynamicListWidget extends StatefulWidget {
   final int? recipeId;
-  final VoidCallback? onInstructionsSaved;
-  const InstructionsDynamicListWidget(
-      {super.key, this.recipeId, this.onInstructionsSaved});
+  final List<Instruction>? initialInstructions;
+
+  const InstructionsDynamicListWidget({
+    Key? key,
+    this.recipeId,
+    this.initialInstructions,
+  }) : super(key: key);
 
   @override
-  State<InstructionsDynamicListWidget> createState() =>
-      _InstructionsDynamicListWidgetState();
+  InstructionsDynamicListWidgetState createState() =>
+      InstructionsDynamicListWidgetState();
 }
 
-class _InstructionsDynamicListWidgetState
+class InstructionsDynamicListWidgetState
     extends State<InstructionsDynamicListWidget> {
-  List<TextEditingController> instructionsControllers = [];
+  List<TextEditingController> controllers = [];
+  List<int?> instructionIds = [];
+  List<int?> originalInstructionIds = [];
 
   @override
   void initState() {
     super.initState();
-    _addInstruction();
-  }
-
-  @override
-  void didUpdateWidget(covariant InstructionsDynamicListWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.recipeId != widget.recipeId) {
-      _saveInstructions();
+    if (widget.initialInstructions != null &&
+        widget.initialInstructions!.isNotEmpty) {
+      for (var inst in widget.initialInstructions!) {
+        controllers.add(TextEditingController(text: inst.text));
+        instructionIds.add(inst.id);
+      }
+      originalInstructionIds = List<int?>.from(instructionIds);
+    } else {
+      _addInstruction();
     }
   }
 
   void _addInstruction() {
     setState(() {
-      instructionsControllers.add(TextEditingController());
+      controllers.add(TextEditingController());
+      instructionIds.add(null);
     });
   }
 
-  void _removeInstruction() {
-    for (var element in instructionsControllers) {
-      element.dispose();
+  void _removeInstruction(int index) async {
+    final vm = context.read<InstructionViewmodel>();
+    final userVm = context.read<LoginViewModel>();
+    if (originalInstructionIds.length > index) {
+      await vm.deleteInstruction(originalInstructionIds[index]!);
+      originalInstructionIds.removeAt(index);
+      vm.fetchInstructionsByUserId(userVm.currentUser!.id!);
+      vm.fetchInstructionsByRecipeId(widget.recipeId!);
     }
-
-    instructionsControllers = [];
+    controllers[index].dispose();
+    controllers.removeAt(index);
+    instructionIds.removeAt(index);
   }
 
-  void _saveInstructions() async {
-    if (widget.recipeId != null) {
-      List<Instruction> instructions = [];
-      final recipesInstructionsViewmodel = context.read<InstructionViewmodel>();
-      for (int i = 0; i < instructionsControllers.length; i++) {
-        if (instructionsControllers[i].text.isNotEmpty) {
-          var name =
-              Validations.firstLetterUpperCase(instructionsControllers[i].text);
-          instructions.add(Instruction(
-            id: null,
-            recipeId: widget.recipeId,
-            text: name,
-          ));
-        }
-      }
-      for (var instruction in instructions) {
-        await recipesInstructionsViewmodel.addInstruction(instruction);
-      }
+  Future<void> saveInstructions(int recipeId) async {
+    final vm = context.read<InstructionViewmodel>();
+    List<int?> currentInstructionIds = [];
 
-      _removeInstruction();
+    for (int i = 0; i < controllers.length; i++) {
+      final text = Validations.firstLetterUpperCase(controllers[i].text.trim());
+      final id = instructionIds[i];
 
-      if (widget.onInstructionsSaved != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          widget.onInstructionsSaved!();
-        });
+      if (text.isEmpty) continue;
+
+      if (id == null) {
+        await vm.addInstruction(Instruction(
+          id: null,
+          recipeId: recipeId,
+          text: text,
+        ));
+        final newInst = vm.allRecipeInstructions.last;
+        instructionIds[i] = newInst.id;
+        currentInstructionIds.add(newInst.id);
+      } else {
+        // Editar existente
+        await vm.updateInstruction(Instruction(
+          id: id,
+          recipeId: recipeId,
+          text: text,
+        ));
+        currentInstructionIds.add(id);
       }
-    } else {
-      return;
-    }
+    }    
   }
 
   @override
@@ -89,7 +103,7 @@ class _InstructionsDynamicListWidgetState
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: instructionsControllers.length,
+          itemCount: controllers.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -98,20 +112,18 @@ class _InstructionsDynamicListWidgetState
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
                   setState(() {
-                    instructionsControllers.removeAt(index);
+                    _removeInstruction(index);
                   });
                 },
                 background: Container(
                   alignment: Alignment.centerRight,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.primaryColor,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Icon(Icons.delete, color: Colors.white),
                   ),
                 ),
                 child: Row(
@@ -119,9 +131,9 @@ class _InstructionsDynamicListWidgetState
                     Expanded(
                       flex: 6,
                       child: CustomTextField(
-                        controller: instructionsControllers[index],
+                        controller: controllers[index],
                         isPassword: false,
-                        labelText: 'Instruction',
+                        labelText: 'Instrucción',
                       ),
                     ),
                   ],
@@ -133,9 +145,9 @@ class _InstructionsDynamicListWidgetState
         Padding(
           padding: const EdgeInsets.only(bottom: 50),
           child: CustomElevatedButtomWidget(
-            text: 'Add instruction',
+            text: 'Añadir instrucción',
             onPressed: _addInstruction,
-            width: 110,
+            width: 150,
             height: 10,
           ),
         ),

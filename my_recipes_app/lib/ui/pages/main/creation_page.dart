@@ -2,18 +2,31 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
+import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
+import 'package:my_recipes_app/data/models/instruction.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/image_uploader_widget.dart';
 import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
 import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/validations.dart';
+import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class CreationPage extends StatefulWidget {
-  const CreationPage({super.key});
+  final Recipe? recipeToEdit;
+  List<RecipeIngredient>? initialIngredients;
+  List<Instruction>? initialInstructions;
+
+  CreationPage({
+    super.key,
+    this.recipeToEdit,
+    this.initialIngredients,
+    this.initialInstructions,
+  });
 
   @override
   State<CreationPage> createState() => _CreationPageState();
@@ -27,24 +40,107 @@ class _CreationPageState extends State<CreationPage> {
   final imagePlaceHolder =
       'https://ysccfnuyictzgvydbbaq.supabase.co/storage/v1/object/public/recipes/images/sin_imagen.png';
 
-  int recipeId = 0;
+  int? recipeId;
   String? imageUrl;
   bool isLoading = false;
-  bool areIngredientsSaved = false;
-  bool areInstructionsSaved = false;
+
+  final GlobalKey<IngredientsDynamicListState> _ingredientsKey = GlobalKey();
+  final GlobalKey<InstructionsDynamicListWidgetState> _instructionsKey =
+      GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.recipeToEdit != null) {
+      initialIngredientsAndInstructions();
+      nameController.text = widget.recipeToEdit!.title!;
+      categoriaController.text = widget.recipeToEdit!.category!;
+      prepTimeController.text = widget.recipeToEdit!.prepTime?.toString() ?? '';
+      imageUrl = widget.recipeToEdit!.imageUrl;
+      recipeId = widget.recipeToEdit!.id!;
+    }
+  }
 
   bool isValidToSend() {
-    return nameController.text.isNotEmpty ||
+    return nameController.text.isNotEmpty &&
         categoriaController.text.isNotEmpty;
   }
 
-  void checkIsAllSave() {
-    if (areIngredientsSaved && areInstructionsSaved) {
-      setState(() {
-        isLoading = false;
+  Future<void> initialIngredientsAndInstructions() async {
+    if (widget.recipeToEdit != null) {
+      final recipeIngredientViewModel = context.read<IngredientViewmodel>();
+      final recipeInstructionViewModel = context.read<InstructionViewmodel>();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await recipeIngredientViewModel
+            .fetchIngredientsByUserId(widget.recipeToEdit!.userId!);
+        recipeIngredientViewModel
+            .getRecipeIngredients(widget.recipeToEdit!.id!);
+        recipeInstructionViewModel
+            .fetchInstructionsByUserId(widget.recipeToEdit!.userId!);
       });
-      Navigator.pop(context);
+
+      recipeInstructionViewModel
+          .getRecipeInstructions(widget.recipeToEdit!.id!);
+      setState(() {
+        widget.initialIngredients =
+            recipeIngredientViewModel.allRecipeIngredients;
+        widget.initialInstructions =
+            recipeInstructionViewModel.allRecipeInstructions;
+      });
     }
+  }
+
+  Future<void> _saveAll() async {
+    setState(() => isLoading = true);
+    final recipesViewmodel = context.read<RecipeViewModel>();
+    final loginViewModel = context.read<LoginViewModel>();
+    final name = Validations.firstLetterUpperCase(nameController.text);
+    final category = Validations.firstLetterUpperCase(categoriaController.text);
+    final currentUser = loginViewModel.currentUser!.id!;
+
+    Recipe? savedRecipe;
+
+    if (widget.recipeToEdit == null) {
+      // CREAR NUEVA RECETA
+      await recipesViewmodel.addRecipe(
+        Recipe(
+          id: null,
+          userId: currentUser,
+          category: category,
+          imageUrl: imageUrl ?? imagePlaceHolder,
+          isFavorite: false,
+          prepTime: int.tryParse(prepTimeController.text),
+          title: name,
+          createdAt: DateTime.now().toString(),
+        ),
+      );
+      savedRecipe = recipesViewmodel.recipes.last;
+      recipeId = savedRecipe.id!;
+    } else {
+      // EDITAR RECETA EXISTENTE
+      await recipesViewmodel.updateRecipe(
+        Recipe(
+          id: recipeId!,
+          userId: currentUser,
+          category: category,
+          imageUrl: imageUrl ?? imagePlaceHolder,
+          isFavorite: widget.recipeToEdit!.isFavorite,
+          prepTime: int.tryParse(prepTimeController.text),
+          title: name,
+          createdAt: widget.recipeToEdit!.createdAt,
+        ),
+      );
+      savedRecipe = widget.recipeToEdit!;
+    }
+
+    // Guardar ingredientes e instrucciones
+    await _ingredientsKey.currentState?.saveIngredients(recipeId!);
+    await _instructionsKey.currentState?.saveInstructions(recipeId!);
+
+    await recipesViewmodel.fetchRecipesByUser(loginViewModel.currentUser!);
+
+    setState(() => isLoading = false);
+    Navigator.pop(context);
   }
 
   @override
@@ -61,41 +157,13 @@ class _CreationPageState extends State<CreationPage> {
                 size: 30,
                 color: isValidToSend() ? AppColors.secondaryColor : Colors.grey,
               ),
-              onPressed: !isValidToSend()
-                  ? null
-                  : () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      final name =
-                          Validations.firstLetterUpperCase(nameController.text);
-                      final category = Validations.firstLetterUpperCase(
-                          categoriaController.text);
-                      final recipesViewmodel = context.read<RecipeViewModel>();
-                      final loginViewModel = context.read<LoginViewModel>();
-                      final currentUser = loginViewModel.currentUser!.id!;
-                      await recipesViewmodel.addRecipe(Recipe(
-                          id: null,
-                          userId: currentUser,
-                          category: category,
-                          imageUrl: imageUrl ?? imagePlaceHolder,
-                          isFavorite: false,
-                          prepTime: int.tryParse(prepTimeController.text),
-                          title: name,
-                          createdAt: DateTime.now().toString()));
-                      setState(() {
-                        recipeId = recipesViewmodel.recipes.last.id!;
-                      });
-                      recipesViewmodel
-                          .fetchRecipesByUser(loginViewModel.currentUser!);
-                    },
+              onPressed: isValidToSend() ? _saveAll : null,
             ),
           ),
         ],
       ),
       body: Stack(
         children: [
-          // El contenido principal del formulario
           SingleChildScrollView(
             child: Padding(
               padding:
@@ -107,10 +175,8 @@ class _CreationPageState extends State<CreationPage> {
                   CustomTextField(
                     controller: nameController,
                     isPassword: false,
-                    labelText: 'Name',
-                    onChanged: (text) {
-                      setState(() {});
-                    },
+                    labelText: 'Nombre',
+                    onChanged: (text) => setState(() {}),
                   ),
                   SizedBox(height: 15),
                   Row(
@@ -118,21 +184,22 @@ class _CreationPageState extends State<CreationPage> {
                       Expanded(
                         flex: 1,
                         child: CustomTextField(
-                            onChanged: (text) {
-                              setState(() {});
-                            },
-                            controller: categoriaController,
-                            isPassword: false,
-                            labelText: 'Category'),
+                          onChanged: (text) => setState(() {}),
+                          controller: categoriaController,
+                          isPassword: false,
+                          labelText: 'Categoría',
+                        ),
                       ),
                       SizedBox(width: 10),
                       Expanded(
-                          flex: 1,
-                          child: CustomTextField(
-                              keyboardType: TextInputType.number,
-                              labelText: 'Prep Time (min)',
-                              controller: prepTimeController,
-                              isPassword: false))
+                        flex: 1,
+                        child: CustomTextField(
+                          keyboardType: TextInputType.number,
+                          labelText: 'Tiempo prep. (min)',
+                          controller: prepTimeController,
+                          isPassword: false,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 15),
@@ -143,23 +210,15 @@ class _CreationPageState extends State<CreationPage> {
                   }),
                   SizedBox(height: 25),
                   IngredientsDynamicList(
+                    key: _ingredientsKey,
                     recipeId: recipeId,
-                    onIngredientsSaved: () {
-                      setState(() {
-                        areIngredientsSaved = true;
-                        checkIsAllSave();
-                      });
-                    },
+                    initialIngredients: widget.initialIngredients,
                   ),
                   SizedBox(height: 25),
                   InstructionsDynamicListWidget(
+                    key: _instructionsKey,
                     recipeId: recipeId,
-                    onInstructionsSaved: () {
-                      setState(() {
-                        areInstructionsSaved = true;
-                        checkIsAllSave();
-                      });
-                    },
+                    initialInstructions: widget.initialInstructions,
                   ),
                 ],
               ),
@@ -172,8 +231,7 @@ class _CreationPageState extends State<CreationPage> {
                   BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                     child: Container(
-                      color: Colors.black
-                          .withOpacity(0.15), // Le da un toque oscuro
+                      color: Colors.black.withOpacity(0.15),
                     ),
                   ),
                   Center(

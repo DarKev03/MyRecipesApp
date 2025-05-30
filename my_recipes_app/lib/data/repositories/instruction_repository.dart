@@ -19,4 +19,8 @@ class InstructionRepository {
   Future<List<Instruction>> getInstructionsByUserId(int userId) async {
     return await instructionService.getInstructionsByUserId(userId);
   }
+
+  Future<Instruction> updateInstruction(Instruction instruction) async {
+    return await instructionService.updateInstruction(instruction);
+  }
 }

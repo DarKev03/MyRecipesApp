@@ -30,15 +30,6 @@ class ShoppingListWidget extends StatelessWidget {
                           .removeShoppingList(shoppingList);
                       await shoppingListViewmodel.fetchShoppingListByUserId(
                           userViewModel.currentUser!.id!);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Shopping list "${shoppingList.name}" deleted',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: AppColors.primaryColor,
-                        ),
-                      );
                     },
                     background: Container(
                       alignment: Alignment.centerRight,

@@ -62,4 +62,18 @@ class InstructionService {
       throw Exception('Error fetching instructions');
     }
   }
+
+  Future<Instruction> updateInstruction(Instruction instruction) async {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.121:8080/api/instructions/update'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(instruction.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Instruction.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error updating instruction');
+    }
+  }
 }

@@ -10,6 +10,7 @@ class IngredientViewmodel extends ChangeNotifier {
 
   List<RecipeIngredient> _allUserIngredients = [];
   List<RecipeIngredient> _allRecipeIngredients = [];
+  
 
   List<RecipeIngredient> get allUserIngredients => _allUserIngredients;
   List<RecipeIngredient> get allRecipeIngredients => _allRecipeIngredients;
@@ -68,5 +69,18 @@ class IngredientViewmodel extends ChangeNotifier {
     }
   }
 
-  // Añadir endpoint para eliminar por id ingrediente
+  Future<void> updateRecipeIngredient(RecipeIngredient recipeIngredient) async {
+    try {
+      RecipeIngredient updatedIngredient = await recipeIngredientRepository
+          .updateRecipeIngredient(recipeIngredient);
+      _allUserIngredients = _allUserIngredients.map((ingredient) {
+        return ingredient.id == updatedIngredient.id
+            ? updatedIngredient
+            : ingredient;
+      }).toList();
+      notifyListeners();
+    } catch (e) {
+      print("Error updating recipe ingredient: $e");
+    }
+  }
 }

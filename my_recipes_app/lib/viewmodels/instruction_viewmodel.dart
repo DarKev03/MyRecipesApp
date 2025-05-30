@@ -57,4 +57,19 @@ class InstructionViewmodel extends ChangeNotifier {
       print("Error deleting instruction: $e");
     }
   }
+
+  Future<void> updateInstruction(Instruction instruction) async {
+    try {
+      final updatedInstruction =
+          await instructionRepository.updateInstruction(instruction);
+      final index = _allInstructions
+          .indexWhere((inst) => inst.id == updatedInstruction.id);
+      if (index != -1) {
+        _allInstructions[index] = updatedInstruction;
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Error updating instruction: $e");
+    }
+  }
 }

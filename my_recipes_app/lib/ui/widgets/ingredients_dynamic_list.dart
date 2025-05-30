@@ -1,113 +1,134 @@
 import 'package:flutter/material.dart';
-import 'package:my_recipes_app/data/models/ingredient.dart';
 import 'package:my_recipes_app/data/models/recipe_ingredient.dart';
+import 'package:my_recipes_app/data/models/ingredient.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
+import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class IngredientsDynamicList extends StatefulWidget {
   final int? recipeId;
-  final VoidCallback? onIngredientsSaved;
-  const IngredientsDynamicList(
-      {super.key, this.recipeId, this.onIngredientsSaved});
+  final List<RecipeIngredient>? initialIngredients;
+
+  const IngredientsDynamicList({
+    super.key,
+    this.recipeId,
+    this.initialIngredients,
+  });
 
   @override
-  State<IngredientsDynamicList> createState() => _IngredientsDynamicListState();
+  IngredientsDynamicListState createState() => IngredientsDynamicListState();
 }
 
-class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
-  List<TextEditingController> ingredientNameControllers = [];
-  List<TextEditingController> ingredientQuantityControllers = [];
-  List<TextEditingController> ingredientUnitsControllers = [];
+class IngredientsDynamicListState extends State<IngredientsDynamicList> {
+  List<TextEditingController> nameControllers = [];
+  List<TextEditingController> quantityControllers = [];
+  List<TextEditingController> unitControllers = [];
+  List<int?> recipeIngredientIds = [];
+  List<int?> ingredientIds = [];
+  List<int?> originalRecipeIngredientIds = [];
 
   @override
   void initState() {
     super.initState();
-    _addIngredient();
-  }
-
-  @override
-  void didUpdateWidget(covariant IngredientsDynamicList oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.recipeId != widget.recipeId) {
-      _saveIngredients();
+    if (widget.initialIngredients != null &&
+        widget.initialIngredients!.isNotEmpty) {
+      for (var ri in widget.initialIngredients!) {
+        nameControllers.add(TextEditingController(text: ri.ingredientName));
+        quantityControllers
+            .add(TextEditingController(text: ri.quantity?.toString() ?? ''));
+        unitControllers.add(TextEditingController(text: ri.unit ?? ''));
+        recipeIngredientIds.add(ri.id);
+        ingredientIds.add(ri.ingredientId);
+      }
+      originalRecipeIngredientIds = List<int?>.from(recipeIngredientIds);
+    } else {
+      _addIngredient();
     }
   }
 
   void _addIngredient() {
     setState(() {
-      ingredientNameControllers.add(TextEditingController());
-      ingredientQuantityControllers.add(TextEditingController());
-      ingredientUnitsControllers.add(TextEditingController());
+      nameControllers.add(TextEditingController());
+      quantityControllers.add(TextEditingController());
+      unitControllers.add(TextEditingController());
+      recipeIngredientIds.add(null);
+      ingredientIds.add(null);
     });
   }
 
-  void _removeIngredient() {
-    for (var element in ingredientNameControllers) {
-      element.dispose();
+  void _removeIngredient(int index) {
+    if (originalRecipeIngredientIds.length > index &&
+        originalRecipeIngredientIds[index] != null) {
+      final vm = context.read<IngredientViewmodel>();
+      final userVm = context.read<LoginViewModel>();
+      vm.deleteRecipeIngredient(originalRecipeIngredientIds[index]!);
+      originalRecipeIngredientIds.removeAt(index);
+      vm.fetchIngredientsByUserId(userVm.currentUser!.id!);
+      vm.getRecipeIngredients(widget.recipeId!);
     }
-    for (var element in ingredientQuantityControllers) {
-      element.dispose();
-    }
-    for (var element in ingredientUnitsControllers) {
-      element.dispose();
-    }
-
-    ingredientNameControllers = [];
-    ingredientQuantityControllers = [];
-    ingredientUnitsControllers = [];
+    nameControllers[index].dispose();
+    quantityControllers[index].dispose();
+    unitControllers[index].dispose();
+    nameControllers.removeAt(index);
+    quantityControllers.removeAt(index);
+    unitControllers.removeAt(index);
+    recipeIngredientIds.removeAt(index);
+    ingredientIds.removeAt(index);
   }
 
-  void _saveIngredients() async {
-    if (widget.recipeId == null) {
-      return;
-    } else {
-      List<Ingredient> ingredients = [];
-      List<Ingredient> ingredientsSaved = [];
-      final recipesIngredientsViewmodel = context.read<IngredientViewmodel>();
-      for (int i = 0; i < ingredientNameControllers.length; i++) {
-        if (ingredientNameControllers[i].text.isNotEmpty) {
-          var name = Validations.firstLetterUpperCase(
-              ingredientNameControllers[i].text);
-          ingredients.add(Ingredient(
+  Future<void> saveIngredients(int recipeId) async {
+    final vm = context.read<IngredientViewmodel>();
+    List<int?> currentRecipeIngredientIds = [];
+
+    for (int i = 0; i < nameControllers.length; i++) {
+      final name =
+          Validations.firstLetterUpperCase(nameControllers[i].text.trim());
+      final quantity = double.tryParse(quantityControllers[i].text);
+      final unit = unitControllers[i].text.trim();
+      final recipeIngId = recipeIngredientIds[i];
+      final ingredientId = ingredientIds[i];
+
+      if (name.isEmpty) continue;
+
+      int usedIngredientId = ingredientId ??
+          (await vm.addIngredient(Ingredient(
             id: null,
             name: name,
             description: null,
             createdAt: null,
-          ));
-        }
-      }
-      for (var ingredient in ingredients) {
-        ingredientsSaved
-            .add(await recipesIngredientsViewmodel.addIngredient(ingredient));
-      }
+          )))
+              .id!;
 
-      List<RecipeIngredient> recipeIngredients = [];
-
-      for (int i = 0; i < ingredients.length; i++) {
-        recipeIngredients.add(RecipeIngredient(
+      if (recipeIngId == null) {
+        await vm.addRecipeIngredient(RecipeIngredient(
           id: null,
-          recipeId: widget.recipeId!,
-          ingredientName: ingredientsSaved[i].name,
-          ingredientId: ingredientsSaved[i].id!,
-          quantity: double.tryParse(ingredientQuantityControllers[i].text),
-          unit: ingredientUnitsControllers[i].text,
+          recipeId: recipeId,
+          ingredientName: name,
+          ingredientId: usedIngredientId,
+          quantity: quantity,
+          unit: unit,
         ));
-      }
-      for (var recipeIngredient in recipeIngredients) {
-        await recipesIngredientsViewmodel.addRecipeIngredient(recipeIngredient);
-      }
+        vm.getRecipeIngredients(recipeId);
+        final newRecipeIng = vm.allRecipeIngredients.last;
 
-      _removeIngredient();
-
-      if (widget.onIngredientsSaved != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          widget.onIngredientsSaved!();
-        });
+        recipeIngredientIds[i] = newRecipeIng.id;
+        ingredientIds[i] = usedIngredientId;
+        currentRecipeIngredientIds.add(newRecipeIng.id);
+      } else {
+        // Actualizar existente
+        await vm.updateRecipeIngredient(RecipeIngredient(
+          id: recipeIngId,
+          recipeId: recipeId,
+          ingredientName: name,
+          ingredientId: usedIngredientId,
+          quantity: quantity,
+          unit: unit,
+        ));
+        currentRecipeIngredientIds.add(recipeIngId);
       }
     }
   }
@@ -119,7 +140,7 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: ingredientNameControllers.length,
+          itemCount: nameControllers.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -128,22 +149,18 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
                   setState(() {
-                    ingredientNameControllers.removeAt(index);
-                    ingredientQuantityControllers.removeAt(index);
-                    ingredientUnitsControllers.removeAt(index);
+                    _removeIngredient(index);
                   });
                 },
                 background: Container(
                   alignment: Alignment.centerRight,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.primaryColor,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Icon(Icons.delete, color: Colors.white),
                   ),
                 ),
                 child: Row(
@@ -151,28 +168,28 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
                     Expanded(
                       flex: 5,
                       child: CustomTextField(
-                        controller: ingredientNameControllers[index],
+                        controller: nameControllers[index],
                         isPassword: false,
-                        labelText: 'Ingredient',
+                        labelText: 'Ingrediente',
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       flex: 3,
                       child: CustomTextField(
-                        controller: ingredientQuantityControllers[index],
+                        controller: quantityControllers[index],
                         keyboardType: TextInputType.number,
                         isPassword: false,
-                        labelText: 'Quantity',
+                        labelText: 'Cantidad',
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       flex: 2,
                       child: CustomTextField(
-                        controller: ingredientUnitsControllers[index],
+                        controller: unitControllers[index],
                         isPassword: false,
-                        labelText: 'Unit',
+                        labelText: 'Unidad',
                       ),
                     ),
                   ],
@@ -183,11 +200,9 @@ class _IngredientsDynamicListState extends State<IngredientsDynamicList> {
         ),
         CustomElevatedButtomWidget(
           height: 10,
-          width: 100,
+          width: 150,
           text: 'Añadir ingrediente',
-          onPressed: () {
-            _addIngredient();
-          },
+          onPressed: _addIngredient,
         ),
       ],
     );

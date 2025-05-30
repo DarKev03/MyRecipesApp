@@ -40,8 +40,9 @@ class RecipePage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CreationPage(
-                              editRecipe: true,
-                              recipe: recipe,
+                              initialIngredients: [],
+                              initialInstructions: [],
+                              recipeToEdit: recipe,
                             ),
                           ));
                     },
