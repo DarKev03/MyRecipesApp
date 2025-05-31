@@ -11,6 +11,7 @@ import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -32,14 +33,17 @@ class SignUpPage extends StatelessWidget {
         !Validations.isValidPassword(password) ||
         !Validations.doPasswordsMatch(password, confirmPassword)) {
       if (!Validations.isValidName(name)) {
-        CustomSnackbar.show(context, "Please fill in all fields");
+        CustomSnackbar.show(
+            context, AppLocalizations.of(context)!.fillAllFields);
       } else if (!Validations.isValidEmail(email)) {
-        CustomSnackbar.show(context, "Invalid email format");
+        CustomSnackbar.show(
+            context, AppLocalizations.of(context)!.invalidEmailFormat);
       } else if (!Validations.isValidPassword(password)) {
-        CustomSnackbar.show(context,
-            "Password must be at least 7 characters long and contain at least one uppercase letter and one number");
+        CustomSnackbar.show(
+            context, AppLocalizations.of(context)!.passwordRequirements);
       } else if (!Validations.doPasswordsMatch(password, confirmPassword)) {
-        CustomSnackbar.show(context, "Passwords do not match");
+        CustomSnackbar.show(
+            context, AppLocalizations.of(context)!.passwordsDoNotMatch);
       }
 
       return false;
@@ -67,8 +71,8 @@ class SignUpPage extends StatelessWidget {
                 const SizedBox(height: 120),
 
                 // Nombre de la pagina
-                const Text(
-                  'Register',
+                Text(
+                  AppLocalizations.of(context)!.register,
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w600,
@@ -79,8 +83,8 @@ class SignUpPage extends StatelessWidget {
                 const SizedBox(height: 15),
 
                 // Subtitulo
-                const Text(
-                  'Create your new account',
+                Text(
+                  AppLocalizations.of(context)!.createNewAccount,
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.secondaryColor,
@@ -93,7 +97,7 @@ class SignUpPage extends StatelessWidget {
                 CustomTextField(
                   controller: nameController,
                   isPassword: false,
-                  labelText: 'Name',
+                  labelText: AppLocalizations.of(context)!.name,
                 ),
 
                 const SizedBox(height: 25),
@@ -101,7 +105,7 @@ class SignUpPage extends StatelessWidget {
                 CustomTextField(
                   controller: emailController,
                   isPassword: false,
-                  labelText: 'Email',
+                  labelText: AppLocalizations.of(context)!.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
 
@@ -109,7 +113,7 @@ class SignUpPage extends StatelessWidget {
 
                 CustomTextField(
                   controller: passwordController,
-                  labelText: 'Password',
+                  labelText: AppLocalizations.of(context)!.password,
                   isPassword: true,
                 ),
 
@@ -117,7 +121,7 @@ class SignUpPage extends StatelessWidget {
 
                 CustomTextField(
                   controller: confirmPasswordController,
-                  labelText: 'Confirm Password',
+                  labelText: AppLocalizations.of(context)!.confirmPassword,
                   isPassword: true,
                 ),
 
@@ -126,7 +130,7 @@ class SignUpPage extends StatelessWidget {
                 // Sign up button
                 CustomElevatedButtomWidget(
                   width: 120,
-                  text: "Sign up",
+                  text: AppLocalizations.of(context)!.register,
                   onPressed: () async {
                     try {
                       if (!isValid(context)) {
@@ -139,10 +143,10 @@ class SignUpPage extends StatelessWidget {
                           name: nameController.text,
                           createdAt: null,
                           isAdmin: null);
-                      final loginViewModel = context.read<LoginViewModel>();
+                      final loginViewModel = context.read<UserViewModel>();
                       bool success = await loginViewModel.signUp(user);
                       if (success) {
-                        final loginViewModel = context.read<LoginViewModel>();
+                        final loginViewModel = context.read<UserViewModel>();
                         loginViewModel.setCurrentUser(user);
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -165,7 +169,7 @@ class SignUpPage extends StatelessWidget {
                 // Login
                 CustomTextButtom(
                   textSize: 13,
-                  text: "Already have an account?",
+                  text: AppLocalizations.of(context)!.alreadyHaveAccount,
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
@@ -175,20 +179,6 @@ class SignUpPage extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 15),
-
-                Text("Or continue with"),
-
-                const SizedBox(height: 5),
-
-                // Boton de google
-                IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      "lib/assets/images/google_png.webp",
-                      width: 50,
-                      height: 50,
-                    )),
               ],
             ),
           ),

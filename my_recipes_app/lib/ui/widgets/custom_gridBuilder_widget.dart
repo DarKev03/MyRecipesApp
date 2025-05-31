@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomGridBuilderWidget extends StatefulWidget {
   final int index;
@@ -133,9 +134,9 @@ class _CustomGridBuilderWidgetState extends State<CustomGridBuilderWidget> {
               )
             : Center(
                 child: widget.index == 0
-                    ? const Text('No recipes found')
-                    : const Text(
-                        'No favorite recipes',
+                    ? Text(AppLocalizations.of(context)!.noRecipesFound)
+                    : Text(
+                        AppLocalizations.of(context)!.noFavoritesFound,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey,

@@ -9,18 +9,17 @@ class IngredientViewmodel extends ChangeNotifier {
   final IngredientRepository ingredientRepository;
 
   List<RecipeIngredient> _allUserIngredients = [];
-  List<RecipeIngredient> _allRecipeIngredients = [];
-  List<RecipeIngredient> _currentRecipeIngredients = [];
+  //final List<RecipeIngredient> _allRecipeIngredients = [];
+  // List<RecipeIngredient> _currentRecipeIngredients = [];
 
   List<RecipeIngredient> get allUserIngredients => _allUserIngredients;
-  List<RecipeIngredient> get allRecipeIngredients => _allRecipeIngredients;
-  List<RecipeIngredient> get currentRecipeIngredients =>
-      _currentRecipeIngredients;
+  //List<RecipeIngredient> get allRecipeIngredients => _allRecipeIngredients;
+  // List<RecipeIngredient> get currentRecipeIngredients =>
+  //     _currentRecipeIngredients;
 
   IngredientViewmodel(
       {required this.recipeIngredientRepository,
       required this.ingredientRepository});
-  
 
   Future<void> fetchIngredientsByUserId(int userId) async {
     try {
@@ -32,15 +31,15 @@ class IngredientViewmodel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchIngredientsByRecipeId(int recipeId) async {
-    try {
-      _currentRecipeIngredients =
-          await recipeIngredientRepository.getIngredientsByRecipId(recipeId);
-      notifyListeners();
-    } catch (e) {
-      print("Error fetching ingredients by recipe ID: $e");
-    }
-  }
+  // Future<void> fetchIngredientsByRecipeId(int recipeId) async {
+  //   try {
+  //     _currentRecipeIngredients =
+  //         await recipeIngredientRepository.getIngredientsByRecipId(recipeId);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print("Error fetching ingredients by recipe ID: $e");
+  //   }
+  // }
 
   Future<Ingredient> addIngredient(Ingredient ingredient) async {
     try {
@@ -51,6 +50,16 @@ class IngredientViewmodel extends ChangeNotifier {
     } catch (e) {
       print("Error adding ingredient: $e");
       return ingredient;
+    }
+  }
+
+  Future<void> deleteIngredient(int id) async {
+    try {
+      await ingredientRepository.deleteIngredient(id);
+      _allUserIngredients.removeWhere((ingredient) => ingredient.id == id);
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting ingredient: $e");
     }
   }
 

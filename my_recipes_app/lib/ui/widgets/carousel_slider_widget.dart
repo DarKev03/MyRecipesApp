@@ -4,6 +4,7 @@ import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/ui/pages/main/recipe_page.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CarouselSliderWidget extends StatefulWidget {
   const CarouselSliderWidget({super.key});
@@ -22,11 +23,11 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
       height: 220,
       child: Consumer<RecipeViewModel>(
         builder: (context, viewModel, child) {
-          List<Recipe> recipes = viewModel.recentlyRecipes;          
+          List<Recipe> recipes = viewModel.recentlyRecipes;
           return viewModel.recentlyRecipes.isEmpty
-              ? const Center(
+              ? Center(
                   child: Text(
-                    'No recently added recipes',
+                    AppLocalizations.of(context)!.noRecentRecipesFound,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,

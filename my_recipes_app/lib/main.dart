@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/repositories/recipe_calendar_repository.dart';
 import 'package:my_recipes_app/data/repositories/shopping_list_repository.dart';
+import 'package:my_recipes_app/viewmodels/locale_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_recipes_app/data/repositories/ingredient_repository.dart';
@@ -33,7 +34,7 @@ Future<void> main() async {
               recipeCalendarRepository: RecipeCalendarRepository()),
         ),
         ChangeNotifierProvider(
-          create: (_) => LoginViewModel(userRepository: UserRepository()),
+          create: (_) => UserViewModel(userRepository: UserRepository()),
         ),
         ChangeNotifierProvider(
           create: (_) => InstructionViewmodel(
@@ -46,7 +47,8 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
             create: (_) =>
-                ShoppingListViewmodel(repository: ShoppingListRepository()))
+                ShoppingListViewmodel(repository: ShoppingListRepository())),
+        ChangeNotifierProvider(create: (_) => LocaleViewmodel()),
       ],
       child: const MainApp(),
     ),

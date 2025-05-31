@@ -15,6 +15,7 @@ import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecipePage extends StatelessWidget {
   final Recipe recipe;
@@ -52,7 +53,7 @@ class RecipePage extends StatelessWidget {
                         const Icon(Icons.edit, color: AppColors.secondaryColor),
                         const SizedBox(width: 10),
                         Text(
-                          'Edit',
+                          AppLocalizations.of(context)!.edit,
                           style: TextStyle(color: AppColors.secondaryColor),
                         ),
                       ],
@@ -61,7 +62,7 @@ class RecipePage extends StatelessWidget {
                   PopupMenuItem<String>(
                     onTap: () {
                       final viewModel = context.read<RecipeViewModel>();
-                      final userViewModel = context.read<LoginViewModel>();
+                      final userViewModel = context.read<UserViewModel>();
                       final ingredientsViewModel =
                           context.read<IngredientViewmodel>();
                       final instructionViewModel =
@@ -72,18 +73,21 @@ class RecipePage extends StatelessWidget {
                         context: context,
                         builder: (dialogContext) {
                           return AlertDialog(
-                            title: const Text('Delete Recipe'),
-                            content: const Text(
-                                'Are you sure you want to delete this recipe?'),
+                            title: Text(
+                                AppLocalizations.of(context)!.deleteRecipe),
+                            content: Text(AppLocalizations.of(context)!
+                                .deleteRecipeQuestion),
                             actions: [
                               TextButton(
-                                child: const Text('Cancel'),
+                                child:
+                                    Text(AppLocalizations.of(context)!.cancel),
                                 onPressed: () {
                                   Navigator.pop(dialogContext);
                                 },
                               ),
                               TextButton(
-                                child: const Text('Delete'),
+                                child: Text(
+                                    AppLocalizations.of(context)!.deleteRecipe),
                                 onPressed: () async {
                                   // Eliminar receta
                                   await viewModel.deleteRecipe(recipe.id!);
@@ -118,7 +122,7 @@ class RecipePage extends StatelessWidget {
                             color: AppColors.secondaryColor),
                         const SizedBox(width: 10),
                         Text(
-                          'Delete',
+                          AppLocalizations.of(context)!.delete,
                           style: TextStyle(color: AppColors.secondaryColor),
                         ),
                       ],
@@ -127,7 +131,7 @@ class RecipePage extends StatelessWidget {
                   PopupMenuItem(
                     onTap: () {
                       final viewModel = context.read<RecipeViewModel>();
-                      final userViewModel = context.read<LoginViewModel>();
+                      final userViewModel = context.read<UserViewModel>();
 
                       // Elegir fecha para planificación
                       showDatePicker(
@@ -151,12 +155,16 @@ class RecipePage extends StatelessWidget {
                                 builder: (context, setState) {
                               return !isLoading
                                   ? AlertDialog(
-                                      title: const Text('Notes'),
+                                      title: Text(
+                                          AppLocalizations.of(context)!.notes),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
-                                              'Do you want to add some notes for this recipe on date: ${datePicked.day}/${datePicked.month}/${datePicked.year}?'),
+                                          Text(AppLocalizations.of(context)!
+                                              .planDateQuestion(datePicked
+                                                  .toLocal()
+                                                  .toString()
+                                                  .split(' ')[0])),
                                           SizedBox(
                                             height: 10,
                                           ),
@@ -169,7 +177,8 @@ class RecipePage extends StatelessWidget {
                                       ),
                                       actions: [
                                         TextButton(
-                                          child: const Text('No'),
+                                          child: Text(
+                                              AppLocalizations.of(context)!.no),
                                           onPressed: () async {
                                             setState(() {
                                               isLoading = true;
@@ -196,7 +205,9 @@ class RecipePage extends StatelessWidget {
                                           },
                                         ),
                                         TextButton(
-                                          child: const Text('Yes'),
+                                          child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .yes),
                                           onPressed: () async {
                                             setState(() {
                                               isLoading = true;
@@ -252,7 +263,7 @@ class RecipePage extends StatelessWidget {
                             color: AppColors.secondaryColor),
                         SizedBox(width: 10),
                         Text(
-                          'Plan Recipe',
+                          AppLocalizations.of(context)!.planRecipe,
                           style: TextStyle(color: AppColors.secondaryColor),
                         ),
                       ],

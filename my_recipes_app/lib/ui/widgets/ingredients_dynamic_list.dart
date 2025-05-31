@@ -64,15 +64,15 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
     });
   }
 
-  void _removeIngredient(int index) {
+  void _removeIngredient(int index) async {
     if (originalRecipeIngredientIds.length > index &&
         originalRecipeIngredientIds[index] != null) {
       final vm = context.read<IngredientViewmodel>();
-      final userVm = context.read<LoginViewModel>();
-      vm.deleteRecipeIngredient(originalRecipeIngredientIds[index]!);
+      final userVm = context.read<UserViewModel>();
+      nameControllers.removeAt(index);
+      await vm.deleteRecipeIngredient(originalRecipeIngredientIds[index]!);
       originalRecipeIngredientIds.removeAt(index);
       vm.fetchIngredientsByUserId(userVm.currentUser!.id!);
-      vm.fetchIngredientsByRecipeId(widget.recipeId!);
     }
     nameControllers[index].dispose();
     quantityControllers[index].dispose();
@@ -116,7 +116,8 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
           quantity: quantity,
           unit: unit,
         ));
-        await vm.fetchIngredientsByRecipeId(recipeId);
+        await vm.fetchIngredientsByUserId(
+            context.read<UserViewModel>().currentUser!.id!);
         final newRecipeIng = vm.allUserIngredients.last;
 
         recipeIngredientIds[i] = newRecipeIng.id;
@@ -204,7 +205,7 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
         ),
         CustomElevatedButtomWidget(
           height: 10,
-          width: 150,
+          width: 100,
           text: 'Añadir ingrediente',
           onPressed: _addIngredient,
         ),

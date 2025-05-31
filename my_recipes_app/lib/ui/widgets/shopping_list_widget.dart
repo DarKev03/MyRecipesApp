@@ -3,13 +3,14 @@ import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ShoppingListWidget extends StatelessWidget {
   const ShoppingListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userViewModel = context.read<LoginViewModel>();
+    final userViewModel = context.read<UserViewModel>();
     return Consumer<ShoppingListViewmodel>(
       builder: (BuildContext context, shoppingListViewmodel, Widget? child) {
         final shoppingLists = shoppingListViewmodel.shoppingLists;
@@ -107,7 +108,7 @@ class ShoppingListWidget extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.4,
                 alignment: Alignment.center,
                 child: Text(
-                  'No shopping lists available',
+                  AppLocalizations.of(context)!.noShoppingListsFound,
                   style: TextStyle(
                     fontSize: 20,
                     color: AppColors.secondaryColor,

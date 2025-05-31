@@ -3,6 +3,7 @@ import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InstructionListWidget extends StatelessWidget {
   final Recipe recipe;
@@ -46,7 +47,7 @@ class InstructionListWidget extends StatelessWidget {
               )
             : Center(
                 child: Text(
-                  'No instructions available',
+                  AppLocalizations.of(context)!.noInstructionsFound,
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               );

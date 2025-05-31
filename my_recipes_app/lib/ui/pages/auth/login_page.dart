@@ -14,6 +14,7 @@ import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -47,8 +48,9 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 140),
-                const Text(
-                  'Welcome Back',
+                Text(
+                  AppLocalizations.of(context)!.welcomeBack,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w600,
@@ -56,8 +58,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Text(
-                  "Login to your account",
+                Text(
+                  AppLocalizations.of(context)!.loginToYourAccount,
                   style: TextStyle(
                     fontSize: 16,
                     color: AppColors.secondaryColor,
@@ -70,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 CustomTextField(
                   controller: emailController,
                   isPassword: false,
-                  labelText: 'Email',
+                  labelText: AppLocalizations.of(context)!.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
 
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 CustomTextField(
                   controller: passwordController,
-                  labelText: 'Password',
+                  labelText: AppLocalizations.of(context)!.password,
                   isPassword: true,
                   enableSuggestions: false,
                 ),
@@ -94,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     : CustomElevatedButtomWidget(
                         width: 120,
-                        text: "Login",
+                        text: AppLocalizations.of(context)!.login,
                         onPressed: () async {
                           try {
                             User user = User(
@@ -106,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                               password: passwordController.text,
                             );
                             final loginViewModel =
-                                context.read<LoginViewModel>();
+                                context.read<UserViewModel>();
                             bool loginSuccess = await loginViewModel.login(
                               user,
                             );
@@ -149,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                               // Manejar error de inicio de sesión
                               CustomSnackbar.show(
                                 context,
-                                "Invalid email or password",
+                                AppLocalizations.of(context)!
+                                    .invalidEmailOrPassword,
                               );
                             }
                           } catch (e) {}
@@ -158,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 5),
 
                 CustomTextButtom(
-                    text: "Don't have an account?",
+                    text: AppLocalizations.of(context)!.dontHaveAccount,
                     textSize: 13,
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -167,22 +170,6 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => SignUpPage(),
                           ));
                     }),
-
-                const SizedBox(height: 25),
-
-                Text("Or continue with"),
-
-                const SizedBox(height: 15),
-
-                // Botones de inicio de sesion con redes sociales
-                IconButton(
-                  icon: Image.asset(
-                    "lib/assets/images/google_png.webp",
-                    width: 50,
-                    height: 50,
-                  ),
-                  onPressed: () {},
-                ),
 
                 const SizedBox(height: 25),
               ],

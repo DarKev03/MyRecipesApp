@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class UserViewModel extends ChangeNotifier {
   final UserRepository _userRepository;
   User? _currentUser;
 
   User? get currentUser => _currentUser;
 
-  LoginViewModel({required UserRepository userRepository})
+  UserViewModel({required UserRepository userRepository})
       : _userRepository = userRepository;
 
   Future<bool> login(User user) async {
@@ -29,7 +29,30 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<bool> signUp(User user) async {
     try {
-      await _userRepository.registerUser(user);      
+      await _userRepository.registerUser(user);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateUser(User user) async {
+    try {
+      await _userRepository.updateUser(user);
+      setCurrentUser(user);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteUser(int userId) async {
+    try {
+      await _userRepository.deleteUser(userId);
+      if (_currentUser?.id == userId) {
+        logout();
+      }
       return true;
     } catch (e) {
       return false;

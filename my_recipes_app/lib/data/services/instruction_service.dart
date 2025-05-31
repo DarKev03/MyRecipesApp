@@ -42,7 +42,7 @@ class InstructionService {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (response.statusCode != 204 || response.statusCode != 200) {
+    if (response.statusCode != 200) {
       throw Exception('Error deleting instruction');
     }
   }

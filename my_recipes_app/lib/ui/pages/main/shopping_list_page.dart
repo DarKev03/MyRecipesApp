@@ -10,6 +10,7 @@ import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ShoppingListPage extends StatefulWidget {
   const ShoppingListPage({super.key});
@@ -26,8 +27,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final shoppingListViewmodel = context.watch<ShoppingListViewmodel>();
-    final userViewModel = context.watch<LoginViewModel>();
+    final shoppingListViewmodel = context.read<ShoppingListViewmodel>();
+    final userViewModel = context.read<UserViewModel>();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -40,18 +41,20 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               context: context,
               builder: (dialogContext) {
                 return AlertDialog(
-                  title: const Text('Create Shopping List'),
+                  title: Text(AppLocalizations.of(context)!.createShoppingList),
                   content: CustomTextField(
                     isPassword: false,
                     controller: shoppingListNameController,
-                    labelText: 'Shopping List Name',
+                    labelText: AppLocalizations.of(context)!.shoppingListName,
                   ),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.of(dialogContext).pop();
                       },
-                      child: const Text('Cancel'),
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                      ),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -67,7 +70,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                             userViewModel.currentUser!.id!);
                         Navigator.of(dialogContext).pop();
                       },
-                      child: const Text('Create'),
+                      child: Text(AppLocalizations.of(context)!.create),
                     ),
                   ],
                 );
@@ -101,7 +104,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: CustomElevatedButtomWidget(
-                              text: 'Clean up shopping lists',
+                              text: AppLocalizations.of(context)!
+                                  .cleanUpShoppingLists,
                               width: 10,
                               onPressed: () async {
                                 setState(() {

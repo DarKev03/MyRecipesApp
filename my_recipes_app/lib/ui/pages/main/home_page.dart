@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
+import 'package:my_recipes_app/ui/pages/main/admin_page.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/carousel_slider_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,55 +18,70 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
+            // Elementos de la barra de acciones
             PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
-                return [
-                  const PopupMenuItem<String>(
-                    value: 'profile',
-                    child: Row(
-                      children: [
-                        Icon(Icons.person, color: AppColors.secondaryColor),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: AppColors.secondaryColor,
+                final items = <PopupMenuEntry<String>>[];
+                final user = context.read<UserViewModel>();
+                if (user.currentUser!.isAdmin! == true) {
+                  items.add(
+                    PopupMenuItem<String>(
+                      value: 'admin',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.admin_panel_settings,
+                              color: AppColors.secondaryColor),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Admin',
+                            style: const TextStyle(
+                              color: AppColors.secondaryColor,
+                            ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminPage(),
+                          ),
+                        );
+                      },
                     ),
-                  ),
+                  );
+                }
+                items.add(
                   PopupMenuItem<String>(
+                    value: 'logout',
                     onTap: () {
-                      final loginViewModel = context.read<LoginViewModel>();
+                      final loginViewModel = context.read<UserViewModel>();
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Authpage()));
                       loginViewModel.logout();
                     },
-                    value: 'logout',
                     child: Row(
                       children: [
-                        Icon(Icons.logout, color: AppColors.secondaryColor),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        const Icon(Icons.logout,
+                            color: AppColors.secondaryColor),
+                        const SizedBox(width: 10),
                         Text(
-                          'Logout',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.logout,
+                          style: const TextStyle(
                             color: AppColors.secondaryColor,
                           ),
                         )
                       ],
                     ),
                   ),
-                ];
+                );
+                return items;
               },
-            )
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -87,8 +104,8 @@ class HomePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: const Text(
-                  'Recently added',
+                child: Text(
+                  AppLocalizations.of(context)!.recentlyAdded,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -106,7 +123,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Text(
-                  'Favorites recipes',
+                  AppLocalizations.of(context)!.favoriteRecipes,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

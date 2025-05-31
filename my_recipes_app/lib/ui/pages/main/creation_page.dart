@@ -10,11 +10,10 @@ import 'package:my_recipes_app/ui/widgets/ingredients_dynamic_list.dart';
 import 'package:my_recipes_app/ui/widgets/instructions_dynamic_list_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/utils/validations.dart';
-import 'package:my_recipes_app/viewmodels/ingredient_viewmodel.dart';
-import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreationPage extends StatefulWidget {
   final Recipe? recipeToEdit;
@@ -51,7 +50,7 @@ class _CreationPageState extends State<CreationPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.recipeToEdit != null) {      
+    if (widget.recipeToEdit != null) {
       nameController.text = widget.recipeToEdit!.title!;
       categoriaController.text = widget.recipeToEdit!.category!;
       prepTimeController.text = widget.recipeToEdit!.prepTime?.toString() ?? '';
@@ -63,12 +62,12 @@ class _CreationPageState extends State<CreationPage> {
   bool isValidToSend() {
     return nameController.text.isNotEmpty &&
         categoriaController.text.isNotEmpty;
-  }  
+  }
 
   Future<void> _saveAll() async {
     setState(() => isLoading = true);
     final recipesViewmodel = context.read<RecipeViewModel>();
-    final loginViewModel = context.read<LoginViewModel>();
+    final loginViewModel = context.read<UserViewModel>();
     final name = Validations.firstLetterUpperCase(nameController.text);
     final category = Validations.firstLetterUpperCase(categoriaController.text);
     final currentUser = loginViewModel.currentUser!.id!;
@@ -150,7 +149,7 @@ class _CreationPageState extends State<CreationPage> {
                   CustomTextField(
                     controller: nameController,
                     isPassword: false,
-                    labelText: 'Nombre',
+                    labelText: AppLocalizations.of(context)!.name,
                     onChanged: (text) => setState(() {}),
                   ),
                   SizedBox(height: 15),
@@ -162,7 +161,7 @@ class _CreationPageState extends State<CreationPage> {
                           onChanged: (text) => setState(() {}),
                           controller: categoriaController,
                           isPassword: false,
-                          labelText: 'Categoría',
+                          labelText: AppLocalizations.of(context)!.category,
                         ),
                       ),
                       SizedBox(width: 10),
@@ -170,7 +169,7 @@ class _CreationPageState extends State<CreationPage> {
                         flex: 1,
                         child: CustomTextField(
                           keyboardType: TextInputType.number,
-                          labelText: 'Tiempo prep. (min)',
+                          labelText: AppLocalizations.of(context)!.prepTime,
                           controller: prepTimeController,
                           isPassword: false,
                         ),
@@ -218,7 +217,7 @@ class _CreationPageState extends State<CreationPage> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Guardando receta...',
+                          AppLocalizations.of(context)!.savingRecipe,
                           style: TextStyle(
                             color: AppColors.secondaryColor,
                             fontSize: 18,
