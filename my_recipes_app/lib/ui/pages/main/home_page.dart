@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
           actions: [
             // Elementos de la barra de acciones
             PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 final items = <PopupMenuEntry<String>>[];
