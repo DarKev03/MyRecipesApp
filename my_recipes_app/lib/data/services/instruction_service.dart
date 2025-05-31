@@ -42,7 +42,7 @@ class InstructionService {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (response.statusCode != 204 || response.statusCode != 200) {
+    if (response.statusCode != 200) {
       throw Exception('Error deleting instruction');
     }
   }
@@ -65,7 +65,7 @@ class InstructionService {
 
   Future<Instruction> updateInstruction(Instruction instruction) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/instructions/update'),
+      Uri.parse('http://192.168.1.135:8080/api/instructions/update'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(instruction.toJson()),
     );

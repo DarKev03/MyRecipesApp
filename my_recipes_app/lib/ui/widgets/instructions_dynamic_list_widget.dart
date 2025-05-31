@@ -58,14 +58,19 @@ class InstructionsDynamicListWidgetState
   void _removeInstruction(int index) async {
     final vm = context.read<InstructionViewmodel>();
     final userVm = context.read<UserViewModel>();
-    if (originalInstructionIds.length > index) {
-      await vm.deleteInstruction(originalInstructionIds[index]!);
+
+    final controllerToDispose = controllers[index];
+    controllers.removeAt(index);
+
+    if (originalInstructionIds.length > index &&
+        originalInstructionIds[index] != null) {
+      final idToDelete = originalInstructionIds[index]!;
+      await vm.deleteInstruction(idToDelete);
       originalInstructionIds.removeAt(index);
       vm.fetchInstructionsByUserId(userVm.currentUser!.id!);
-      vm.fetchInstructionsByRecipeId(widget.recipeId!);
     }
-    controllers[index].dispose();
-    controllers.removeAt(index);
+
+    controllerToDispose.dispose();
     instructionIds.removeAt(index);
   }
 
