@@ -65,7 +65,7 @@ class InstructionService {
 
   Future<Instruction> updateInstruction(Instruction instruction) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.135:8080/api/instructions/update'),
+      Uri.parse('$baseUrl/instructions/update'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(instruction.toJson()),
     );

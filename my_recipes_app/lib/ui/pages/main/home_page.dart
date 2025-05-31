@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
               iconColor: AppColors.secondaryColor,
               itemBuilder: (context) {
                 final items = <PopupMenuEntry<String>>[];
-                final user = context.read<UserViewModel>();                
+                final user = context.read<UserViewModel>();
                 if (user.currentUser!.isAdmin! == true) {
                   items.add(
                     PopupMenuItem<String>(
@@ -51,25 +51,7 @@ class HomePage extends StatelessWidget {
                       },
                     ),
                   );
-                }                
-                items.add(
-                  PopupMenuItem<String>(
-                    value: 'profile',
-                    child: Row(
-                      children: [
-                        const Icon(Icons.person,
-                            color: AppColors.secondaryColor),
-                        const SizedBox(width: 10),
-                        Text(
-                          AppLocalizations.of(context)!.profile,
-                          style: const TextStyle(
-                            color: AppColors.secondaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
+                }
                 items.add(
                   PopupMenuItem<String>(
                     value: 'logout',
