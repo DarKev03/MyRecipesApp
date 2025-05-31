@@ -151,7 +151,7 @@ class InstructionsDynamicListWidgetState
           child: CustomElevatedButtomWidget(
             text: 'Añadir instrucción',
             onPressed: _addInstruction,
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: 100,
             height: 10,
           ),
         ),

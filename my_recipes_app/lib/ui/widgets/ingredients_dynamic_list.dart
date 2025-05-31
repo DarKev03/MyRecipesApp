@@ -204,7 +204,7 @@ class IngredientsDynamicListState extends State<IngredientsDynamicList> {
         ),
         CustomElevatedButtomWidget(
           height: 10,
-          width: MediaQuery.of(context).size.width * 0.2,
+          width: 100,
           text: 'Añadir ingrediente',
           onPressed: _addIngredient,
         ),
