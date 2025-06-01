@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localVM = context.watch<LocaleViewmodel>();
-    final locale = localVM.locale ?? const Locale('es'); 
+    final locale = localVM.locale ?? const Locale('en'); 
     return MaterialApp(
       title: 'MyRecipes',
       locale: locale,
