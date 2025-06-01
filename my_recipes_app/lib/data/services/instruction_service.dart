@@ -64,7 +64,7 @@ class InstructionService {
   }
 
   Future<Instruction> updateInstruction(Instruction instruction) async {
-    final response = await http.post(
+    final response = await http.put(
       Uri.parse('$baseUrl/instructions/update'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(instruction.toJson()),
