@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
@@ -14,7 +15,6 @@ import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/shopping_list_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

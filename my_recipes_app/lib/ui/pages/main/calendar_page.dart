@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/widgets/calendar_widget.dart';
 import 'package:my_recipes_app/ui/widgets/next_recipes_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});

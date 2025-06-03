@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/splash_screen_page.dart';
 import 'package:my_recipes_app/viewmodels/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
