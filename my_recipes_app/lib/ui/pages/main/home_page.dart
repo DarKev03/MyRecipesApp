@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/auth/auth_page.dart';
 import 'package:my_recipes_app/ui/pages/main/admin_page.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
@@ -7,7 +8,6 @@ import 'package:my_recipes_app/ui/widgets/custom_gridBuilder_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

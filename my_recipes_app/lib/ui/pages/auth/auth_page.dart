@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
 import 'package:my_recipes_app/ui/pages/auth/sign_up_page.dart';
 import 'package:my_recipes_app/ui/widgets/app_image_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_buttom.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_recipes_app/viewmodels/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 

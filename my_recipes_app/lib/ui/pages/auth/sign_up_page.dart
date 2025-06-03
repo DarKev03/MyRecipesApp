@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/user.dart';
 import 'package:my_recipes_app/data/repositories/user_repository.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/auth/login_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/ui/widgets/custom_scaffold_messenger.dart';
@@ -11,7 +12,6 @@ import 'package:my_recipes_app/utils/navbar.dart';
 import 'package:my_recipes_app/utils/validations.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();

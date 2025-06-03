@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:my_recipes_app/data/models/recipe.dart';
 import 'package:my_recipes_app/data/models/recipe_calendar.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/pages/main/creation_page.dart';
 import 'package:my_recipes_app/ui/widgets/custom_text_field.dart';
 import 'package:my_recipes_app/ui/widgets/hero_image_widget.dart';
@@ -15,7 +16,6 @@ import 'package:my_recipes_app/viewmodels/instruction_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/login_viewmodel.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecipePage extends StatelessWidget {
   final Recipe recipe;

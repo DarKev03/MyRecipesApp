@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipes_app/l10n/app_localizations.dart';
 import 'package:my_recipes_app/ui/widgets/custom_elevated_buttom_widget.dart';
 import 'package:my_recipes_app/utils/AppColors.dart';
 import 'package:my_recipes_app/viewmodels/recipe_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class FilterDrawerWidget extends StatefulWidget {
   const FilterDrawerWidget({super.key});
