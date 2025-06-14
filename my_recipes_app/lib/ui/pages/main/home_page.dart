@@ -18,68 +18,66 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           forceMaterialTransparency: true,
           actions: [
-            // Elementos de la barra de acciones
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert),
-              iconColor: AppColors.secondaryColor,
-              itemBuilder: (context) {
-                final items = <PopupMenuEntry<String>>[];
-                final user = context.read<UserViewModel>();
-                if (user.currentUser!.isAdmin! == true) {
-                  items.add(
-                    PopupMenuItem<String>(
-                      value: 'admin',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.admin_panel_settings,
-                              color: AppColors.secondaryColor),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Admin',
-                            style: const TextStyle(
-                              color: AppColors.secondaryColor,
-                            ),
+            Builder(
+              builder: (context) {
+                final user = context.watch<UserViewModel>().currentUser;
+                return PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  iconColor: AppColors.secondaryColor,
+                  itemBuilder: (menuContext) {
+                    final items = <PopupMenuEntry<String>>[];
+                    if (user != null && user.isAdmin == true) {
+                      items.add(
+                        PopupMenuItem<String>(
+                          value: 'admin',
+                          child: Row(
+                            children: [
+                              const Icon(Icons.admin_panel_settings,
+                                  color: AppColors.secondaryColor),
+                              const SizedBox(width: 10),
+                              Text('Admin',
+                                  style: const TextStyle(
+                                      color: AppColors.secondaryColor)),
+                            ],
                           ),
-                        ],
+                        ),
+                      );
+                    }
+                    items.add(
+                      PopupMenuItem<String>(
+                        value: 'logout',
+                        child: Row(
+                          children: [
+                            const Icon(Icons.logout,
+                                color: AppColors.secondaryColor),
+                            const SizedBox(width: 10),
+                            Text(AppLocalizations.of(context)!.logout,
+                                style: const TextStyle(
+                                    color: AppColors.secondaryColor)),
+                          ],
+                        ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AdminPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }
-                items.add(
-                  PopupMenuItem<String>(
-                    value: 'logout',
-                    onTap: () {
+                    );
+                    return items;
+                  },
+                  onSelected: (value) {
+                    if (value == 'admin') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AdminPage()),
+                      );
+                    }
+                    if (value == 'logout') {
                       final loginViewModel = context.read<UserViewModel>();
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Authpage()));
                       loginViewModel.logout();
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.logout,
-                            color: AppColors.secondaryColor),
-                        const SizedBox(width: 10),
-                        Text(
-                          AppLocalizations.of(context)!.logout,
-                          style: const TextStyle(
-                            color: AppColors.secondaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                    }
+                  },
                 );
-                return items;
               },
             ),
           ],
